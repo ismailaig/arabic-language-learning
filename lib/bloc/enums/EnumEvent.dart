@@ -1,0 +1,1 @@
+enum EventState {LOADING,LOADED,ERROR}
