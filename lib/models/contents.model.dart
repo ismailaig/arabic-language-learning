@@ -46,6 +46,7 @@ class Attributes {
     required this.createdAt,
     required this.updatedAt,
     required this.publishedAt,
+    required this.pageNumber,
     required this.image,
     required this.lesson,
   });
@@ -53,6 +54,7 @@ class Attributes {
   late final String createdAt;
   late final String updatedAt;
   late final String publishedAt;
+  late final int pageNumber;
   late final Image image;
   late final Lesson lesson;
 
@@ -61,6 +63,7 @@ class Attributes {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     publishedAt = json['publishedAt'];
+    pageNumber = json['pageNumber'];
     image = Image.fromJson(json['image']);
     lesson = Lesson.fromJson(json['lesson']);
   }
@@ -71,6 +74,7 @@ class Attributes {
     _data['createdAt'] = createdAt;
     _data['updatedAt'] = updatedAt;
     _data['publishedAt'] = publishedAt;
+    _data['pageNumber'] = pageNumber;
     _data['image'] = image.toJson();
     _data['lesson'] = lesson.toJson();
     return _data;

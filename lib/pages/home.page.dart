@@ -1,16 +1,20 @@
 import 'dart:math';
+import 'package:devrnz/bloc/contentBloc/content.event.dart';
 import 'package:devrnz/bloc/enums/EnumEvent.dart';
 import 'package:devrnz/bloc/lessonBloc/course.bloc.dart';
 import 'package:devrnz/bloc/lessonBloc/course.state.dart';
+import 'package:devrnz/pages/page.content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/authBloc/auth_bloc.dart';
+import '../bloc/contentBloc/content.bloc.dart';
 import '../widgets/drawer.widget.dart';
 
 class HomePage extends StatelessWidget {
-
+  late ContentBloc contentBloc;
   @override
   Widget build(BuildContext context) {
+    contentBloc = BlocProvider.of<ContentBloc>(context);
     return BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is AuthenticateState) {
@@ -77,7 +81,12 @@ class HomePage extends StatelessWidget {
                           child: ListView.separated(
                                 itemBuilder: (context, index) {
                                   return InkWell(
-                                    onTap: () => print("ontap fonctionne"),
+                                    onTap: () {
+                                      contentBloc.add(ContentLoading(state.lessons!.data[index].id));
+                                      Navigator.push(
+                                          context,MaterialPageRoute(builder: (context)=>PageContent())
+                                      );
+                                    },
                                     child: lesson("assets/images/egg.png",
                                         "${state.lessons!.data[index].attributes.king}",
                                         state.lessons!.data[index].attributes.title, Colors.blue

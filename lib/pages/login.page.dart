@@ -11,7 +11,6 @@ import '../utils/bezierContainer.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, this.title}) : super(key: key);
-
   final String? title;
 
   @override

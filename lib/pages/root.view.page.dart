@@ -26,7 +26,7 @@ class RootView extends StatelessWidget {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: state.theme,
-            home: MainScreen(),
+            home: ContentPage(imageName: "Salam",imagePath: "assets/images/egg.png", contentsLength: 10,pageNumber: 5),
             routes: {
               "/home":(context) => HomePage(),
               "/welcome":(context) => WelcomePage(),
