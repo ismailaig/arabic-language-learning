@@ -43,6 +43,7 @@ class Data {
 class Attributes {
   Attributes({
     required this.imageName,
+    required this.imageNameFr,
     required this.createdAt,
     required this.updatedAt,
     required this.publishedAt,
@@ -51,6 +52,7 @@ class Attributes {
     required this.lesson,
   });
   late final String imageName;
+  late final String imageNameFr;
   late final String createdAt;
   late final String updatedAt;
   late final String publishedAt;
@@ -60,6 +62,7 @@ class Attributes {
 
   Attributes.fromJson(Map<String, dynamic> json){
     imageName = json['imageName'];
+    imageNameFr = json['imageNameFr'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     publishedAt = json['publishedAt'];
@@ -71,6 +74,7 @@ class Attributes {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['imageName'] = imageName;
+    _data['imageNameFr'] = imageNameFr;
     _data['createdAt'] = createdAt;
     _data['updatedAt'] = updatedAt;
     _data['publishedAt'] = publishedAt;

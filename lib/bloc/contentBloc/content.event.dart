@@ -20,5 +20,4 @@ class ContentError extends ContentEvent
 
 class ContentPagination extends ContentEvent
 {
-
 }
