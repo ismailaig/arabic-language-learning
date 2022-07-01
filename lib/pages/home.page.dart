@@ -3,12 +3,12 @@ import 'package:devrnz/bloc/contentBloc/content.event.dart';
 import 'package:devrnz/bloc/enums/EnumEvent.dart';
 import 'package:devrnz/bloc/lessonBloc/course.bloc.dart';
 import 'package:devrnz/bloc/lessonBloc/course.state.dart';
-import 'package:devrnz/pages/page.content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 import '../bloc/contentBloc/content.bloc.dart';
 import '../widgets/drawer.widget.dart';
+import 'content.page.dart';
 
 class HomePage extends StatelessWidget {
   late ContentBloc contentBloc;
@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
                     leading: Builder(
                         builder: (BuildContext context) {
                           return IconButton(
-                              icon: Icon(
+                              icon: const Icon(
                                   Icons.menu, color: Colors.orange, size: 30),
                               onPressed: () {
                                 Scaffold.of(context).openDrawer();
@@ -51,7 +51,7 @@ class HomePage extends StatelessWidget {
                               Image.asset("assets/images/crown.png", height: 40,
                                 width: 40,),
                               Text("${state.listUsers.data[0].attributes.king}",
-                                style: TextStyle(color: Colors.orange,
+                                style: const TextStyle(color: Colors.orange,
                                     fontSize: 18),)
                             ],
                           ),
@@ -64,37 +64,39 @@ class HomePage extends StatelessWidget {
                       if (state.eventState == EventState.ERROR) {
                         return Column(
                           children:[
-                            Text(state.error,style: TextStyle(color: Colors.red, fontSize: 22),),
+                            Text(state.error,style: const TextStyle(color: Colors.red, fontSize: 22),),
                             ElevatedButton(
                                 onPressed: (){},
-                                child: Text("Réessayer"),
+                                child: const Text("Réessayer"),
                             )
                           ]
                         );
                       } else if (state.eventState == EventState.LOADING) {
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(),
                         );
                       } else if (state.eventState == EventState.LOADED) {
                         return Padding(
-                          padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
-                          child: ListView.separated(
+                          padding: const EdgeInsets.only(top: 35.0, bottom: 25.0),
+                          child: GridView.builder(
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                ),
+                                padding: EdgeInsets.only(left: 45, right: 45),
+                                shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   return InkWell(
                                     onTap: () {
                                       contentBloc.add(ContentLoading(state.lessons!.data[index].id));
                                       Navigator.push(
-                                          context,MaterialPageRoute(builder: (context)=>PageContent())
+                                          context,MaterialPageRoute(builder: (context)=>ContentPage())
                                       );
                                     },
-                                    child: lesson("assets/images/egg.png",
+                                    child: lesson(state.lessons!.data[index].attributes.image.data.attributes.url,
                                         "${state.lessons!.data[index].attributes.king}",
                                         state.lessons!.data[index].attributes.title, Colors.blue
                                     ),
                                   );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return SizedBox(height: 40);
                                 },
                                 itemCount: state.lessons!.data.length
                           ),
@@ -117,57 +119,55 @@ Widget twoLessons(Widget lesson1, Widget lesson2){
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
       lesson1,
-      SizedBox(width: 20,),
+      const SizedBox(width: 20,),
       lesson2
     ],
   );
 }
 
 Widget lesson(String image, String number, String title, Color color){
-  return Container(
-    child: Column(
-      children: <Widget>[
-        Stack(
-          alignment: Alignment.bottomRight,
-          children: <Widget>[
-            Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Transform.rotate(
-                  angle: 3*pi/4,
-                  child: CircularProgressIndicator(
-                    backgroundColor: Colors.grey[300],
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.yellow),
-                    value: Random().nextDouble(),
-                    strokeWidth: 60,
-                  ),
+  return Column(
+    children: <Widget>[
+      Stack(
+        alignment: Alignment.bottomRight,
+        children: <Widget>[
+          Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              Transform.rotate(
+                angle: 3*pi/4,
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.grey[300],
+                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.yellow),
+                  value: Random().nextDouble(),
+                  strokeWidth: 60,
                 ),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: CircleAvatar(
-                    backgroundColor: Colors.white,
-                    radius: 42,
-                  ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 42,
                 ),
-                CircleAvatar(
-                  child: Image.network(image,height: 50,),
-                  radius: 35,
-                  backgroundColor: color
-                )
-              ],
-            ),
-            Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Image.asset("assets/images/crown.png",height: 30,),
-                Text(number,style: TextStyle(color: Colors.deepOrange),)
-              ],
-            )
-          ],
-        ),
-        SizedBox(height: 10,),
-        Text(title,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),)
-      ],
-    ),
+              ),
+              CircleAvatar(
+                child: Image.network(image,height: 50,),
+                radius: 35,
+                backgroundColor: color
+              )
+            ],
+          ),
+          Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              Image.asset("assets/images/crown.png",height: 30,),
+              Text(number,style: const TextStyle(color: Colors.deepOrange),)
+            ],
+          )
+        ],
+      ),
+      const SizedBox(height: 10,),
+      Text(title,style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),)
+    ],
   );
 }

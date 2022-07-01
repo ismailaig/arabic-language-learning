@@ -23,7 +23,7 @@ class ProfilePage extends StatelessWidget {
                   physics: const BouncingScrollPhysics(),
                   children: [
                     ProfileWidget(
-                        imagePath:"assets/images/profile.jpg",
+                        imagePath:state.listUsers.data[0].attributes.photo.data.attributes.url,
                         onClicked:() async {}
                     ),
                     const SizedBox(height: 24),

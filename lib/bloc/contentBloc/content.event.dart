@@ -1,3 +1,4 @@
+
 abstract class ContentEvent {}
 
 class ContentLoading extends ContentEvent
@@ -15,4 +16,9 @@ class ContentError extends ContentEvent
 {
   String erroMessage;
   ContentError(this.erroMessage);
+}
+
+class ContentPagination extends ContentEvent
+{
+
 }

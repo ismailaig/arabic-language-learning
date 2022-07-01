@@ -5,8 +5,8 @@ class ContentState
 {
   Contents? contents;
   late EventState? eventState;
-  int? currentPage = 0;
+  int currentContent ;
   String error ='';
-  ContentState({this.eventState, this.contents, this.currentPage, required this.error});
+  ContentState({this.eventState, this.contents, required this.currentContent, required this.error});
 
 }

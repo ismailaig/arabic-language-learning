@@ -1,7 +1,9 @@
 import 'package:devrnz/bloc/lessonBloc/course.bloc.dart';
+import 'package:devrnz/repository/contents.repository.dart';
 import 'package:devrnz/repository/course.repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/contentBloc/content.bloc.dart';
 import 'pages/root.view.page.dart';
 import 'bloc/authBloc/auth_bloc.dart';
 import 'bloc/loginBloc/login_bloc.dart';
@@ -23,7 +25,10 @@ class MyApp extends StatelessWidget {
             create: (context) => ThemeBloc(),
           ),
           BlocProvider(
-            create: (context) => CourseBloc(new CourseRepository()),
+            create: (context) => ContentBloc(ContentRepository()),
+          ),
+          BlocProvider(
+            create: (context) => CourseBloc(CourseRepository()),
           ),
           BlocProvider(
             create: (context) => AuthBloc(),

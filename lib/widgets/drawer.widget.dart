@@ -14,6 +14,7 @@ class MyDrawer extends StatelessWidget {
   late LogoutBloc logoutBloc;
   late AuthBloc authBloc;
 
+
   @override
   Widget build(BuildContext context) {
     logoutBloc = BlocProvider.of<LogoutBloc>(context);
@@ -28,72 +29,67 @@ class MyDrawer extends StatelessWidget {
       {"title":"Graphics", "icon": Icon(Icons.grading, color: Theme.of(context).primaryColor), "route":"/graphics"},
       {"title":"Log out", "icon": Icon(Icons.logout, color: Theme.of(context).primaryColor), "route":"/welcome"}
     ];
-    return BlocListener<LogoutBloc,LogoutState>(
-      listener: (context, state) {
-        if(state is LogoutSucced){
-          authBloc.add(LogOut(uid: 0));
-          Navigator.push(
-              context, MaterialPageRoute(builder: (_) => WelcomePage())
-          );
-        }
-      },
-      child: BlocBuilder<LogoutBloc,LogoutState>(
+    return BlocBuilder<AuthBloc,AuthState>(
         builder: (context, state) {
-              return Drawer(
-                      child: Column(
-                        children: [
-                          DrawerHeader(
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                      colors: [
-                                        Colors.white,
-                                        Theme.of(context).colorScheme.primary
-                                      ]
-                                  )
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children:  [
-                                  const CircleAvatar(
-                                    radius: 50,
-                                    backgroundImage: AssetImage("assets/images/profile.jpg"),
-                                  ),
-                                  IconButton(onPressed: (){
-                                    context.read<ThemeBloc>().add(SwitchThemeEvent());
-                                  }, icon: const Icon(Icons.switch_account))
-                                ],
-                              )
-                          ),
-                          Expanded(
-                            child: ListView.separated(
-                                separatorBuilder: (_,__){
-                                  return Divider(color: Theme.of(context).primaryColor,height: 1,);
-                                },
-                                itemCount: menus.length,
-                                itemBuilder: (_,index){
-                                  return ListTile(
-                                    leading: menus[index]['icon'] as Icon,
-                                    title: Text("${menus[index]['title']}"),
-                                    onTap: (){
-                                      if(menus[index]['title']=="Log out"){
-                                        logoutBloc.add(LogoutButtonPressed());
-                                      }else{
-                                        Navigator.of(context).pop();
-                                        Navigator.pushNamed(context, "${menus[index]['route']}");
-                                      }
-                                    },
-                                  );
-                                }
-                            ),
+          if(state is AuthenticateState){
+            return Drawer(
+              child: Column(
+                children: [
+                  DrawerHeader(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [
+                                Colors.white,
+                                Theme.of(context).colorScheme.primary
+                              ]
                           )
-                        ],
                       ),
-                    );
-              }
-          )
-    );
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children:  [
+                          CircleAvatar(
+                            radius: 50,
+                            backgroundImage: NetworkImage(state.listUsers.data[0].attributes.photo.data.attributes.url),
+                          ),
+                          IconButton(onPressed: (){
+                            context.read<ThemeBloc>().add(SwitchThemeEvent());
+                          }, icon: const Icon(Icons.switch_account))
+                        ],
+                      )
+                  ),
+                  Expanded(
+                    child: ListView.separated(
+                        separatorBuilder: (_,__){
+                          return Divider(color: Theme.of(context).primaryColor,height: 1,);
+                        },
+                        itemCount: menus.length,
+                        itemBuilder: (_,index){
+                          return ListTile(
+                            leading: menus[index]['icon'] as Icon,
+                            title: Text("${menus[index]['title']}"),
+                            onTap: (){
+                              if(menus[index]['title']=="Log out"){
+                                logoutBloc.add(LogoutButtonPressed());
+                              }else{
+                                Navigator.of(context).pop();
+                                Navigator.pushNamed(context, "${menus[index]['route']}");
+                              }
+                            },
+                          );
+                        }
+                    ),
+                  )
+                ],
+              ),
+            );
+          }
+          return Container();
+        });
   }
 }
+
+
+
 
 
 
