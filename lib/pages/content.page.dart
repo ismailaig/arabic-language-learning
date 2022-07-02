@@ -1,14 +1,15 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:devrnz/bloc/contentBloc/content.event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-
 import '../bloc/contentBloc/content.bloc.dart';
 import '../bloc/contentBloc/content.state.dart';
 import '../bloc/enums/EnumEvent.dart';
 
 class ContentPage extends StatelessWidget {
 
+  final audioPlayer = AudioPlayer();
   late ContentBloc contentBloc;
 
   @override
@@ -37,15 +38,15 @@ class ContentPage extends StatelessWidget {
                 title: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(20)),
                   child: LinearPercentIndicator(
-                    padding: const EdgeInsets.only(right: 15),
-                    width: 220,
+                    padding: const EdgeInsets.only(right: 10),
+                    width: 200,
                     lineHeight: 19,
                     percent: state.contents!.data[state.currentContent].attributes.pageNumber/state.contents!.data.length,
                     animation: true,
                     animateFromLastPercent:true,
                     animationDuration: 1000,
                     barRadius: const Radius.circular(120),
-                    trailing: Text("${state.contents!.data[state.currentContent].attributes.pageNumber}/${state.contents!.data.length}", style: const TextStyle(fontSize: 19, color: Colors.deepOrange),),
+                    trailing: Text("${(state.contents!.data[state.currentContent].attributes.pageNumber*100/state.contents!.data.length).round()}%", style: const TextStyle(fontSize: 20, color: Colors.deepOrange),),
                     progressColor: Colors.green,
                   ),
                 ),
@@ -84,16 +85,39 @@ class ContentPage extends StatelessWidget {
                         } else if(state.eventState==EventState.LOADED){
                           return Column(
                               children: [
-                                Image.network(
-                                  state.contents!.data[state.currentContent].attributes.image.data[0].attributes.url,
-                                  width: 200,
-                                  height: 200,
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 20.0, left: 6),
+                                  child: Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () async{
+                                            print("Hi"+state.contents!.data[state.currentContent].attributes.imageSong.data[0].attributes.url);
+                                            audioPlayer.play(UrlSource(state.contents!.data[state.currentContent].attributes.imageSong.data[0].attributes.url));
+                                        },
+                                        child: Image.asset(
+                                            "assets/images/sound.png",
+                                          width: 50,
+                                          height: 50,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 40,
+                                      ),
+                                      Image.network(
+                                        state.contents!.data[state.currentContent].attributes.image.data[0].attributes.url,
+                                        width: 150,
+                                        height: 230,
+                                      ),
+                                    ],
+                                  ),
                                 ),
+                                const SizedBox(height: 30),
+                                Text(state.contents!.data[state.currentContent].attributes.imageName,style: const TextStyle(color:Colors.deepOrange,fontWeight: FontWeight.w400, fontSize: 24),),
                                 const SizedBox(height: 40),
-                                Text(state.contents!.data[state.currentContent].attributes.imageName,style: const TextStyle(color:Colors.deepOrange,fontWeight: FontWeight.w400, fontSize: 22),),
+                                Text(state.contents!.data[state.currentContent].attributes.nameArFr,style: const TextStyle(color:Colors.deepPurple, fontWeight: FontWeight.w400, fontSize: 24),),
                                 const SizedBox(height: 40),
-                                Text(state.contents!.data[state.currentContent].attributes.imageNameFr,style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 22),),
-                                const SizedBox(height: (100)),
+                                Text(state.contents!.data[state.currentContent].attributes.imageNameFr,style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 24),),
+                                const SizedBox(height: (60)),
                                 SizedBox(
                                   width: 300,
                                   height: 50,
@@ -113,7 +137,7 @@ class ContentPage extends StatelessWidget {
                                         context.read<ContentBloc>().add(ContentPagination());
                                       }
                                     },
-                                    child: const Text("Memorisé",style: TextStyle(fontSize: 20)),
+                                    child: const Text("Continuer",style: TextStyle(fontSize: 22)),
                                   ),
                                 )
                               ],

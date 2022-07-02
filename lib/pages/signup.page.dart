@@ -186,36 +186,36 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _loginAccountLabel() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()
-        ));
-      },
-      child: Container(
+    return Container(
         margin: const EdgeInsets.symmetric(vertical: 20),
         padding: const EdgeInsets.all(15),
         alignment: Alignment.bottomCenter,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Text(
+          children: <Widget>[
+            const Text(
               'Already have an account ?',
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
-            Text(
-              'Login',
-              style: TextStyle(
-                  color: Color(0xfff79c4f),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
+            InkWell(
+              onTap: (){
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => LoginPage()
+                ));
+              },
+              child: const Text(
+                'Login',
+                style: TextStyle(
+                    color: Color(0xfff79c4f),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600),
+              ),
             ),
           ],
         ),
-      ),
     );
   }
 
@@ -329,7 +329,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                         //),
-                        Positioned(top: 8, left: 0, child: _backButton()),
+                        Positioned(top: 38, left: 0, child: _backButton()),
                       ],
                     ),
                   ),

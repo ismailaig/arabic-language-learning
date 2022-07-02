@@ -247,35 +247,36 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _createAccountLabel() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
-      },
-      child: Container(
+    return Container(
         margin: const EdgeInsets.symmetric(vertical: 20),
         padding: const EdgeInsets.all(15),
         alignment: Alignment.bottomCenter,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Text(
+          children: <Widget>[
+            const Text(
               'Don\'t have an account ?',
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
-            Text(
-              'Register',
-              style: TextStyle(
-                  color: Color(0xfff79c4f),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
+            InkWell(
+              onTap: (){
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => SignUpPage())
+                );
+              },
+              child: const Text(
+                'Register',
+                style: TextStyle(
+                    color: Color(0xfff79c4f),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600),
+              ),
             ),
           ],
         ),
-      ),
     );
   }
 
@@ -309,97 +310,99 @@ class _LoginPageState extends State<LoginPage> {
     authBloc = BlocProvider.of<AuthBloc>(context);
     courseBloc = BlocProvider.of<CourseBloc>(context);
     return Scaffold(
-            body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: height,
-                    child: Stack(
-                    children: <Widget>[
-                    Positioned(
-                      top: -height * .25,
-                        right: -MediaQuery.of(context).size.width * .4,
-                      child: const BezierContainer()),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        //child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            SizedBox(height: height * .1),
-                            _title(),
-                            const SizedBox(height: 5),
-                            Form(
-                              key: _formKey,
-                              child: Column(
-                              children: <Widget>[
-                                _emailField(),
-                                _passwordField(),
-                                const SizedBox(height: 15),
-                                _submitButton(),
-                                const SizedBox(height: 8),
-                                  Text(
-                                    error,
-                                    style: const TextStyle(color: Colors.red, fontSize: 15.0),
-                                  )
-                              ]
+            body: SingleChildScrollView(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: height,
+                      child: Stack(
+                      children: <Widget>[
+                      Positioned(
+                        top: -height * .25,
+                          right: -MediaQuery.of(context).size.width * .4,
+                        child: const BezierContainer()),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          //child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(height: height * .1),
+                              _title(),
+                              const SizedBox(height: 5),
+                              Form(
+                                key: _formKey,
+                                child: Column(
+                                children: <Widget>[
+                                  _emailField(),
+                                  _passwordField(),
+                                  const SizedBox(height: 15),
+                                  _submitButton(),
+                                  const SizedBox(height: 8),
+                                    Text(
+                                      error,
+                                      style: const TextStyle(color: Colors.red, fontSize: 15.0),
+                                    )
+                                ]
+                                ),
                               ),
-                            ),
-                            /*Container(
-                              margin: EdgeInsets.only(top: 15),
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              alignment: Alignment.center,
-                              child: Text('Forgot Password ?',
-                                style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500)),
-                             ),*/
-                            //_divider(),
-                            //_googleButton(),
-                            SizedBox(height: height * .0001),
-                            _createAccountLabel(),
-                            BlocListener<LoginBloc,LoginState>(
-                                listener: (context, state) {
-                                  if(state is LoginSucced){
-                                    setState(() {
-                                      error = '';
-                                    });
-                                    courseBloc.add(CourseLoading());
-                                    authBloc.add(AppLoaded(listUsers: state.listUsers));
-                                    Navigator.push(
-                                        context,MaterialPageRoute(builder: (context)=>HomePage())
-                                    );
-                                  }else if(state is LoginFailed){
-                                    setState(() {
-                                      error = 'Email or password is incorrect';
-                                    });
-                                  }
-                                },
-                                child: BlocBuilder<LoginBloc,LoginState>(
-                                    builder: (context,state){
-                                      if(state is LoginLoading){
-                                        return const Center(
-                                            child: CircularProgressIndicator()
-                                        );
-                                      }else if(state is LoginFailed){
+                              /*Container(
+                                margin: EdgeInsets.only(top: 15),
+                                padding: EdgeInsets.symmetric(vertical: 5),
+                                alignment: Alignment.center,
+                                child: Text('Forgot Password ?',
+                                  style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w500)),
+                               ),*/
+                              //_divider(),
+                              //_googleButton(),
+                              SizedBox(height: height * .0001),
+                              _createAccountLabel(),
+                              BlocListener<LoginBloc,LoginState>(
+                                  listener: (context, state) {
+                                    if(state is LoginSucced){
+                                      setState(() {
+                                        error = '';
+                                      });
+                                      courseBloc.add(CourseLoading());
+                                      authBloc.add(AppLoaded(listUsers: state.listUsers));
+                                      Navigator.push(
+                                          context,MaterialPageRoute(builder: (context)=>HomePage())
+                                      );
+                                    }else if(state is LoginFailed){
+                                      setState(() {
                                         error = 'Email or password is incorrect';
-                                      }else if(state is LoginSucced){
+                                      });
+                                    }
+                                  },
+                                  child: BlocBuilder<LoginBloc,LoginState>(
+                                      builder: (context,state){
+                                        if(state is LoginLoading){
+                                          return const Center(
+                                              child: CircularProgressIndicator()
+                                          );
+                                        }else if(state is LoginFailed){
+                                          error = 'Email or password is incorrect';
+                                        }else if(state is LoginSucced){
+                                          return Container();
+                                        }
                                         return Container();
                                       }
-                                      return Container();
-                                    }
-                                )
-                            ),
-                          ],
+                                  )
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    //),
-                    Positioned(top: 8, left: 0, child: _backButton()),
-                    ],
-                  ),
-                  ),
-                ],
-              ),
+                      //),
+                      Positioned(top: 38, left: 0, child: _backButton()),
+                      ],
+                    ),
+                    ),
+                  ],
+                ),
+            ),
         );
     }
 }

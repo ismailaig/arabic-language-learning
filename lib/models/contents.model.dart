@@ -44,24 +44,29 @@ class Attributes {
   Attributes({
     required this.imageName,
     required this.imageNameFr,
+    required this.nameArFr,
     required this.createdAt,
     required this.updatedAt,
     required this.publishedAt,
     required this.pageNumber,
     required this.image,
     required this.lesson,
+    required this.imageSong
   });
   late final String imageName;
+  late final String nameArFr;
   late final String imageNameFr;
   late final String createdAt;
   late final String updatedAt;
   late final String publishedAt;
-  late final double pageNumber;
+  late final int pageNumber;
   late final Image image;
   late final Lesson lesson;
+  late final ImageSong imageSong;
 
   Attributes.fromJson(Map<String, dynamic> json){
     imageName = json['imageName'];
+    nameArFr = json['nameArFr'];
     imageNameFr = json['imageNameFr'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -69,11 +74,13 @@ class Attributes {
     pageNumber = json['pageNumber'];
     image = Image.fromJson(json['image']);
     lesson = Lesson.fromJson(json['lesson']);
+    imageSong = ImageSong.fromJson(json['imageSong']);
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['imageName'] = imageName;
+    _data['nameArFr'] = nameArFr;
     _data['imageNameFr'] = imageNameFr;
     _data['createdAt'] = createdAt;
     _data['updatedAt'] = updatedAt;
@@ -81,6 +88,7 @@ class Attributes {
     _data['pageNumber'] = pageNumber;
     _data['image'] = image.toJson();
     _data['lesson'] = lesson.toJson();
+    _data['imageSong'] = imageSong.toJson();
     return _data;
   }
 }
@@ -341,6 +349,144 @@ class AttributesLesson {
     _data['updatedAt'] = updatedAt;
     _data['publishedAt'] = publishedAt;
     _data['king'] = king;
+    return _data;
+  }
+}
+
+
+
+class ImageSong {
+  ImageSong({
+    required this.data,
+  });
+  late final List<DataSong> data;
+
+  ImageSong.fromJson(Map<String, dynamic> json){
+    data = List.from(json['data']).map((e)=>DataSong.fromJson(e)).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['data'] = data.map((e)=>e.toJson()).toList();
+    return _data;
+  }
+}
+
+class DataSong {
+  DataSong({
+    required this.id,
+    required this.attributes,
+  });
+  late final int id;
+  late final AttributesSong attributes;
+
+  DataSong.fromJson(Map<String, dynamic> json){
+    id = json['id'];
+    attributes = AttributesSong.fromJson(json['attributes']);
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['id'] = id;
+    _data['attributes'] = attributes.toJson();
+    return _data;
+  }
+}
+
+class AttributesSong {
+  AttributesSong({
+    required this.name,
+    required this.alternativeText,
+    required this.caption,
+    this.width,
+    this.height,
+    this.formats,
+    required this.hash,
+    required this.ext,
+    required this.mime,
+    required this.size,
+    required this.url,
+    required this.previewUrl,
+    required this.provider,
+    required this.providerMetadata,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+  late final String name;
+  late final String alternativeText;
+  late final String caption;
+  late final Null width;
+  late final Null height;
+  late final Null formats;
+  late final String hash;
+  late final String ext;
+  late final String mime;
+  late final double size;
+  late final String url;
+  late final String previewUrl;
+  late final String provider;
+  late final ProviderMetadata providerMetadata;
+  late final String createdAt;
+  late final String updatedAt;
+
+  AttributesSong.fromJson(Map<String, dynamic> json){
+    name = json['name'];
+    alternativeText = json['alternativeText'];
+    caption = json['caption'];
+    width = null;
+    height = null;
+    formats = null;
+    hash = json['hash'];
+    ext = json['ext'];
+    mime = json['mime'];
+    size = json['size'].toDouble();
+    url = json['url'];
+    previewUrl = json['previewUrl'];
+    provider = json['provider'];
+    providerMetadata = ProviderMetadata.fromJson(json['provider_metadata']);
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['name'] = name;
+    _data['alternativeText'] = alternativeText;
+    _data['caption'] = caption;
+    _data['width'] = width;
+    _data['height'] = height;
+    _data['formats'] = formats;
+    _data['hash'] = hash;
+    _data['ext'] = ext;
+    _data['mime'] = mime;
+    _data['size'] = size;
+    _data['url'] = url;
+    _data['previewUrl'] = previewUrl;
+    _data['provider'] = provider;
+    _data['provider_metadata'] = providerMetadata.toJson();
+    _data['createdAt'] = createdAt;
+    _data['updatedAt'] = updatedAt;
+    return _data;
+  }
+}
+
+class ProviderMetadata {
+  ProviderMetadata({
+    required this.publicId,
+    required this.resourceType,
+  });
+  late final String publicId;
+  late final String resourceType;
+
+  ProviderMetadata.fromJson(Map<String, dynamic> json){
+    publicId = json['public_id'];
+    resourceType = json['resource_type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['public_id'] = publicId;
+    _data['resource_type'] = resourceType;
     return _data;
   }
 }

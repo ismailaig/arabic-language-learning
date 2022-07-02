@@ -49,7 +49,7 @@ class Attributes {
     required this.updatedAt,
     required this.publishedAt,
     required this.king,
-    required this.image,
+    required this.image, 
   });
   late final String title;
   late final bool started;
@@ -57,7 +57,7 @@ class Attributes {
   late final String createdAt;
   late final String updatedAt;
   late final String publishedAt;
-  late final double king;
+  late final int king;
   late final Image image;
 
   Attributes.fromJson(Map<String, dynamic> json){
@@ -169,7 +169,7 @@ class AttributesImage {
     hash = json['hash'];
     ext = json['ext'];
     mime = json['mime'];
-    size = json['size'];
+    size = json['size'].toDouble();
     url = json['url'];
     previewUrl = null;
     provider = json['provider'];
@@ -250,7 +250,7 @@ class Small {
     mime = json['mime'];
     name = json['name'];
     path = null;
-    size = json['size'];
+    size = json['size'].toDouble();
     width = json['width'];
     height = json['height'];
   }
@@ -299,7 +299,7 @@ class Thumbnail {
     mime = json['mime'];
     name = json['name'];
     path = null;
-    size = json['size'];
+    size = json['size'].toDouble();
     width = json['width'];
     height = json['height'];
   }

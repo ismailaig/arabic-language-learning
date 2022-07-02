@@ -46,6 +46,7 @@ dependencies:
   qr_code_scanner:
   bloc:
   percent_indicator: ^4.0.1
+  audioplayers:
   provider:
   flutter_spinkit:
   flutter_bloc:

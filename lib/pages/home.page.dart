@@ -83,7 +83,7 @@ class HomePage extends StatelessWidget {
                                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                 ),
-                                padding: const EdgeInsets.only(left: 45, right: 45),
+                                padding: const EdgeInsets.only(left: 20, right: 20),
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   return lesson(state.lessons!.data[index].id, context, state.lessons!.data[index].attributes.image.data.attributes.url,
