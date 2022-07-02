@@ -57,7 +57,7 @@ class Attributes {
   late final String createdAt;
   late final String updatedAt;
   late final String publishedAt;
-  late final int king;
+  late final double king;
   late final Image image;
 
   Attributes.fromJson(Map<String, dynamic> json){

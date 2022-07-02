@@ -295,42 +295,42 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                               SizedBox(height: height * .0000001),
                               _loginAccountLabel(),
+                              BlocListener<RegisterBloc,RegisterState>(
+                                listener: (context,state){
+                                  if(state is RegisterSucced){
+                                    setState(() {
+                                      error = '';
+                                    });
+                                    Navigator.push(
+                                        context, MaterialPageRoute(builder: (_) => LoginPage())
+                                    );
+                                  }else if(state is RegisterFailed){
+                                    setState(() {
+                                      error = 'Fields are incorrect';
+                                    });
+                                  }
+                                },
+                                child: BlocBuilder<RegisterBloc,RegisterState>(
+                                    builder: (context,state){
+                                      if(state is RegisterLoading){
+                                        return const Center(
+                                            child: CircularProgressIndicator()
+                                        );
+                                      }else if(state is RegisterFailed){
+                                        error = 'Fields are incorrect';
+                                      }else if(state is RegisterSucced){
+                                        return Container();
+                                      }
+                                      return Container();
+                                    }
+                                ),
+                              ),
                             ],
                           ),
                         ),
                         //),
                         Positioned(top: 8, left: 0, child: _backButton()),
                       ],
-                    ),
-                  ),
-                  BlocListener<RegisterBloc,RegisterState>(
-                    listener: (context,state){
-                      if(state is RegisterSucced){
-                        setState(() {
-                          error = '';
-                        });
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (_) => LoginPage())
-                        );
-                      }else if(state is RegisterFailed){
-                        setState(() {
-                          error = 'Fields are incorrect';
-                        });
-                      }
-                    },
-                    child: BlocBuilder<RegisterBloc,RegisterState>(
-                        builder: (context,state){
-                          if(state is RegisterLoading){
-                            return const Center(
-                                child: CircularProgressIndicator()
-                            );
-                          }else if(state is RegisterFailed){
-                            error = 'Fields are incorrect';
-                          }else if(state is RegisterSucced){
-                            return Container();
-                          }
-                          return Container();
-                        }
                     ),
                   ),
                 ],

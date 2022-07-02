@@ -42,7 +42,7 @@ class _GraphicsPageState extends State<GraphicsPage> with TickerProviderStateMix
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Graphics Animation'),
+        title: const Text('Animation'),
       ),
       body:Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,8 +61,8 @@ class _GraphicsPageState extends State<GraphicsPage> with TickerProviderStateMix
           ),
           Slider(
               value: radius,
-              min: 40,
-              max: 200,
+              min: 20,
+              max: 150,
               label: radius.toString(),
               divisions: 10,
               onChanged: (value){

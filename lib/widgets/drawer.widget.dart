@@ -26,7 +26,7 @@ class MyDrawer extends StatelessWidget {
       {"title":"Face Detector", "icon": Icon(Icons.face, color: Theme.of(context).primaryColor), "route":"/face"},
       {"title":"QR Code Generate", "icon": Icon(Icons.qr_code, color: Theme.of(context).primaryColor), "route":"/QR"},
       {"title":"QR Scan & Generate", "icon": Icon(Icons.qr_code, color: Theme.of(context).primaryColor), "route":"/scanQR"},
-      {"title":"Graphics", "icon": Icon(Icons.grading, color: Theme.of(context).primaryColor), "route":"/graphics"},
+      {"title":"Animation", "icon": Icon(Icons.grading, color: Theme.of(context).primaryColor), "route":"/graphics"},
       {"title":"Log out", "icon": Icon(Icons.logout, color: Theme.of(context).primaryColor), "route":"/welcome"}
     ];
     return BlocBuilder<AuthBloc,AuthState>(

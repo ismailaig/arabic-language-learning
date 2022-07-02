@@ -14,7 +14,7 @@ class CourseBloc extends Bloc<CourseEvent,CourseState>
     on<CourseLoading>((event, emit) async {
       emit(CourseState(eventState: EventState.LOADING,error: ''));
       try {
-        final lesson = await _courseRepository.getLessons(event.page);
+        final lesson = await _courseRepository.getLessons();
         emit(CourseState(lessons: lesson,eventState: EventState.LOADED,error: ''));
       } catch (e) {
         emit(CourseState(eventState: EventState.ERROR,error: e.toString()));

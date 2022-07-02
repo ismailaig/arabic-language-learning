@@ -37,6 +37,7 @@ class ContentPage extends StatelessWidget {
                 title: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(20)),
                   child: LinearPercentIndicator(
+                    padding: const EdgeInsets.only(right: 15),
                     width: 220,
                     lineHeight: 19,
                     percent: state.contents!.data[state.currentContent].attributes.pageNumber/state.contents!.data.length,
@@ -44,7 +45,7 @@ class ContentPage extends StatelessWidget {
                     animateFromLastPercent:true,
                     animationDuration: 1000,
                     barRadius: const Radius.circular(120),
-                    trailing: Text("${state.contents!.data[state.currentContent].attributes.pageNumber}/${state.contents!.data.length}", style: const TextStyle(fontSize: 20, color: Colors.orange),),
+                    trailing: Text("${state.contents!.data[state.currentContent].attributes.pageNumber}/${state.contents!.data.length}", style: const TextStyle(fontSize: 19, color: Colors.deepOrange),),
                     progressColor: Colors.green,
                   ),
                 ),
@@ -89,9 +90,9 @@ class ContentPage extends StatelessWidget {
                                   height: 200,
                                 ),
                                 const SizedBox(height: 40),
-                                Text(state.contents!.data[state.currentContent].attributes.imageName,style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 40),),
+                                Text(state.contents!.data[state.currentContent].attributes.imageName,style: const TextStyle(color:Colors.deepOrange,fontWeight: FontWeight.w400, fontSize: 22),),
                                 const SizedBox(height: 40),
-                                Text(state.contents!.data[state.currentContent].attributes.imageNameFr,style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 40),),
+                                Text(state.contents!.data[state.currentContent].attributes.imageNameFr,style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 22),),
                                 const SizedBox(height: (100)),
                                 SizedBox(
                                   width: 300,
@@ -103,7 +104,7 @@ class ContentPage extends StatelessWidget {
                                             borderRadius: BorderRadius.circular(18.0),
                                           ),
                                         ),
-                                        backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor)
+                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.deepOrange)
                                     ),
                                     onPressed: (){
                                       if(state.currentContent==(state.contents!.data.length)-1){

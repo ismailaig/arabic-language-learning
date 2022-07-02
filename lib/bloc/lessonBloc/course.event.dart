@@ -2,8 +2,7 @@ abstract class CourseEvent {}
 
 class CourseLoading extends CourseEvent
 {
-  int page;
-  CourseLoading(this.page);
+
 }
 
 class CourseLoaded extends CourseEvent

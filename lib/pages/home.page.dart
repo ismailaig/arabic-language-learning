@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
                         builder: (BuildContext context) {
                           return IconButton(
                               icon: const Icon(
-                                  Icons.menu, color: Colors.orange, size: 30),
+                                  Icons.menu, color: Colors.deepOrange, size: 35),
                               onPressed: () {
                                 Scaffold.of(context).openDrawer();
                               },
@@ -61,14 +61,16 @@ class HomePage extends StatelessWidget {
                 body: BlocBuilder<CourseBloc, CourseState>(
                     builder: (context, state) {
                       if (state.eventState == EventState.ERROR) {
-                        return Column(
-                          children:[
-                            Text(state.error,style: const TextStyle(color: Colors.red, fontSize: 22),),
-                            ElevatedButton(
-                                onPressed: (){},
-                                child: const Text("Réessayer"),
-                            )
-                          ]
+                        return Center(
+                          child: Column(
+                            children:[
+                              Text(state.error,style: const TextStyle(color: Colors.red, fontSize: 22),),
+                              ElevatedButton(
+                                  onPressed: (){},
+                                  child: const Text("Réessayer"),
+                              )
+                            ]
+                          ),
                         );
                       } else if (state.eventState == EventState.LOADING) {
                         return const Center(
@@ -81,7 +83,7 @@ class HomePage extends StatelessWidget {
                                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                 ),
-                                padding: EdgeInsets.only(left: 45, right: 45),
+                                padding: const EdgeInsets.only(left: 45, right: 45),
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   return lesson(state.lessons!.data[index].id, context, state.lessons!.data[index].attributes.image.data.attributes.url,

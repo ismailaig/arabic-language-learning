@@ -56,7 +56,7 @@ class Attributes {
   late final String createdAt;
   late final String updatedAt;
   late final String publishedAt;
-  late final int pageNumber;
+  late final double pageNumber;
   late final Image image;
   late final Lesson lesson;
 

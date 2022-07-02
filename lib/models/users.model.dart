@@ -58,7 +58,7 @@ class Attributes {
   late final String updatedAt;
   late final String publishedAt;
   late final Photo photo;
-  late final int king;
+  late final double king;
 
   Attributes.fromJson(Map<String, dynamic> json){
     email = json['email'];

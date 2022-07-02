@@ -8,29 +8,20 @@ abstract class AuthEvent {}
 
 class AppLoaded extends AuthEvent{
   ListUsers listUsers;
-  int uid;
-  AppLoaded({required this.listUsers, required this.uid});
+  AppLoaded({required this.listUsers});
 }
 
 class LogOut extends AuthEvent{
-  int uid;
-  LogOut({required this.uid});
 }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial()) {
     on<AppLoaded>((event, emit) {
-      if (event.uid!=0) {
         emit(AuthenticateState(listUsers: event.listUsers));
-      } else {
-        emit(UnAuthenticateState());
-      }
     });
 
     on<LogOut>((event, emit) {
-      if (event.uid==0) {
         emit(UnAuthenticateState());
-      }
     });
   }
 }

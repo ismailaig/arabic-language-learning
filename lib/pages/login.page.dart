@@ -309,8 +309,7 @@ class _LoginPageState extends State<LoginPage> {
     authBloc = BlocProvider.of<AuthBloc>(context);
     courseBloc = BlocProvider.of<CourseBloc>(context);
     return Scaffold(
-            body: SingleChildScrollView(
-              child: Column(
+            body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
@@ -359,6 +358,38 @@ class _LoginPageState extends State<LoginPage> {
                             //_googleButton(),
                             SizedBox(height: height * .0001),
                             _createAccountLabel(),
+                            BlocListener<LoginBloc,LoginState>(
+                                listener: (context, state) {
+                                  if(state is LoginSucced){
+                                    setState(() {
+                                      error = '';
+                                    });
+                                    courseBloc.add(CourseLoading());
+                                    authBloc.add(AppLoaded(listUsers: state.listUsers));
+                                    Navigator.push(
+                                        context,MaterialPageRoute(builder: (context)=>HomePage())
+                                    );
+                                  }else if(state is LoginFailed){
+                                    setState(() {
+                                      error = 'Email or password is incorrect';
+                                    });
+                                  }
+                                },
+                                child: BlocBuilder<LoginBloc,LoginState>(
+                                    builder: (context,state){
+                                      if(state is LoginLoading){
+                                        return const Center(
+                                            child: CircularProgressIndicator()
+                                        );
+                                      }else if(state is LoginFailed){
+                                        error = 'Email or password is incorrect';
+                                      }else if(state is LoginSucced){
+                                        return Container();
+                                      }
+                                      return Container();
+                                    }
+                                )
+                            ),
                           ],
                         ),
                       ),
@@ -367,42 +398,8 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   ),
-                  BlocListener<LoginBloc,LoginState>(
-                      listener: (context, state) {
-                        if(state is LoginSucced){
-                          setState(() {
-                            error = '';
-                          });
-                          courseBloc.add(CourseLoading(0));
-                          authBloc.add(AppLoaded(listUsers: state.listUsers, uid: state.listUsers.data[0].id));
-                          Navigator.push(
-                              context,MaterialPageRoute(builder: (context)=>HomePage())
-                          );
-                        }else if(state is LoginFailed){
-                          setState(() {
-                            error = 'Email or password is incorrect';
-                          });
-                        }
-                      },
-                      child: BlocBuilder<LoginBloc,LoginState>(
-                          builder: (context,state){
-                            if(state is LoginLoading){
-                              return const Center(
-                                  child: CircularProgressIndicator()
-                              );
-                            }else if(state is LoginFailed){
-                                error = 'Email or password is incorrect';
-                            }else if(state is LoginSucced){
-                              error = '';
-                              return Container();
-                            }
-                            return Container();
-                          }
-                      )
-                  ),
                 ],
               ),
-            )
         );
     }
 }
