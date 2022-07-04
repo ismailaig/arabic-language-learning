@@ -1,23 +1,16 @@
+import 'package:devrnz/bloc/enums/EnumEvent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:devrnz/bloc/logoutBloc/logout_bloc.dart';
 import 'package:devrnz/bloc/theme.bloc.dart';
-import 'package:devrnz/models/users.model.dart';
-import 'package:devrnz/pages/welcome.page.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 import '../bloc/logoutBloc/logout_event.dart';
-import '../bloc/logoutBloc/logout_state.dart';
-import '../pages/home.page.dart';
-import '../pages/profile.page.dart';
 
 class MyDrawer extends StatelessWidget {
-  late LogoutBloc logoutBloc;
   late AuthBloc authBloc;
-
 
   @override
   Widget build(BuildContext context) {
-    logoutBloc = BlocProvider.of<LogoutBloc>(context);
     authBloc = BlocProvider.of<AuthBloc>(context);
     final menus = [
       {"title":"Home", "icon": Icon(Icons.home, color: Theme.of(context).primaryColor,), "route":"/home"},
@@ -29,9 +22,9 @@ class MyDrawer extends StatelessWidget {
       {"title":"Animation", "icon": Icon(Icons.grading, color: Theme.of(context).primaryColor), "route":"/graphics"},
       {"title":"Log out", "icon": Icon(Icons.logout, color: Theme.of(context).primaryColor), "route":"/welcome"}
     ];
-    return BlocBuilder<AuthBloc,AuthState>(
+    return BlocBuilder<AuthBloc,AuthenticateState>(
         builder: (context, state) {
-          if(state is AuthenticateState){
+          if(state.eventState==EventState.LOADED){
             return Drawer(
               child: Column(
                 children: [
@@ -49,7 +42,7 @@ class MyDrawer extends StatelessWidget {
                         children:  [
                           CircleAvatar(
                             radius: 50,
-                            backgroundImage: NetworkImage(state.listUsers.data[0].attributes.photo.data.attributes.url),
+                            backgroundImage: state.listUsers!.data[0].attributes.photo.data==null?const AssetImage("assets/images/profile.jpg"):NetworkImage(state.listUsers!.data[0].attributes.photo.data!.attributes.url) as ImageProvider,
                           ),
                           IconButton(onPressed: (){
                             context.read<ThemeBloc>().add(SwitchThemeEvent());
@@ -69,11 +62,10 @@ class MyDrawer extends StatelessWidget {
                             title: Text("${menus[index]['title']}"),
                             onTap: (){
                               if(menus[index]['title']=="Log out"){
-                                logoutBloc.add(LogoutButtonPressed());
-                              }else{
-                                Navigator.of(context).pop();
-                                Navigator.pushNamed(context, "${menus[index]['route']}");
+                                authBloc.add(LogOut());
                               }
+                              Navigator.of(context).pop();
+                              Navigator.pushNamed(context, "${menus[index]['route']}");
                             },
                           );
                         }

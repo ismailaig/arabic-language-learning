@@ -1,56 +1,63 @@
 import 'dart:io';
-
 import 'package:devrnz/bloc/authBloc/auth_bloc.dart';
+import 'package:devrnz/bloc/enums/EnumEvent.dart';
+import 'package:devrnz/models/users.model.dart';
 import 'package:flutter/material.dart';
 import 'package:devrnz/widgets/profile.widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
+import '../utils/utils.dart';
 import '../widgets/drawer.widget.dart';
 import '../widgets/textfield.widget.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ProfilePage extends StatelessWidget {
 
-
+  late AuthBloc authBloc;
   @override
   Widget build(BuildContext context) {
+    authBloc = BlocProvider.of<AuthBloc>(context);
     return Scaffold(
         drawer: MyDrawer(),
         appBar: AppBar(title: const Text('Profile'),),
-        body: BlocBuilder<AuthBloc,AuthState>(
+        body: BlocBuilder<AuthBloc,AuthenticateState>(
             builder: (context,state){
-              if(state is AuthenticateState){
-                return SingleChildScrollView(
+              if(state.eventState==EventState.LOADED){
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 18),
                   child: ListView(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    padding: const EdgeInsets.symmetric(horizontal: 32,vertical: 30),
-                    physics: const BouncingScrollPhysics(),
-                    children: [
-                      ProfileWidget(
-                          imagePath:state.listUsers.data[0].attributes.photo.data.attributes.url,
-                          onClicked:() async {openDialog(context);}
-                      ),
-                      const SizedBox(height: 24),
-                      TextFieldWidget(
-                        label:'Full Name',
-                        text: state.listUsers.data[0].attributes.fullname,
-                        onChanged: (name){},
-                      ),
-                      const SizedBox(height: 24),
-                      TextFieldWidget(
-                        label:'Email',
-                        text: state.listUsers.data[0].attributes.email,
-                        onChanged: (email){},
-                      ),
-                      const SizedBox(height: 24),
-                      TextFieldWidget(
-                        label:'Password',
-                        text: state.listUsers.data[0].attributes.password,
-                        onChanged: (name){},
-                      ),
-                    ],
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      padding: const EdgeInsets.symmetric(horizontal: 32,vertical: 30),
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        ProfileWidget(
+                            imagePath:state.listUsers!.data[0].attributes.photo.data==null?"assets/images/profile.jpg":state.listUsers!.data[0].attributes.photo.data!.attributes.url,
+                            mode:state.listUsers!.data[0].attributes.photo.data==null?"asset":"network",
+                            onClicked:() {
+                              openDialog(context,state.listUsers!);
+                            }
+                        ),
+                        const SizedBox(height: 24),
+                        TextFieldWidget(
+                          label:'Full Name',
+                          text: state.listUsers!.data[0].attributes.fullname,
+                          onChanged: (name){},
+                        ),
+                        const SizedBox(height: 24),
+                        TextFieldWidget(
+                          label:'Email',
+                          text: state.listUsers!.data[0].attributes.email,
+                          onChanged: (email){},
+                        ),
+                        const SizedBox(height: 24),
+                        TextFieldWidget(
+                          label:'Password',
+                          text: state.listUsers!.data[0].attributes.password,
+                          onChanged: (name){},
+                        ),
+                      ],
                   ),
                 );
               }
@@ -63,7 +70,7 @@ class ProfilePage extends StatelessWidget {
 
 
 
-  Future<void> openDialog(BuildContext context) async{
+  Future<void> openDialog(BuildContext context,ListUsers listUsers) {
     return showDialog(context: context,builder: (BuildContext context){
       return AlertDialog(
         title: const Text('Source de l\'image'),
@@ -72,40 +79,24 @@ class ProfilePage extends StatelessWidget {
             child: const Text('Gallery'),
             onPressed: () async{
               Navigator.of(context).pop();
-              XFile? file = await ImagePicker().pickImage(source: ImageSource.gallery);
-              if(file==null) {
+              File file = await Utils().pickImage(ImageSource.gallery,false,500,500);
+              if(file == null) {
                 return;
+              }else{
+                authBloc.add(UpdatePicture(file,listUsers));
               }
-              String path = file.path;
-              if (kIsWeb) {
-                // Set web-specific directory
-                file.saveTo(file.name);
-              } else {
-                final Directory localStorage = await getApplicationDocumentsDirectory();
-                final String locaStoragelPath = localStorage.path;
-                await file.saveTo('assets/images/${file.name}');
-              }
-              context.read<AuthBloc>().add(UploadPicture(file));
             },
           ),
           MaterialButton(
             child: const Text('Camera'),
             onPressed: () async{
               Navigator.of(context).pop();
-              XFile? file = await ImagePicker().pickImage(source: ImageSource.camera,maxWidth: 400, maxHeight: 400);
-              if(file==null) {
+              File file = await Utils().pickImage(ImageSource.camera,false,500,500);
+              if(file == null) {
                 return;
+              }else{
+                authBloc.add(UpdatePicture(file,listUsers));
               }
-              String path = file.path;
-              if (kIsWeb) {
-                // Set web-specific directory
-                file.saveTo(file.name);
-              } else {
-                final Directory localStorage = await getApplicationDocumentsDirectory();
-                final String locaStoragelPath = localStorage.path;
-                await file.saveTo('assets/images/${file.name}');
-              }
-              context.read<AuthBloc>().add(UploadPicture(file));
             },
           )
         ],

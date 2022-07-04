@@ -4,11 +4,13 @@ class ProfileWidget extends StatelessWidget {
 
   final VoidCallback onClicked;
   final String imagePath;
+  final String mode;
 
   const ProfileWidget({
     Key?key,
     required this.onClicked,
-    required this.imagePath
+    required this.imagePath,
+    required this.mode
   }):super(key: key);
 
 
@@ -27,11 +29,15 @@ class ProfileWidget extends StatelessWidget {
         ],
       ),
     );
-
   }
 
   Widget buildImage(){
-    final image = NetworkImage(imagePath);
+    final image;
+    if(mode=="network"){
+      image = NetworkImage(imagePath);
+    }else{
+      image = AssetImage(imagePath);
+    }
     return ClipOval(
       child: Material(
         color: Colors.transparent,
@@ -72,9 +78,6 @@ class ProfileWidget extends StatelessWidget {
           child: child,
         ),
       );
-
-
-
 }
 
 

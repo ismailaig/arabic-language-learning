@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart';
 import 'package:devrnz/models/users.model.dart';
 import 'package:http/http.dart' as http;
 
@@ -30,6 +33,7 @@ class UserRepository{
         "fullname":fullname,
         "email":email,
         "password":password,
+        "king": "${0}"
     };
     try {
       http.Response response = await http.post(Uri.parse(url),
@@ -46,6 +50,40 @@ class UserRepository{
     }
   }
 
+  Future<bool> deletePhoto(ListUsers listUsers) async{
+    String url = "https://arabic-language.herokuapp.com/api/upload/files/${listUsers.data[0].attributes.photo.data!.id}";
+    try {
+      http.Response response = await http.delete(Uri.parse(url));
+      if(response.statusCode==200){
+        return true;
+      }else{
+        print(response.body);
+        return throw("Delete photo probleme => ${response.statusCode}");
+      }
+    } catch (e) {
+      return throw("Delete photo probleme => "+e.toString());
+    }
+  }
+
+  Future<bool> updatePhoto(File image, ListUsers listUsers) async{
+    String url = "https://arabic-language.herokuapp.com/api/upload/";
+    http.MultipartRequest request = http.MultipartRequest("POST", Uri.parse(url));
+    try {
+      http.MultipartFile multipartFile = await http.MultipartFile.fromPath('files', image.path,filename: basename(image.path),contentType: MediaType('image', 'jpeg'));
+      request.files.add(multipartFile);
+      request.fields['ref'] = "api::appuser.appuser";
+      request.fields['refId'] = "${listUsers.data[0].id}";
+      request.fields['field'] = "photo";
+      var response = await request.send();
+      if(response.statusCode==200){
+        return true;
+      }else{
+        return throw("Error uplaod => ${response.statusCode}");
+      }
+    } catch (e) {
+      return throw("Error upload => "+e.toString());
+    }
+  }
 
 
 

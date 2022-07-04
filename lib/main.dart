@@ -1,8 +1,13 @@
 import 'package:devrnz/bloc/lessonBloc/course.bloc.dart';
+import 'package:devrnz/repository/alphabets.repository.dart';
 import 'package:devrnz/repository/contents.repository.dart';
 import 'package:devrnz/repository/course.repository.dart';
+import 'package:devrnz/repository/numbers.repository.dart';
+import 'package:devrnz/repository/users.repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/AlphabetsBloc/alphabet.bloc.dart';
+import 'bloc/NumbersBloc/number.bloc.dart';
 import 'bloc/contentBloc/content.bloc.dart';
 import 'pages/root.view.page.dart';
 import 'bloc/authBloc/auth_bloc.dart';
@@ -31,7 +36,13 @@ class MyApp extends StatelessWidget {
             create: (context) => CourseBloc(CourseRepository()),
           ),
           BlocProvider(
-            create: (context) => AuthBloc(),
+            create: (context) => AlphabetBloc(AlphabetRepository()),
+          ),
+          BlocProvider(
+            create: (context) => NumberBloc(NumberRepository()),
+          ),
+          BlocProvider(
+            create: (context) => AuthBloc(UserRepository()),
           ),
           BlocProvider(
             create: (context) => RegisterBloc(),

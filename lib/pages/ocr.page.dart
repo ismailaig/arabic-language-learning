@@ -75,7 +75,7 @@ class _OcrPageState extends State<OcrPage> {
   }
   performOcr(context,source) async{
     Navigator.of(context).pop();
-    File image=await utils.pickImage(source,false,0);
+    File image=await utils.pickImage(source,false,0,0);
     File imageCropped= await utils.cropIMage(image);
     setState(() {
       isLoaded=true;

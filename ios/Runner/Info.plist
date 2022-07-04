@@ -43,5 +43,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+    <string>To take image from the camera</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>To take image from the gallery</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>To activate micro</string>
 </dict>
 </plist>

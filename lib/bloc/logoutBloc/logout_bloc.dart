@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:devrnz/repository/users.repository.dart';
 import 'logout_event.dart';
 import 'logout_state.dart';
 

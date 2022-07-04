@@ -1,22 +1,53 @@
 import 'dart:math';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:devrnz/bloc/contentBloc/content.event.dart';
 import 'package:devrnz/bloc/enums/EnumEvent.dart';
 import 'package:devrnz/bloc/lessonBloc/course.bloc.dart';
 import 'package:devrnz/bloc/lessonBloc/course.state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/AlphabetsBloc/alphabet.bloc.dart';
+import '../bloc/AlphabetsBloc/alphabet.event.dart';
+import '../bloc/AlphabetsBloc/alphabet.state.dart';
+import '../bloc/NumbersBloc/number.bloc.dart';
+import '../bloc/NumbersBloc/number.event.dart';
+import '../bloc/NumbersBloc/number.state.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 import '../bloc/contentBloc/content.bloc.dart';
+import '../bloc/lessonBloc/course.event.dart';
 import '../widgets/drawer.widget.dart';
 import 'content.page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
   late ContentBloc contentBloc;
+
+  late CourseBloc courseBloc;
+
+  late AlphabetBloc alphabetBloc;
+
+  late NumberBloc numberBloc;
+
+  bool alpha = false;
+
+  final audioPlayer = AudioPlayer();
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
+
+    alphabetBloc = BlocProvider.of<AlphabetBloc>(context);
+    courseBloc = BlocProvider.of<CourseBloc>(context);
+    numberBloc = BlocProvider.of<NumberBloc>(context);
+    contentBloc = BlocProvider.of<ContentBloc>(context);
+
+    return BlocBuilder<AuthBloc, AuthenticateState>(
         builder: (context, state) {
-          if (state is AuthenticateState) {
+          if (state.eventState==EventState.LOADED) {
             return Scaffold(
                 drawer: MyDrawer(),
                 appBar: AppBar(
@@ -39,9 +70,31 @@ class HomePage extends StatelessWidget {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Image.asset(
-                          "assets/images/saudi-arabia.png", height: 50,
-                          width: 50,),
+                        InkWell(
+                          onTap: (){
+                            courseBloc.add(CourseLoading());
+                            setState((){
+                              alpha = !alpha;
+                            });
+                          },
+                          child: Image.asset(
+                            "assets/images/saudi-arabia.png", height: 40,
+                            width: 40,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: (){
+                            alphabetBloc.add(AlphabetLoading());
+                            numberBloc.add(NumberLoading());
+                            setState((){
+                              alpha = !alpha;
+                            });
+                          },
+                          child: Image.asset(
+                            "assets/images/arabic-language.png", height: 35,
+                            width: 35,
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(right: 15.0),
                           child: Row(
@@ -49,7 +102,7 @@ class HomePage extends StatelessWidget {
                             children: [
                               Image.asset("assets/images/crown.png", height: 40,
                                 width: 40,),
-                              Text("${state.listUsers.data[0].attributes.king}",
+                              Text("${state.listUsers!.data[0].attributes.king}",
                                 style: const TextStyle(color: Colors.orange,
                                     fontSize: 18),)
                             ],
@@ -58,7 +111,7 @@ class HomePage extends StatelessWidget {
                       ],
                     )
                 ),
-                body: BlocBuilder<CourseBloc, CourseState>(
+                body: alpha == false? BlocBuilder<CourseBloc, CourseState>(
                     builder: (context, state) {
                       if (state.eventState == EventState.ERROR) {
                         return Center(
@@ -97,7 +150,7 @@ class HomePage extends StatelessWidget {
                       }
                       return Container();
                     }
-                )
+                ):alphaNumber()
             );
           }
           return Container();
@@ -105,8 +158,114 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget alphaNumber() {
+    return SingleChildScrollView(
+      child: Padding(
+          padding: const EdgeInsets.only(top: 35.0, bottom: 25.0),
+          child: Column(
+            children: [
+              BlocBuilder<AlphabetBloc, AlphabetState>(
+                  builder: (context, state) {
+                    if (state.eventState == EventState.ERROR) {
+                      return Center(
+                        child: Column(
+                            children:[
+                              Text(state.error,style: const TextStyle(color: Colors.red, fontSize: 22),),
+                              ElevatedButton(
+                                onPressed: (){},
+                                child: const Text("Réessayer"),
+                              )
+                            ]
+                        ),
+                      );
+                    } else if (state.eventState == EventState.LOADING) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (state.eventState == EventState.LOADED) {
+                      return Column(
+                        children: [
+                          const Center(
+                            child: Text("Alphabets", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          GridView.builder(
+                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 4,
+                                    crossAxisSpacing: 6,
+                                    mainAxisSpacing: 6
+                                  ),
+                                  padding: const EdgeInsets.all(8),
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return alphaNumberContainer(state.alphabet!.data[index].attributes.arabe, state.alphabet!.data[index].attributes.french, state.alphabet!.data[index].attributes.song.data[0].attributes.url);
+                                  },
+                                  itemCount: state.alphabet!.data.length
+                          ),
+                        ],
+                      );
+                  }
+                    return Container();
+                  }
+              ),
+              BlocBuilder<NumberBloc, NumberState>(
+                  builder: (context, state) {
+                    if (state.eventState == EventState.ERROR) {
+                      return Center(
+                        child: Column(
+                            children:[
+                              Text(state.error,style: const TextStyle(color: Colors.red, fontSize: 22),),
+                              ElevatedButton(
+                                onPressed: (){},
+                                child: const Text("Réessayer"),
+                              )
+                            ]
+                        ),
+                      );
+                    } else if (state.eventState == EventState.LOADING) {
+                      return Container();
+                    } else if (state.eventState == EventState.LOADED) {
+                      return Column(
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Center(
+                            child: Text("Nombres", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          GridView.builder(
+                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4,
+                                      crossAxisSpacing: 6,
+                                      mainAxisSpacing: 6
+                                  ),
+                                  padding: const EdgeInsets.all(8),
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return alphaNumberContainer(state.number!.data[index].attributes.arabe, state.number!.data[index].attributes.french, state.number!.data[index].attributes.song.data[0].attributes.url);
+                                  },
+                                  itemCount: state.number!.data.length
+                          )
+                        ],
+                      );
+                    }
+                    return Container();
+                  }
+              ),
+            ],
+          )
+      ),
+    );
+  }
+
   Widget lesson(int id, BuildContext context, String image, String number, String title, Color color){
-    contentBloc = BlocProvider.of<ContentBloc>(context);
     return Column(
       children: <Widget>[
         Stack(
@@ -161,7 +320,43 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget alphaNumberContainer(String arabic, String french, String urlAudio){
+    return InkWell(
+      onTap: (){
+        audioPlayer.play(UrlSource(urlAudio));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: Colors.black12,width: 2)
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Text(arabic,style: TextStyle(fontSize:20,fontWeight: FontWeight.w700,color: Colors.deepOrange),),
+              const SizedBox(
+                height: 2,
+              ),
+              Text(french, style: TextStyle(fontSize:20,fontWeight: FontWeight.w700,)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

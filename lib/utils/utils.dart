@@ -3,32 +3,38 @@ import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 
 
 class Utils {
   /// Pick Image from a source
   /// @crop : if true the image is cropped using maxWidth
-  Future pickImage(ImageSource source, bool crop, double? maxWidth) async {
+  Future pickImage(ImageSource source, bool crop, double? maxWidth, double? maxHeight) async {
     final ImagePicker _picker = ImagePicker();
     final XFile? image;
     if(crop) {
-      image = await _picker.pickImage(source: source,maxWidth: maxWidth);
+      image = await _picker.pickImage(source: source,maxWidth: maxWidth,maxHeight: maxHeight);
     } else {
       image = await _picker.pickImage(source: source);
     }
-    final file=File(image!.path);
-    return file;
+    if (image != null) {
+      File rotatedImage = await FlutterExifRotation.rotateImage(
+          path: image.path);
+      return rotatedImage;
+    }
   }
   /// Crop the image from a file
   Future cropIMage(File file) async {
     ImageCropper imageCropper=ImageCropper();
     var imageCropped = await imageCropper.cropImage(
         sourcePath: file.path,
+        maxHeight: 1080,
+        maxWidth: 1080,
         aspectRatioPresets: Platform.isAndroid
             ? [
+          CropAspectRatioPreset.original,
           CropAspectRatioPreset.square,
           CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.original,
           CropAspectRatioPreset.ratio4x3,
           CropAspectRatioPreset.ratio16x9
         ]
@@ -67,7 +73,6 @@ class Utils {
         for (TextElement textElement in textLine.elements) {
           content += " " + textElement.text;
         }
-
         content += '\n';
       }
     }

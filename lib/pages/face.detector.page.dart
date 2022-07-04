@@ -88,7 +88,7 @@ class _FaceDetectorPageState extends State<FaceDetectorPage> {
   }
   faceDetect(context, source) async {
     Navigator.of(context).pop();
-    File image=await Utils().pickImage(source,true,400);
+    File image=await Utils().pickImage(source,true,400,400);
     final data=image.readAsBytesSync();
     var imageData = await decodeImageFromList(data);
     setState(() {

@@ -1,4 +1,4 @@
-import 'package:devrnz/pages/content.page.dart';
+import 'package:devrnz/bloc/enums/EnumEvent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:devrnz/bloc/theme.bloc.dart';
@@ -36,7 +36,6 @@ class RootView extends StatelessWidget {
               "/QR":(context) => QRCodePage(),
               "/scanQR": (context) => QRViewScannerPage(),
               "/graphics": (context) => GraphicsPage()
-
             },
           );
         }
@@ -50,13 +49,11 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
+    return BlocBuilder<AuthBloc, AuthenticateState>(
       builder: (context, state) {
-        if(state is AuthInitial){
+        if(state.eventState==EventState.ERROR){
           return const WelcomePage();
-        }else if (state is UnAuthenticateState) {
-          return const WelcomePage();
-        } else if (state is AuthenticateState) {
+        } else if (state.eventState==EventState.LOADED) {
           return HomePage();
         }
         return Container();

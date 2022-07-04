@@ -45,7 +45,8 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
       TextField(
         controller: controller,
         decoration: InputDecoration(
-          border: OutlineInputBorder(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 1),
             borderRadius: BorderRadius.circular(12),
           ),
         ),

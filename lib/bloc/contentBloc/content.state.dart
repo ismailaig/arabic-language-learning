@@ -1,7 +1,5 @@
-import 'package:equatable/equatable.dart';
 import '../../models/contents.model.dart';
 import '../enums/EnumEvent.dart';
-
 
 
 class ContentState
@@ -11,6 +9,4 @@ class ContentState
   int currentContent ;
   String error ='';
   ContentState({this.eventState, this.contents, required this.currentContent, required this.error});
-
-
 }

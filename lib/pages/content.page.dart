@@ -9,7 +9,6 @@ import '../bloc/enums/EnumEvent.dart';
 
 class ContentPage extends StatelessWidget {
 
-  final audioPlayer = AudioPlayer();
   late ContentBloc contentBloc;
 
   @override
@@ -46,8 +45,8 @@ class ContentPage extends StatelessWidget {
                     animateFromLastPercent:true,
                     animationDuration: 1000,
                     barRadius: const Radius.circular(120),
-                    trailing: Text("${(state.contents!.data[state.currentContent].attributes.pageNumber*100/state.contents!.data.length).round()}%", style: const TextStyle(fontSize: 20, color: Colors.deepOrange),),
-                    progressColor: Colors.green,
+                    trailing: Text("${(state.contents!.data[state.currentContent].attributes.pageNumber*100/state.contents!.data.length).round()}%", style: const TextStyle(fontSize: 20, color: Colors.blue),),
+                    progressColor: Colors.blue,
                   ),
                 ),
               );
@@ -82,7 +81,7 @@ class ContentPage extends StatelessWidget {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
-                        } else if(state.eventState==EventState.LOADED){
+                        } else if(state.eventState == EventState.LOADED){
                           return Column(
                               children: [
                                 Padding(
@@ -90,9 +89,8 @@ class ContentPage extends StatelessWidget {
                                   child: Row(
                                     children: [
                                       InkWell(
-                                        onTap: () async{
-                                            print("Hi"+state.contents!.data[state.currentContent].attributes.imageSong.data[0].attributes.url);
-                                            audioPlayer.play(UrlSource(state.contents!.data[state.currentContent].attributes.imageSong.data[0].attributes.url));
+                                        onTap: () {
+                                          AudioPlayer().play(UrlSource(state.contents!.data[state.currentContent].attributes.imageSong.data[0].attributes.url));
                                         },
                                         child: Image.asset(
                                             "assets/images/sound.png",
@@ -128,9 +126,9 @@ class ContentPage extends StatelessWidget {
                                             borderRadius: BorderRadius.circular(18.0),
                                           ),
                                         ),
-                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.deepOrange)
+                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)
                                     ),
-                                    onPressed: (){
+                                    onPressed: () {
                                       if(state.currentContent==(state.contents!.data.length)-1){
                                         Navigator.of(context).pop();
                                       }else{

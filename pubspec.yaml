@@ -47,6 +47,8 @@ dependencies:
   bloc:
   percent_indicator: ^4.0.1
   audioplayers:
+  http_parser:
+  flutter_exif_rotation:
   provider:
   flutter_spinkit:
   flutter_bloc:
