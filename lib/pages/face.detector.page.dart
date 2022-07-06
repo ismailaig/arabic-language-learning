@@ -118,15 +118,15 @@ class ImagePainter extends CustomPainter {
       ..style=PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
       canvas.drawImage(imageFile, Offset.zero, paint);
-    faces.forEach((face) {
+    for (var face in faces) {
       canvas.drawRect(face.boundingBox, paint);
-    });
+    }
     //canvas.drawRect(Offset(0,0) & Size(size.width, size.height), paint);
   }
 
   @override
-  bool shouldRepaint(covariant ImagePainter old) {
-    return imageFile != old.imageFile || faces != old.faces;
+  bool shouldRepaint(covariant ImagePainter oldDelegate) {
+    return imageFile != oldDelegate.imageFile || faces != oldDelegate.faces;
   }
 
 }

@@ -1,8 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:devrnz/bloc/enums/EnumEvent.dart';
-import 'package:devrnz/bloc/lessonBloc/course.event.dart';
 import 'package:devrnz/repository/alphabets.repository.dart';
-import '../../repository/course.repository.dart';
 import 'alphabet.event.dart';
 import 'alphabet.state.dart';
 

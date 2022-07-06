@@ -30,7 +30,7 @@ class _QRViewScannerPageState extends State<QRViewScannerPage> {
               onPressed: () {
                 qrViewController.flipCamera();
               },
-              icon: Icon(Icons.flip))
+              icon: const Icon(Icons.flip))
         ],
       ),
       body: Column(
@@ -38,9 +38,9 @@ class _QRViewScannerPageState extends State<QRViewScannerPage> {
           Expanded(
               flex: 5,
               child:
-              (!viewQRScan)?QrImage(data: "${data}"):
+              (!viewQRScan)?QrImage(data: "$data"):
               Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: QRView(
                   overlay: QrScannerOverlayShape(
                       borderColor: Colors.red,

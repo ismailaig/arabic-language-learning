@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/alphabets.model.dart';
-import '../models/contents.model.dart';
 import '../models/numbers.model.dart';
 
 class NumberRepository{

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:devrnz/repository/users.repository.dart';
-import 'package:equatable/equatable.dart';
 import 'package:devrnz/models/users.model.dart';
 import '../../models/users.model.dart';
 import '../enums/EnumEvent.dart';
@@ -36,22 +35,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthenticateState> {
         emit(AuthenticateState(eventState: EventState.ERROR,error: ''));
     });
 
-    on<UpdatePicture>((event, emit) async {;
+    on<UpdatePicture>((event, emit) async {
         try {
           if(event.listUsers.data[0].attributes.photo.data!=null){
-            bool delete = await userRepository.deletePhoto(event.listUsers);
-            if(delete){
-              print("deleted");
-            }
+            await userRepository.deletePhoto(event.listUsers);
           }
           bool update = await userRepository.updatePhoto(event.image, event.listUsers);
           if(update){
-            print("Updated");
             ListUsers listUsers = await userRepository.signIn(event.listUsers.data[0].attributes.email, event.listUsers.data[0].attributes.password);
             emit(AuthenticateState(listUsers: listUsers,eventState: EventState.LOADED,error: '',));
           }
         } catch (e) {
-          print("Update problem "+e.toString());
+          throw("Update problem "+e.toString());
         }
     });
 

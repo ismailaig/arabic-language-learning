@@ -120,9 +120,6 @@ class AttributesSong {
     required this.name,
     required this.alternativeText,
     required this.caption,
-    this.width,
-    this.height,
-    this.formats,
     required this.hash,
     required this.ext,
     required this.mime,
@@ -137,9 +134,6 @@ class AttributesSong {
   late final String name;
   late final String alternativeText;
   late final String caption;
-  late final Null width;
-  late final Null height;
-  late final Null formats;
   late final String hash;
   late final String ext;
   late final String mime;
@@ -155,9 +149,6 @@ class AttributesSong {
     name = json['name'];
     alternativeText = json['alternativeText'];
     caption = json['caption'];
-    width = null;
-    height = null;
-    formats = null;
     hash = json['hash'];
     ext = json['ext'];
     mime = json['mime'];
@@ -175,9 +166,6 @@ class AttributesSong {
     _data['name'] = name;
     _data['alternativeText'] = alternativeText;
     _data['caption'] = caption;
-    _data['width'] = width;
-    _data['height'] = height;
-    _data['formats'] = formats;
     _data['hash'] = hash;
     _data['ext'] = ext;
     _data['mime'] = mime;

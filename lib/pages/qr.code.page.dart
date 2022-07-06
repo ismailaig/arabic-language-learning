@@ -9,7 +9,7 @@ class QRCodePage extends StatefulWidget {
 }
 
 class _QRCodePageState extends State<QRCodePage> {
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   String data = "";
 
   @override
@@ -41,7 +41,7 @@ class _QRCodePageState extends State<QRCodePage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-              child: Icon(Icons.qr_code_2_outlined),
+              child: const Icon(Icons.qr_code_2_outlined),
               onPressed: () {}
           )
         ],

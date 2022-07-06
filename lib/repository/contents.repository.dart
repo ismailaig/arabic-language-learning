@@ -6,7 +6,7 @@ class ContentRepository{
 
 
   Future<Contents> getContents(int idLesson) async{
-    String url = "https://arabic-language.herokuapp.com/api/contents/?populate=*&filters[lesson][id][\$eq]=$idLesson";
+    String url = "https://arabic-language.herokuapp.com/api/contents/?populate=*&pagination[page]=1&pagination[pageSize]=30&filters[lesson][id][\$eq]=$idLesson";
     try {
       http.Response response = await http.get(Uri.parse(url));
       if(response.statusCode==200){

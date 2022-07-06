@@ -136,9 +136,7 @@ class AttributesImage {
     required this.mime,
     required this.size,
     required this.url,
-    this.previewUrl,
     required this.provider,
-    this.providerMetadata,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -153,9 +151,7 @@ class AttributesImage {
   late final String mime;
   late final double size;
   late final String url;
-  late final Null previewUrl;
   late final String provider;
-  late final Null providerMetadata;
   late final String createdAt;
   late final String updatedAt;
 
@@ -171,9 +167,7 @@ class AttributesImage {
     mime = json['mime'];
     size = json['size'].toDouble();
     url = json['url'];
-    previewUrl = null;
     provider = json['provider'];
-    providerMetadata = null;
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
   }
@@ -191,9 +185,7 @@ class AttributesImage {
     _data['mime'] = mime;
     _data['size'] = size;
     _data['url'] = url;
-    _data['previewUrl'] = previewUrl;
     _data['provider'] = provider;
-    _data['provider_metadata'] = providerMetadata;
     _data['createdAt'] = createdAt;
     _data['updatedAt'] = updatedAt;
     return _data;
@@ -228,7 +220,6 @@ class Small {
     required this.hash,
     required this.mime,
     required this.name,
-    this.path,
     required this.size,
     required this.width,
     required this.height,
@@ -238,7 +229,6 @@ class Small {
   late final String hash;
   late final String mime;
   late final String name;
-  late final Null path;
   late final double size;
   late final int width;
   late final int height;
@@ -249,7 +239,6 @@ class Small {
     hash = json['hash'];
     mime = json['mime'];
     name = json['name'];
-    path = null;
     size = json['size'].toDouble();
     width = json['width'];
     height = json['height'];
@@ -262,7 +251,6 @@ class Small {
     _data['hash'] = hash;
     _data['mime'] = mime;
     _data['name'] = name;
-    _data['path'] = path;
     _data['size'] = size;
     _data['width'] = width;
     _data['height'] = height;
@@ -277,7 +265,6 @@ class Thumbnail {
     required this.hash,
     required this.mime,
     required this.name,
-    this.path,
     required this.size,
     required this.width,
     required this.height,
@@ -287,7 +274,6 @@ class Thumbnail {
   late final String hash;
   late final String mime;
   late final String name;
-  late final Null path;
   late final double size;
   late final int width;
   late final int height;
@@ -298,7 +284,6 @@ class Thumbnail {
     hash = json['hash'];
     mime = json['mime'];
     name = json['name'];
-    path = null;
     size = json['size'].toDouble();
     width = json['width'];
     height = json['height'];
@@ -311,7 +296,6 @@ class Thumbnail {
     _data['hash'] = hash;
     _data['mime'] = mime;
     _data['name'] = name;
-    _data['path'] = path;
     _data['size'] = size;
     _data['width'] = width;
     _data['height'] = height;

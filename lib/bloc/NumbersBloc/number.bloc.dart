@@ -1,9 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:devrnz/bloc/enums/EnumEvent.dart';
-import 'package:devrnz/bloc/lessonBloc/course.event.dart';
-import 'package:devrnz/repository/alphabets.repository.dart';
 import 'package:devrnz/repository/numbers.repository.dart';
-import '../../repository/course.repository.dart';
 import 'number.event.dart';
 import 'number.state.dart';
 

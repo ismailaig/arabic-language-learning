@@ -36,7 +36,7 @@ class _OcrPageState extends State<OcrPage> {
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
                 height: MediaQuery.of(context).size.height*0.5,
-                child: SingleChildScrollView(child: Text("${finalText}")),
+                child: SingleChildScrollView(child: Text(finalText)),
               ),
             )
           ],
@@ -80,7 +80,6 @@ class _OcrPageState extends State<OcrPage> {
     setState(() {
       isLoaded=true;
       imageFile=imageCropped;
-      print("Image Cropped");
     });
     String content=await utils.textOcr(imageCropped.path);
     setState(() {

@@ -1,5 +1,4 @@
 import 'package:devrnz/bloc/enums/EnumEvent.dart';
-
 import '../../models/alphabets.model.dart';
 
 class AlphabetState

@@ -28,14 +28,14 @@ class RootView extends StatelessWidget {
             theme: state.theme,
             home: const MainScreen(),
             routes: {
-              "/home":(context) => HomePage(),
-              "/welcome":(context) => WelcomePage(),
+              "/home":(context) => const HomePage(),
+              "/welcome":(context) => const WelcomePage(),
               "/profile":(context) => ProfilePage(),
-              "/ocr":(context) => OcrPage(),
-              "/face":(context) => FaceDetectorPage(),
-              "/QR":(context) => QRCodePage(),
-              "/scanQR": (context) => QRViewScannerPage(),
-              "/graphics": (context) => GraphicsPage()
+              "/ocr":(context) => const OcrPage(),
+              "/face":(context) => const FaceDetectorPage(),
+              "/QR":(context) => const QRCodePage(),
+              "/scanQR": (context) => const QRViewScannerPage(),
+              "/graphics": (context) => const GraphicsPage()
             },
           );
         }
@@ -54,7 +54,7 @@ class MainScreen extends StatelessWidget {
         if(state.eventState==EventState.ERROR){
           return const WelcomePage();
         } else if (state.eventState==EventState.LOADED) {
-          return HomePage();
+          return const HomePage();
         }
         return Container();
       },

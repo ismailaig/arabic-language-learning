@@ -1,6 +1,5 @@
 import 'package:devrnz/bloc/lessonBloc/course.bloc.dart';
 import 'package:devrnz/bloc/lessonBloc/course.event.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:devrnz/bloc/loginBloc/login_bloc.dart';
@@ -21,8 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   late LoginBloc loginBloc;
   late AuthBloc authBloc;
   late CourseBloc courseBloc;
-  TextEditingController emailTextEditingController = new TextEditingController();
-  TextEditingController passwordTextEditingController = new TextEditingController();
+  TextEditingController emailTextEditingController = TextEditingController();
+  TextEditingController passwordTextEditingController = TextEditingController();
   String email = "";
   String password = "";
   bool notVisible = true;
@@ -36,12 +35,12 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.pop(context);
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-              child: Icon(Icons.keyboard_arrow_left, color: Colors.black),
+              padding: const EdgeInsets.only(left: 0, top: 10, bottom: 10),
+              child: const Icon(Icons.keyboard_arrow_left, color: Colors.black),
             ),
             const Text('Back',
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
@@ -89,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _passwordField() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -264,7 +263,7 @@ class _LoginPageState extends State<LoginPage> {
             InkWell(
               onTap: (){
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => SignUpPage())
+                    context, MaterialPageRoute(builder: (context) => const SignUpPage())
                 );
               },
               child: const Text(
@@ -314,7 +313,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
+                    SizedBox(
                       height: height,
                       child: Stack(
                       children: <Widget>[
@@ -368,8 +367,8 @@ class _LoginPageState extends State<LoginPage> {
                                       });
                                       courseBloc.add(CourseLoading());
                                       authBloc.add(AppLoaded(listUsers: state.listUsers));
-                                      Navigator.push(
-                                          context,MaterialPageRoute(builder: (context)=>HomePage())
+                                      Navigator.pushAndRemoveUntil(
+                                          context,MaterialPageRoute(builder: (context)=>HomePage()),(route) => false
                                       );
                                     }else if(state is LoginFailed){
                                       setState(() {
@@ -381,7 +380,7 @@ class _LoginPageState extends State<LoginPage> {
                                       builder: (context,state){
                                         if(state is LoginLoading){
                                           return const Center(
-                                              child: CircularProgressIndicator()
+                                              child: CircularProgressIndicator(strokeWidth: 6,)
                                           );
                                         }else if(state is LoginFailed){
                                           error = 'Email or password is incorrect';
@@ -396,7 +395,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       //),
-                      Positioned(top: 38, left: 0, child: _backButton()),
+                      //²²²²²²²²²Positioned(top: 38, left: 0, child: _backButton()),
                       ],
                     ),
                     ),

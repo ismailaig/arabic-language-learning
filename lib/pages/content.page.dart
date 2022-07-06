@@ -11,6 +11,8 @@ class ContentPage extends StatelessWidget {
 
   late ContentBloc contentBloc;
 
+  ContentPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     contentBloc = BlocProvider.of<ContentBloc>(context);
@@ -37,7 +39,7 @@ class ContentPage extends StatelessWidget {
                 title: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(20)),
                   child: LinearPercentIndicator(
-                    padding: const EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.only(right: 15),
                     width: 200,
                     lineHeight: 19,
                     percent: state.contents!.data[state.currentContent].attributes.pageNumber/state.contents!.data.length,
@@ -45,8 +47,8 @@ class ContentPage extends StatelessWidget {
                     animateFromLastPercent:true,
                     animationDuration: 1000,
                     barRadius: const Radius.circular(120),
-                    trailing: Text("${(state.contents!.data[state.currentContent].attributes.pageNumber*100/state.contents!.data.length).round()}%", style: const TextStyle(fontSize: 20, color: Colors.blue),),
-                    progressColor: Colors.blue,
+                    trailing: Text("${(state.contents!.data[state.currentContent].attributes.pageNumber*100/state.contents!.data.length).round()}%", style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w400, color: Colors.orange),),
+                    progressColor: Colors.green,
                   ),
                 ),
               );
@@ -79,7 +81,7 @@ class ContentPage extends StatelessWidget {
                           );
                         } else if (state.eventState == EventState.LOADING) {
                           return const Center(
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(strokeWidth: 6,),
                           );
                         } else if(state.eventState == EventState.LOADED){
                           return Column(
@@ -109,13 +111,13 @@ class ContentPage extends StatelessWidget {
                                     ],
                                   ),
                                 ),
+                                const SizedBox(height: 15),
+                                Text(state.contents!.data[state.currentContent].attributes.imageName, textAlign: TextAlign.center, overflow: TextOverflow.visible, style: const TextStyle(color:Colors.deepOrange,fontWeight: FontWeight.w400, fontSize: 24),),
                                 const SizedBox(height: 30),
-                                Text(state.contents!.data[state.currentContent].attributes.imageName,style: const TextStyle(color:Colors.deepOrange,fontWeight: FontWeight.w400, fontSize: 24),),
-                                const SizedBox(height: 40),
-                                Text(state.contents!.data[state.currentContent].attributes.nameArFr,style: const TextStyle(color:Colors.deepPurple, fontWeight: FontWeight.w400, fontSize: 24),),
-                                const SizedBox(height: 40),
-                                Text(state.contents!.data[state.currentContent].attributes.imageNameFr,style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 24),),
-                                const SizedBox(height: (60)),
+                                Text(state.contents!.data[state.currentContent].attributes.nameArFr, textAlign: TextAlign.center, overflow: TextOverflow.visible, style: const TextStyle(color:Colors.deepPurple, fontWeight: FontWeight.w400, fontSize: 22),),
+                                const SizedBox(height: 30),
+                                Text(state.contents!.data[state.currentContent].attributes.imageNameFr, textAlign: TextAlign.center, overflow: TextOverflow.visible, style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 22),),
+                                const SizedBox(height: (50)),
                                 SizedBox(
                                   width: 300,
                                   height: 50,

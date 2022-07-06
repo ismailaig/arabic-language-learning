@@ -1,13 +1,15 @@
 import 'package:devrnz/bloc/enums/EnumEvent.dart';
+import 'package:devrnz/pages/welcome.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:devrnz/bloc/logoutBloc/logout_bloc.dart';
 import 'package:devrnz/bloc/theme.bloc.dart';
+import 'package:page_transition/page_transition.dart';
 import '../bloc/authBloc/auth_bloc.dart';
-import '../bloc/logoutBloc/logout_event.dart';
 
 class MyDrawer extends StatelessWidget {
   late AuthBloc authBloc;
+
+  MyDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class MyDrawer extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children:  [
                           CircleAvatar(
-                            radius: 50,
+                            radius: 60,
                             backgroundImage: state.listUsers!.data[0].attributes.photo.data==null?const AssetImage("assets/images/profile.jpg"):NetworkImage(state.listUsers!.data[0].attributes.photo.data!.attributes.url) as ImageProvider,
                           ),
                           IconButton(onPressed: (){
@@ -63,9 +65,12 @@ class MyDrawer extends StatelessWidget {
                             onTap: (){
                               if(menus[index]['title']=="Log out"){
                                 authBloc.add(LogOut());
+                                Navigator.of(context).pop();
+                                Navigator.pushAndRemoveUntil(context, PageTransition(child: const WelcomePage(),type: PageTransitionType.leftToRight), (route) => false);
+                              }else{
+                                Navigator.of(context).pop();
+                                Navigator.pushNamed(context, "${menus[index]['route']}");
                               }
-                              Navigator.of(context).pop();
-                              Navigator.pushNamed(context, "${menus[index]['route']}");
                             },
                           );
                         }

@@ -5,21 +5,19 @@ import 'package:devrnz/models/users.model.dart';
 import 'package:flutter/material.dart';
 import 'package:devrnz/widgets/profile.widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import '../utils/utils.dart';
-import '../widgets/drawer.widget.dart';
 import '../widgets/textfield.widget.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ProfilePage extends StatelessWidget {
 
   late AuthBloc authBloc;
+
+  ProfilePage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     authBloc = BlocProvider.of<AuthBloc>(context);
     return Scaffold(
-        drawer: MyDrawer(),
         appBar: AppBar(title: const Text('Profile'),),
         body: BlocBuilder<AuthBloc,AuthenticateState>(
             builder: (context,state){

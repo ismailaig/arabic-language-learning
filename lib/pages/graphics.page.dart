@@ -16,7 +16,7 @@ class _GraphicsPageState extends State<GraphicsPage> with TickerProviderStateMix
   void initState() {
     // TODO: implement initState
     super.initState();
-    animationController= AnimationController(vsync: this, duration: Duration(seconds: 4));
+    animationController= AnimationController(vsync: this, duration: const Duration(seconds: 4));
     Tween<double> tween= Tween(begin: -pi,end: pi);
     animation= tween.animate(animationController)
       ..addListener(() {

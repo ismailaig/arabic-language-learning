@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/alphabets.model.dart';
-import '../models/contents.model.dart';
 
 class AlphabetRepository{
 
 
   Future<Alphabets> getAlphabets() async{
-    String url = "https://arabic-language.herokuapp.com/api/alphabets/?populate=*&sort=id";
+    String url = "https://arabic-language.herokuapp.com/api/alphabets/?populate=*&sort=id&pagination[page]=1&pagination[pageSize]=32";
     try {
       http.Response response = await http.get(Uri.parse(url));
       if(response.statusCode==200){

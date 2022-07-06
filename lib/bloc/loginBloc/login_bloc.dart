@@ -20,7 +20,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         ListUsers listUsers = await userRepository.signIn(event.email, event.password);
           emit(LoginSucced(listUsers: listUsers));
       } catch (e) {
-        print(e);
         emit(LoginFailed());
       }
     });

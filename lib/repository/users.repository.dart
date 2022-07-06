@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 class UserRepository{
 
   Future<ListUsers> signIn(String email, String password) async{
-    String url = "https://arabic-language.herokuapp.com/api/appusers?populate=*&filters[email][\$eq]=${email}&filters[password][\$eq]=${password}";
+    String url = "https://arabic-language.herokuapp.com/api/appusers?populate=*&filters[email][\$eq]=$email&filters[password][\$eq]=$password";
     try {
       http.Response response = await http.get(Uri.parse(url));
       if(response.statusCode==200){
@@ -57,7 +57,6 @@ class UserRepository{
       if(response.statusCode==200){
         return true;
       }else{
-        print(response.body);
         return throw("Delete photo probleme => ${response.statusCode}");
       }
     } catch (e) {

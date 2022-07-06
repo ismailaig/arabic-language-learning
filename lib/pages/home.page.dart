@@ -19,6 +19,8 @@ import '../widgets/drawer.widget.dart';
 import 'content.page.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -74,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                           onTap: (){
                             courseBloc.add(CourseLoading());
                             setState((){
-                              alpha = !alpha;
+                              alpha = false;
                             });
                           },
                           child: Image.asset(
@@ -87,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                             alphabetBloc.add(AlphabetLoading());
                             numberBloc.add(NumberLoading());
                             setState((){
-                              alpha = !alpha;
+                              alpha = true;
                             });
                           },
                           child: Image.asset(
@@ -100,8 +102,8 @@ class _HomePageState extends State<HomePage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Image.asset("assets/images/crown.png", height: 40,
-                                width: 40,),
+                              Image.asset("assets/images/crown.png", height: 33,
+                                width: 33,),
                               Text("${state.listUsers!.data[0].attributes.king}",
                                 style: const TextStyle(color: Colors.orange,
                                     fontSize: 18),)
@@ -111,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     )
                 ),
-                body: alpha == false? BlocBuilder<CourseBloc, CourseState>(
+                body: alpha == false? BlocBuilder<CourseBloc, CourseState>( 
                     builder: (context, state) {
                       if (state.eventState == EventState.ERROR) {
                         return Center(
@@ -127,16 +129,14 @@ class _HomePageState extends State<HomePage> {
                         );
                       } else if (state.eventState == EventState.LOADING) {
                         return const Center(
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(strokeWidth: 6,),
                         );
                       } else if (state.eventState == EventState.LOADED) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 35.0, bottom: 25.0),
-                          child: GridView.builder(
+                        return GridView.builder(
                                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2,
                                 ),
-                                padding: const EdgeInsets.only(left: 20, right: 20),
+                                padding: const EdgeInsets.only(left: 20, top: 35, bottom: 25, right: 20),
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   return lesson(state.lessons!.data[index].id, context, state.lessons!.data[index].attributes.image.data.attributes.url,
@@ -145,7 +145,6 @@ class _HomePageState extends State<HomePage> {
                                   );
                                 },
                                 itemCount: state.lessons!.data.length
-                          ),
                         );
                       }
                       return Container();
@@ -180,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     } else if (state.eventState == EventState.LOADING) {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: CircularProgressIndicator(strokeWidth: 6,),
                       );
                     } else if (state.eventState == EventState.LOADED) {
                       return Column(
@@ -191,19 +190,22 @@ class _HomePageState extends State<HomePage> {
                           const SizedBox(
                             height: 20,
                           ),
-                          GridView.builder(
-                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 4,
-                                    crossAxisSpacing: 6,
-                                    mainAxisSpacing: 6
-                                  ),
-                                  padding: const EdgeInsets.all(8),
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return alphaNumberContainer(state.alphabet!.data[index].attributes.arabe, state.alphabet!.data[index].attributes.french, state.alphabet!.data[index].attributes.song.data[0].attributes.url);
-                                  },
-                                  itemCount: state.alphabet!.data.length
+                          Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: GridView.builder(
+                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4,
+                                      crossAxisSpacing: 6,
+                                      mainAxisSpacing: 6
+                                    ),
+                                    padding: const EdgeInsets.all(13),
+                                    shrinkWrap: true,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      return alphaNumberContainer(state.alphabet!.data[index].attributes.arabe, state.alphabet!.data[index].attributes.french, state.alphabet!.data[index].attributes.song.data[0].attributes.url);
+                                    },
+                                    itemCount: state.alphabet!.data.length
+                            ),
                           ),
                         ],
                       );
@@ -245,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                                       crossAxisSpacing: 6,
                                       mainAxisSpacing: 6
                                   ),
-                                  padding: const EdgeInsets.all(8),
+                                  padding: const EdgeInsets.all(13),
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) {
@@ -308,8 +310,11 @@ class _HomePageState extends State<HomePage> {
             Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                Image.asset("assets/images/crown.png",height: 30,),
-                Text(number,style: const TextStyle(color: Colors.deepOrange),)
+                Image.asset("assets/images/crown.png",height: 39),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Text(number,style: const TextStyle(color: Colors.deepOrange,fontSize: 13,fontWeight: FontWeight.bold),),
+                )
               ],
             )
           ],
@@ -334,11 +339,11 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Text(arabic,style: TextStyle(fontSize:20,fontWeight: FontWeight.w700,color: Colors.deepOrange),),
+              Text(arabic,style: const TextStyle(fontSize:20,fontWeight: FontWeight.w700,color: Colors.deepOrange),),
               const SizedBox(
                 height: 2,
               ),
-              Text(french, style: TextStyle(fontSize:20,fontWeight: FontWeight.w700,)),
+              Text(french, style: const TextStyle(fontSize:20,fontWeight: FontWeight.w700,)),
             ],
           ),
         ),

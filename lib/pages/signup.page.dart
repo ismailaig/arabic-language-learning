@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:devrnz/bloc/regBloc/reg_bloc.dart';
 import 'package:devrnz/pages/login.page.dart';
+import 'package:page_transition/page_transition.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 import '../utils/bezierContainer.dart';
 
 class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
+
 
   @override
   _SignUpPageState createState() => _SignUpPageState();
@@ -15,9 +18,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
   late RegisterBloc registerBloc;
   late AuthBloc authBloc;
-  TextEditingController nameTextEditingController = new TextEditingController();
-  TextEditingController emailTextEditingController = new TextEditingController();
-  TextEditingController passwordTextEditingController = new TextEditingController();
+  TextEditingController nameTextEditingController = TextEditingController();
+  TextEditingController emailTextEditingController = TextEditingController();
+  TextEditingController passwordTextEditingController = TextEditingController();
   late String name = "";
   late String email = "";
   late String password = "";
@@ -203,7 +206,7 @@ class _SignUpPageState extends State<SignUpPage> {
             InkWell(
               onTap: (){
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => LoginPage()
+                    context, MaterialPageRoute(builder: (context) => const LoginPage()
                 ));
               },
               child: const Text(
@@ -253,7 +256,7 @@ class _SignUpPageState extends State<SignUpPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
                     height: height,
                     child: Stack(
                       children: <Widget>[
@@ -301,8 +304,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                     setState(() {
                                       error = '';
                                     });
-                                    Navigator.push(
-                                        context, MaterialPageRoute(builder: (_) => LoginPage())
+                                    Navigator.pushAndRemoveUntil(
+                                        context, PageTransition(child: const LoginPage(), type: PageTransitionType.rightToLeft), (route) => false
                                     );
                                   }else if(state is RegisterFailed){
                                     setState(() {
@@ -314,7 +317,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     builder: (context,state){
                                       if(state is RegisterLoading){
                                         return const Center(
-                                            child: CircularProgressIndicator()
+                                            child: CircularProgressIndicator(strokeWidth: 6,)
                                         );
                                       }else if(state is RegisterFailed){
                                         error = 'Fields are incorrect';

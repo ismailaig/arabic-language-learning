@@ -44,6 +44,7 @@ dependencies:
   simple_animations: ^1.3.3
   qr_flutter:
   qr_code_scanner:
+  page_transition:
   bloc:
   percent_indicator: ^4.0.1
   audioplayers:
