@@ -317,7 +317,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     builder: (context,state){
                                       if(state is RegisterLoading){
                                         return const Center(
-                                            child: CircularProgressIndicator(strokeWidth: 6,)
+                                            child: CircularProgressIndicator()
                                         );
                                       }else if(state is RegisterFailed){
                                         error = 'Fields are incorrect';

@@ -3,13 +3,21 @@ import 'package:devrnz/pages/welcome.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:devrnz/bloc/theme.bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:page_transition/page_transition.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 
 class MyDrawer extends StatelessWidget {
+
   late AuthBloc authBloc;
 
   MyDrawer({Key? key}) : super(key: key);
+
+  final storage = const FlutterSecureStorage();
+
+  _onDeleteUserInfo() async {
+    await storage.deleteAll();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +26,7 @@ class MyDrawer extends StatelessWidget {
       {"title":"Home", "icon": Icon(Icons.home, color: Theme.of(context).primaryColor,), "route":"/home"},
       {"title":"Profile", "icon": Icon(Icons.account_circle_rounded, color: Theme.of(context).primaryColor), "route":"/profile"},
       {"title":"OCR", "icon": Icon(Icons.ac_unit, color: Theme.of(context).primaryColor), "route":"/ocr"},
+      {"title":"Map", "icon": Icon(Icons.location_pin, color: Theme.of(context).primaryColor), "route":"/maps"},
       {"title":"Face Detector", "icon": Icon(Icons.face, color: Theme.of(context).primaryColor), "route":"/face"},
       {"title":"QR Code Generate", "icon": Icon(Icons.qr_code, color: Theme.of(context).primaryColor), "route":"/QR"},
       {"title":"QR Scan & Generate", "icon": Icon(Icons.qr_code, color: Theme.of(context).primaryColor), "route":"/scanQR"},
@@ -64,6 +73,7 @@ class MyDrawer extends StatelessWidget {
                             title: Text("${menus[index]['title']}"),
                             onTap: (){
                               if(menus[index]['title']=="Log out"){
+                                _onDeleteUserInfo();
                                 authBloc.add(LogOut());
                                 Navigator.of(context).pop();
                                 Navigator.pushAndRemoveUntil(context, PageTransition(child: const WelcomePage(),type: PageTransitionType.leftToRight), (route) => false);

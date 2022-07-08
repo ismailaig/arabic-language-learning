@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                         );
                       } else if (state.eventState == EventState.LOADING) {
                         return const Center(
-                          child: CircularProgressIndicator(strokeWidth: 6,),
+                          child: CircularProgressIndicator(),
                         );
                       } else if (state.eventState == EventState.LOADED) {
                         return GridView.builder(
@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                       );
                     } else if (state.eventState == EventState.LOADING) {
                       return const Center(
-                        child: CircularProgressIndicator(strokeWidth: 6,),
+                        child: CircularProgressIndicator(),
                       );
                     } else if (state.eventState == EventState.LOADED) {
                       return Column(
@@ -320,7 +320,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         const SizedBox(height: 10,),
-        Text(title,style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),)
+        Text(title,textAlign: TextAlign.center, overflow: TextOverflow.visible,style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),)
       ],
     );
   }

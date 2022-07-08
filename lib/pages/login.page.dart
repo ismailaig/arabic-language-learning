@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:devrnz/bloc/loginBloc/login_bloc.dart';
 import 'package:devrnz/pages/home.page.dart';
 import 'package:devrnz/pages/signup.page.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 import '../utils/bezierContainer.dart';
 
@@ -19,6 +20,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late LoginBloc loginBloc;
   late AuthBloc authBloc;
+  final storage = const FlutterSecureStorage();
   late CourseBloc courseBloc;
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
@@ -28,6 +30,11 @@ class _LoginPageState extends State<LoginPage> {
   String error = "";
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
+
+  _onSaveUserInfo(String email, String password) async {
+    await storage.write(key: "email", value: email);
+    await storage.write(key: "password", value: password);
+  }
 
   Widget _backButton() {
     return InkWell(
@@ -365,6 +372,7 @@ class _LoginPageState extends State<LoginPage> {
                                       setState(() {
                                         error = '';
                                       });
+                                      _onSaveUserInfo(state.listUsers.data[0].attributes.email, state.listUsers.data[0].attributes.password);
                                       courseBloc.add(CourseLoading());
                                       authBloc.add(AppLoaded(listUsers: state.listUsers));
                                       Navigator.pushAndRemoveUntil(
@@ -380,7 +388,7 @@ class _LoginPageState extends State<LoginPage> {
                                       builder: (context,state){
                                         if(state is LoginLoading){
                                           return const Center(
-                                              child: CircularProgressIndicator(strokeWidth: 6,)
+                                              child: CircularProgressIndicator()
                                           );
                                         }else if(state is LoginFailed){
                                           error = 'Email or password is incorrect';
