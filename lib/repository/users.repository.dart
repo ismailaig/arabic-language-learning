@@ -84,6 +84,31 @@ class UserRepository{
     }
   }
 
+  Future<bool> updateUserInfos(int id, String fullname, String password) async{
+    String url = "https://arabic-language.herokuapp.com/api/appusers/$id";
+    Map<String,String> headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Accept': 'application/json'
+    };
+    Map<String,String> body = {
+      "fullname":fullname,
+      "password":password,
+    };
+    try {
+      http.Response response = await http.put(Uri.parse(url),
+          headers: headers,
+          body:jsonEncode({"data":body})
+      );
+      if(response.statusCode==200){
+        return true;
+      }else{
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
 
 
 }

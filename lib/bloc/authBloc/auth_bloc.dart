@@ -20,12 +20,21 @@ class UpdatePicture extends AuthEvent
   UpdatePicture(this.image, this.listUsers);
 }
 
+class UpdateInfos extends AuthEvent
+{
+  int id;
+  String fullname;
+  String email;
+  String password;
+  UpdateInfos(this.id, this.fullname, this.email, this.password);
+}
+
 class LogOut extends AuthEvent{
 }
 
 class AuthBloc extends Bloc<AuthEvent, AuthenticateState> {
   final UserRepository userRepository;
-  AuthBloc(this.userRepository) : super(AuthenticateState(eventState:EventState.ERROR,error: '')) {
+  AuthBloc(this.userRepository) : super(AuthenticateState(eventState:EventState.INITIAL,error: '')) {
 
     on<AppLoaded>((event, emit) {
         emit(AuthenticateState(listUsers: event.listUsers,eventState: EventState.LOADED,error: '',));
@@ -48,6 +57,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthenticateState> {
         } catch (e) {
           throw("Update problem "+e.toString());
         }
+    });
+
+    on<UpdateInfos>((event, emit) async {
+      try {
+        bool update = await userRepository.updateUserInfos(event.id, event.fullname, event.password);
+        if(update){
+          ListUsers listUsers = await userRepository.signIn(event.email, event.password);
+          emit(AuthenticateState(listUsers: listUsers,eventState: EventState.LOADED,error: '',));
+        }
+      } catch (e) {
+        throw("Update problem "+e.toString());
+      }
     });
 
   }

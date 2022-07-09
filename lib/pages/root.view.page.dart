@@ -31,7 +31,6 @@ class _RootViewState extends State<RootView> {
   late ListUsers listUsers;
   final storage = const FlutterSecureStorage();
   late LoginBloc loginBloc;
-  late CourseBloc courseBloc;
   late AuthBloc authBloc;
 
   _onReadUserInfo() async{
@@ -45,7 +44,6 @@ class _RootViewState extends State<RootView> {
   @override
   Widget build(BuildContext context) {
     authBloc = BlocProvider.of<AuthBloc>(context);
-    courseBloc = BlocProvider.of<CourseBloc>(context);
     loginBloc = BlocProvider.of<LoginBloc>(context);
     _onReadUserInfo();
     return BlocBuilder<ThemeBloc,ThemeState>(
@@ -57,9 +55,13 @@ class _RootViewState extends State<RootView> {
               builder: (context,state){
                   if(state is LoginSucced){
                     authBloc.add(AppLoaded(listUsers: state.listUsers));
-                    courseBloc.add(CourseLoading());
+                    return MainScreen();
+                  }else if(state is LoginLoading){
+                    return Container();
+                  }else if(state is LoginFailed){
+                    return MainScreen();
                   }
-                  return const MainScreen();
+                  return Container();
               }
               ),
             routes: {
@@ -81,16 +83,21 @@ class _RootViewState extends State<RootView> {
 
 
 class MainScreen extends StatelessWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  late CourseBloc courseBloc;
 
+  MainScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    courseBloc = BlocProvider.of<CourseBloc>(context);
     return BlocBuilder<AuthBloc, AuthenticateState>(
       builder: (context, state) {
         if(state.eventState==EventState.ERROR){
           return const WelcomePage();
         } else if (state.eventState==EventState.LOADED) {
+          courseBloc.add(CourseLoading());
           return const HomePage();
+        }else if(state.eventState==EventState.INITIAL){
+          return const CircularProgressIndicator();
         }
         return Container();
       },

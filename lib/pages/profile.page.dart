@@ -2,18 +2,35 @@ import 'dart:io';
 import 'package:devrnz/bloc/authBloc/auth_bloc.dart';
 import 'package:devrnz/bloc/enums/EnumEvent.dart';
 import 'package:devrnz/models/users.model.dart';
+import 'package:devrnz/pages/maps.page.dart';
 import 'package:flutter/material.dart';
 import 'package:devrnz/widgets/profile.widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import '../utils/utils.dart';
-import '../widgets/textfield.widget.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
 
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   late AuthBloc authBloc;
+  final storage = const FlutterSecureStorage();
+  late TextEditingController passwordTextEditing = TextEditingController();
+  late TextEditingController fullnameTextEditing = TextEditingController();
+  String fullname = "";
+  bool notVisible = true;
+  String password = "";
+  final _formKey = GlobalKey<FormState>();
 
-  ProfilePage({Key? key}) : super(key: key);
+
+  _onUpdateUserInfo(String password) async {
+    await storage.write(key: "password", value: password);
+  }
+
   @override
   Widget build(BuildContext context) {
     authBloc = BlocProvider.of<AuthBloc>(context);
@@ -38,22 +55,129 @@ class ProfilePage extends StatelessWidget {
                             }
                         ),
                         const SizedBox(height: 24),
-                        TextFieldWidget(
-                          label:'Full Name',
-                          text: state.listUsers!.data[0].attributes.fullname,
-                          onChanged: (name){},
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text("Email", style: TextStyle(fontWeight: FontWeight.bold),),
+                                  const SizedBox(height: 8),
+                                  TextFormField(
+                                    enabled: false,
+                                    //initialValue: state.listUsers!.data[0].attributes.email,
+                                    decoration: InputDecoration(
+                                      hintText: state.listUsers!.data[0].attributes.email,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 1),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    maxLines: 1,
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 24),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text("Fullname", style: TextStyle(fontWeight: FontWeight.bold),),
+                                  const SizedBox(height: 8),
+                                  TextFormField(
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty || value.length<3) {
+                                        return 'Please enter a fullname with at least 3 characters';
+                                      }
+                                      return null;
+                                    },
+                                    controller: fullnameTextEditing,
+                                    decoration: InputDecoration(
+                                      hintText: state.listUsers!.data[0].attributes.fullname,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 1),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    maxLines: 1,
+                                    onChanged: (value){
+                                      setState(() {
+                                        fullname = value;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 24),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text("Password", style: TextStyle(fontWeight: FontWeight.bold),),
+                                  const SizedBox(height: 8),
+                                  TextFormField(
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty || value.length < 8) {
+                                        return "Enter a password with at least 8 characters";
+                                      }
+                                      return null;
+                                    },
+                                    obscureText: notVisible,
+                                    controller: passwordTextEditing,
+                                    decoration: InputDecoration(
+                                      hintText: state.listUsers!.data[0].attributes.password,
+                                      suffixIcon: IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            notVisible = !notVisible;
+                                          });
+                                        },
+                                        icon: Icon(
+                                            notVisible == true ? Icons.visibility_off : Icons.visibility, color: Theme.of(context).primaryColor
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 1),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                    maxLines: 1,
+                                    onChanged: (value){
+                                      setState(() {
+                                        password = value;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: 24),
-                        TextFieldWidget(
-                          label:'Email',
-                          text: state.listUsers!.data[0].attributes.email,
-                          onChanged: (email){},
-                        ),
-                        const SizedBox(height: 24),
-                        TextFieldWidget(
-                          label:'Password',
-                          text: state.listUsers!.data[0].attributes.password,
-                          onChanged: (name){},
+                        const SizedBox(height: 30),
+                        SizedBox(
+                          height: 45,
+                          width: 300,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                  ),
+                                ),
+                                backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor)
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _formKey.currentState?.reset();
+                              });
+                              if (_formKey.currentState?.validate() == true) {
+                                password = passwordTextEditing.text;
+                                fullname = fullnameTextEditing.text;
+                                authBloc.add(UpdateInfos(state.listUsers!.data[0].id, fullname, state.listUsers!.data[0].attributes.email, password));
+                                _onUpdateUserInfo(password);
+                              }
+                            },
+                            child: const Text("Update informations",style: TextStyle(fontSize: 18)),
+                          ),
                         ),
                       ],
                   ),
@@ -61,12 +185,15 @@ class ProfilePage extends StatelessWidget {
               }
               return Container();
             }
-        )
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const MapPage()));
+          },
+          child: const Icon(Icons.location_on),
+        ),
     );
   }
-
-
-
 
   Future<void> openDialog(BuildContext context,ListUsers listUsers) {
     return showDialog(context: context,builder: (BuildContext context){

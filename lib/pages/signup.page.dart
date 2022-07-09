@@ -69,8 +69,8 @@ class _SignUpPageState extends State<SignUpPage> {
               },
               controller: nameTextEditingController,
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a fullname';
+                if (value == null || value.isEmpty || value.length<3) {
+                  return 'Please enter a fullname with at least 3 characters';
                 }
                 return null;
               },

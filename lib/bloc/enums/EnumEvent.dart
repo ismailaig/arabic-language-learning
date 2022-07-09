@@ -1,1 +1,1 @@
-enum EventState {LOADING,LOADED,ERROR}
+enum EventState {LOADING,LOADED,ERROR,INITIAL}
