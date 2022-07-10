@@ -113,43 +113,48 @@ class _HomePageState extends State<HomePage> {
                       ],
                     )
                 ),
-                body: alpha == false? BlocBuilder<CourseBloc, CourseState>( 
-                    builder: (context, state) {
-                      if (state.eventState == EventState.ERROR) {
-                        return Center(
-                          child: Column(
-                            children:[
-                              Text(state.error,style: const TextStyle(color: Colors.red, fontSize: 22),),
-                              ElevatedButton(
-                                  onPressed: (){},
-                                  child: const Text("Réessayer"),
-                              )
-                            ]
-                          ),
-                        );
-                      } else if (state.eventState == EventState.LOADING) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (state.eventState == EventState.LOADED) {
-                        return GridView.builder(
-                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                ),
-                                padding: const EdgeInsets.only(left: 20, top: 35, bottom: 25, right: 20),
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  return lesson(state.lessons!.data[index].id, context, state.lessons!.data[index].attributes.image.data.attributes.url,
-                                        "${state.lessons!.data[index].attributes.king}",
-                                        state.lessons!.data[index].attributes.title, Colors.blue
-                                  );
-                                },
-                                itemCount: state.lessons!.data.length
-                        );
-                      }
-                      return Container();
-                    }
-                ):alphaNumber()
+                body: alpha == false? homeLesson():alphaNumber()
+            );
+          }
+          return Container();
+        }
+    );
+  }
+
+
+  Widget homeLesson(){
+    return BlocBuilder<CourseBloc, CourseState>(
+        builder: (context, state) {
+          if (state.eventState == EventState.ERROR) {
+            return Center(
+              child: Column(
+                  children:[
+                    Text(state.error,style: const TextStyle(color: Colors.red, fontSize: 22),),
+                    ElevatedButton(
+                      onPressed: (){},
+                      child: const Text("Retry"),
+                    )
+                  ]
+              ),
+            );
+          } else if (state.eventState == EventState.LOADING) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state.eventState == EventState.LOADED) {
+            return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                padding: const EdgeInsets.only(left: 20, top: 35, bottom: 25, right: 20),
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return lesson(state.lessons!.data[index].id, context, state.lessons!.data[index].attributes.image.data.attributes.url,
+                      "${state.lessons!.data[index].attributes.king}",
+                      state.lessons!.data[index].attributes.title, Colors.blue
+                  );
+                },
+                itemCount: state.lessons!.data.length
             );
           }
           return Container();
@@ -172,7 +177,7 @@ class _HomePageState extends State<HomePage> {
                               Text(state.error,style: const TextStyle(color: Colors.red, fontSize: 22),),
                               ElevatedButton(
                                 onPressed: (){},
-                                child: const Text("Réessayer"),
+                                child: const Text("Retry"),
                               )
                             ]
                         ),
@@ -222,7 +227,7 @@ class _HomePageState extends State<HomePage> {
                               Text(state.error,style: const TextStyle(color: Colors.red, fontSize: 22),),
                               ElevatedButton(
                                 onPressed: (){},
-                                child: const Text("Réessayer"),
+                                child: const Text("Retry"),
                               )
                             ]
                         ),

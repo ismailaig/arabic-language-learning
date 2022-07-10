@@ -7,11 +7,39 @@ import '../bloc/contentBloc/content.bloc.dart';
 import '../bloc/contentBloc/content.state.dart';
 import '../bloc/enums/EnumEvent.dart';
 
-class ContentPage extends StatelessWidget {
+class ContentPage extends StatefulWidget {
 
+
+  const ContentPage({Key? key}) : super(key: key);
+
+  @override
+  State<ContentPage> createState() => _ContentPageState();
+}
+
+class _ContentPageState extends State<ContentPage> {
   late ContentBloc contentBloc;
 
-  ContentPage({Key? key}) : super(key: key);
+  final audioPlayer = AudioPlayer();
+  late final url;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setAudio();
+  }
+
+  Future setAudio() async{
+    final player = AudioCache(prefix: "assets/audio/");
+    url = await player.load("continue.mp3");
+  }
+
+  @override
+  void dispose(){
+    audioPlayer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +123,7 @@ class ContentPage extends StatelessWidget {
                                 Text(state.error,style: const TextStyle(color: Colors.red, fontSize: 22),),
                                 ElevatedButton(
                                   onPressed: (){},
-                                  child: const Text("Réessayer"),
+                                  child: const Text("Retry"),
                                 )
                               ]
                             ),
@@ -164,6 +192,7 @@ class ContentPage extends StatelessWidget {
                                         backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)
                                     ),
                                     onPressed: () {
+                                      //audioPlayer.play(UrlSource(url.path));
                                       if(state.currentContent==(state.contents!.data.length)-1){
                                         Navigator.of(context).pop();
                                       }else{
@@ -184,7 +213,6 @@ class ContentPage extends StatelessWidget {
           ),
     );
   }
-
 }
 
 

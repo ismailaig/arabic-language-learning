@@ -373,10 +373,10 @@ class _LoginPageState extends State<LoginPage> {
                                         error = '';
                                       });
                                       _onSaveUserInfo(state.listUsers.data[0].attributes.email, state.listUsers.data[0].attributes.password);
-                                      courseBloc.add(CourseLoading());
                                       authBloc.add(AppLoaded(listUsers: state.listUsers));
+                                      courseBloc.add(CourseLoading());
                                       Navigator.pushAndRemoveUntil(
-                                          context,MaterialPageRoute(builder: (context)=>HomePage()),(route) => false
+                                          context,MaterialPageRoute(builder: (context) => const HomePage()),(route) => false
                                       );
                                     }else if(state is LoginFailed){
                                       setState(() {

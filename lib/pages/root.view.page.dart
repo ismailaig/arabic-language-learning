@@ -1,5 +1,6 @@
 import 'package:devrnz/bloc/enums/EnumEvent.dart';
 import 'package:devrnz/bloc/lessonBloc/course.bloc.dart';
+import 'package:devrnz/pages/splash.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:devrnz/bloc/theme.bloc.dart';
@@ -19,8 +20,6 @@ import 'profile.page.dart';
 import 'home.page.dart';
 
 class RootView extends StatefulWidget {
-
-
   const RootView({Key? key}) : super(key: key);
 
   @override
@@ -28,24 +27,33 @@ class RootView extends StatefulWidget {
 }
 
 class _RootViewState extends State<RootView> {
-  late ListUsers listUsers;
   final storage = const FlutterSecureStorage();
   late LoginBloc loginBloc;
   late AuthBloc authBloc;
+  bool logged = false;
+  late CourseBloc courseBloc;
 
-  _onReadUserInfo() async{
+  @override
+  void initState(){
+    super.initState();
+    initUserLogin();
+  }
+
+  void initUserLogin() async {
     String? email = await storage.read(key: "email");
     String? password = await storage.read(key: "password");
+    loginBloc = BlocProvider.of<LoginBloc>(context);
     if(email!=null && password!=null){
-      loginBloc.add(SignInButtonPressed(email: email,password: password));
+      logged = true;
+      loginBloc.add(SignInButtonPressed(email: email, password: password));
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
     authBloc = BlocProvider.of<AuthBloc>(context);
-    loginBloc = BlocProvider.of<LoginBloc>(context);
-    _onReadUserInfo();
+    courseBloc = BlocProvider.of<CourseBloc>(context);
     return BlocBuilder<ThemeBloc,ThemeState>(
         builder: (context,state){
           return MaterialApp(
@@ -55,15 +63,21 @@ class _RootViewState extends State<RootView> {
               builder: (context,state){
                   if(state is LoginSucced){
                     authBloc.add(AppLoaded(listUsers: state.listUsers));
-                    return MainScreen();
+                    courseBloc.add(CourseLoading());
+                    return const HomePage();
                   }else if(state is LoginLoading){
-                    return Container();
+                    return const SplashPage();
                   }else if(state is LoginFailed){
-                    return MainScreen();
+                    return const WelcomePage();
+                  }else if(state is LoginInitial){
+                    if(logged){
+                      return Container();
+                    }else{
+                      return const WelcomePage();
+                    }
                   }
                   return Container();
-              }
-              ),
+              }),
             routes: {
               "/home":(context) => const HomePage(),
               "/welcome":(context) => const WelcomePage(),
@@ -82,25 +96,3 @@ class _RootViewState extends State<RootView> {
 }
 
 
-class MainScreen extends StatelessWidget {
-  late CourseBloc courseBloc;
-
-  MainScreen({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    courseBloc = BlocProvider.of<CourseBloc>(context);
-    return BlocBuilder<AuthBloc, AuthenticateState>(
-      builder: (context, state) {
-        if(state.eventState==EventState.ERROR){
-          return const WelcomePage();
-        } else if (state.eventState==EventState.LOADED) {
-          courseBloc.add(CourseLoading());
-          return const HomePage();
-        }else if(state.eventState==EventState.INITIAL){
-          return const CircularProgressIndicator();
-        }
-        return Container();
-      },
-    );
-  }
-}
