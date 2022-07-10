@@ -48,15 +48,17 @@ class Utils {
           CropAspectRatioPreset.ratio7x5,
           CropAspectRatioPreset.ratio16x9
         ],
-        androidUiSettings: const AndroidUiSettings(
-            toolbarTitle: 'Cropper',
-            toolbarColor: Colors.deepOrange,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
-        iosUiSettings: const IOSUiSettings(
-          title: 'Cropper',
-        )
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Cropper',
+              toolbarColor: Colors.deepOrange,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: 'Cropper',
+          )
+        ]
     );
     return imageCropped;
   }
@@ -64,8 +66,8 @@ class Utils {
   Future textOcr(String path) async {
     String content="";
     final inputImage = InputImage.fromFilePath(path);
-    final textDetector = GoogleMlKit.vision.textDetector();
-    final RecognisedText _recognizedText =
+    final textDetector = GoogleMlKit.vision.textRecognizer();
+    final RecognizedText _recognizedText =
     await textDetector.processImage(inputImage);
 
     for (TextBlock block in _recognizedText.blocks) {
