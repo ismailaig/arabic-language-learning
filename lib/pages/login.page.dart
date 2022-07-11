@@ -6,6 +6,7 @@ import 'package:devrnz/bloc/loginBloc/login_bloc.dart';
 import 'package:devrnz/pages/home.page.dart';
 import 'package:devrnz/pages/signup.page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 import '../utils/bezierContainer.dart';
 
@@ -145,6 +146,7 @@ class _LoginPageState extends State<LoginPage> {
     return ElevatedButton(
         onPressed: () async {
           setState(() {
+            FocusManager.instance.primaryFocus?.unfocus();
             _formKey.currentState?.reset();
           });
           if (_formKey.currentState?.validate() == true) {
@@ -153,13 +155,13 @@ class _LoginPageState extends State<LoginPage> {
             loginBloc.add(SignInButtonPressed(email: email,password: password));
           }
         },
-        child: const Text(
-          "Login",
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        ),
         style: ElevatedButton.styleFrom(
           primary: const Color(0xffe46b10),
           fixedSize: const Size(410, 45),
+        ),
+        child: const Text(
+          "Login",
+          style: TextStyle(color: Colors.white, fontSize: 18),
         )
     );
   }
@@ -388,7 +390,10 @@ class _LoginPageState extends State<LoginPage> {
                                       builder: (context,state){
                                         if(state is LoginLoading){
                                           return const Center(
-                                              child: CircularProgressIndicator()
+                                              child: SpinKitThreeInOut(
+                                                color: Colors.redAccent,
+                                                size: 50.0,
+                                              )
                                           );
                                         }else if(state is LoginFailed){
                                           error = 'Email or password is incorrect';

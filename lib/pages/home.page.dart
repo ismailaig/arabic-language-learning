@@ -6,6 +6,7 @@ import 'package:devrnz/bloc/lessonBloc/course.bloc.dart';
 import 'package:devrnz/bloc/lessonBloc/course.state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../bloc/AlphabetsBloc/alphabet.bloc.dart';
 import '../bloc/AlphabetsBloc/alphabet.event.dart';
 import '../bloc/AlphabetsBloc/alphabet.state.dart';
@@ -139,7 +140,10 @@ class _HomePageState extends State<HomePage> {
             );
           } else if (state.eventState == EventState.LOADING) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: SpinKitThreeInOut(
+                color: Colors.redAccent,
+                size: 80.0,
+              ),
             );
           } else if (state.eventState == EventState.LOADED) {
             return GridView.builder(
@@ -184,7 +188,10 @@ class _HomePageState extends State<HomePage> {
                       );
                     } else if (state.eventState == EventState.LOADING) {
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: SpinKitThreeInOut(
+                          color: Colors.redAccent,
+                          size: 80.0,
+                        ),
                       );
                     } else if (state.eventState == EventState.LOADED) {
                       return Column(
@@ -301,13 +308,13 @@ class _HomePageState extends State<HomePage> {
                   onTap:() {
                     contentBloc.add(ContentLoading(id));
                     Navigator.push(
-                        context,MaterialPageRoute(builder: (context)=>ContentPage())
+                        context,MaterialPageRoute(builder: (context) => const ContentPage())
                     );
                   },
                   child: CircleAvatar(
-                      child: Image.network(image,height: 50,),
                       radius: 35,
-                      backgroundColor: color
+                      backgroundColor: color,
+                      child: Image.network(image,height: 50,)
                   ),
                 )
               ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:devrnz/bloc/regBloc/reg_bloc.dart';
 import 'package:devrnz/pages/login.page.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:page_transition/page_transition.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 import '../utils/bezierContainer.dart';
@@ -168,6 +169,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return ElevatedButton(
       onPressed: () {
         setState(() {
+          FocusManager.instance.primaryFocus?.unfocus();
           _formKey.currentState?.reset();
         });
         if (_formKey.currentState?.validate() == true) {
@@ -177,13 +179,13 @@ class _SignUpPageState extends State<SignUpPage> {
           registerBloc.add(SignUpButtonPressed(fullname:name, email: email,password: password));
         }
       },
-      child: const Text(
-        "Register",
-        style: TextStyle(color: Colors.white, fontSize: 18),
-      ),
       style: ElevatedButton.styleFrom(
           primary: const Color(0xffe46b10),
           fixedSize: const Size(410, 45),
+      ),
+      child: const Text(
+        "Register",
+        style: TextStyle(color: Colors.white, fontSize: 18),
       )
     );
   }
@@ -317,7 +319,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                     builder: (context,state){
                                       if(state is RegisterLoading){
                                         return const Center(
-                                            child: CircularProgressIndicator()
+                                            child: SpinKitThreeInOut(
+                                              color: Colors.redAccent,
+                                              size: 50.0,
+                                            )
                                         );
                                       }else if(state is RegisterFailed){
                                         error = 'Fields are incorrect';
@@ -332,7 +337,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                         //),
-                        Positioned(top: 38, left: 0, child: _backButton()),
+                        //Positioned(top: 38, left: 0, child: _backButton()),
                       ],
                     ),
                   ),

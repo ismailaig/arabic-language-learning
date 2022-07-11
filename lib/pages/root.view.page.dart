@@ -30,7 +30,7 @@ class _RootViewState extends State<RootView> {
   final storage = const FlutterSecureStorage();
   late LoginBloc loginBloc;
   late AuthBloc authBloc;
-  bool logged = false;
+  int logged = 0;
   late CourseBloc courseBloc;
 
   @override
@@ -44,8 +44,10 @@ class _RootViewState extends State<RootView> {
     String? password = await storage.read(key: "password");
     loginBloc = BlocProvider.of<LoginBloc>(context);
     if(email!=null && password!=null){
-      logged = true;
+      logged = 1;
       loginBloc.add(SignInButtonPressed(email: email, password: password));
+    }else{
+      logged = 2;
     }
   }
 
@@ -70,10 +72,12 @@ class _RootViewState extends State<RootView> {
                   }else if(state is LoginFailed){
                     return const WelcomePage();
                   }else if(state is LoginInitial){
-                    if(logged){
+                    if(logged==0){
                       return Container();
-                    }else{
+                    }else if(logged==2){
                       return const WelcomePage();
+                    }else if(logged==1){
+                      return Container();
                     }
                   }
                   return Container();

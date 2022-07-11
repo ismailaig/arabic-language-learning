@@ -166,6 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor)
                             ),
                             onPressed: () {
+                              FocusManager.instance.primaryFocus?.unfocus();
                               setState(() {
                                 _formKey.currentState?.reset();
                               });

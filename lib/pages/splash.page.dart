@@ -7,10 +7,10 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
+      color: Colors.white,
       child: const Center(
-        child: SpinKitFadingCircle(
-          color: Colors.white,
+        child: SpinKitThreeInOut(
+          color: Colors.redAccent,
           size: 80.0,
         ),
       ),

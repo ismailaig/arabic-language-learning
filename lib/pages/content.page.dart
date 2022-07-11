@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:devrnz/bloc/contentBloc/content.event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import '../bloc/contentBloc/content.bloc.dart';
 import '../bloc/contentBloc/content.state.dart';
@@ -130,7 +131,10 @@ class _ContentPageState extends State<ContentPage> {
                           );
                         } else if (state.eventState == EventState.LOADING) {
                           return const Center(
-                            child: CircularProgressIndicator(),
+                            child: SpinKitThreeInOut(
+                              color: Colors.redAccent,
+                              size: 80.0,
+                            ),
                           );
                         } else if(state.eventState == EventState.LOADED){
                           return Column(
