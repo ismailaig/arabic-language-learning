@@ -118,6 +118,7 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body:SingleChildScrollView(
         child:Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),

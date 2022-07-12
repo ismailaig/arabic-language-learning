@@ -391,8 +391,8 @@ class _LoginPageState extends State<LoginPage> {
                                         if(state is LoginLoading){
                                           return const Center(
                                               child: SpinKitThreeInOut(
-                                                color: Colors.redAccent,
-                                                size: 50.0,
+                                                color: Colors.orange,
+                                                size: 40.0,
                                               )
                                           );
                                         }else if(state is LoginFailed){

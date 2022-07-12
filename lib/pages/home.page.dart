@@ -52,13 +52,14 @@ class _HomePageState extends State<HomePage> {
         builder: (context, state) {
           if (state.eventState==EventState.LOADED) {
             return Scaffold(
+                backgroundColor: Colors.white,
                 drawer: MyDrawer(),
                 appBar: AppBar(
                     leading: Builder(
                         builder: (BuildContext context) {
                           return IconButton(
-                              icon: const Icon(
-                                  Icons.menu, color: Colors.deepOrange, size: 35),
+                              icon: Icon(
+                                  Icons.menu, color: Theme.of(context).primaryColor, size: 35),
                               onPressed: () {
                                 Scaffold.of(context).openDrawer();
                               },
@@ -106,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                               Image.asset("assets/images/crown.png", height: 33,
                                 width: 33,),
                               Text("${state.listUsers!.data[0].attributes.king}",
-                                style: const TextStyle(color: Colors.orange,
+                                style: TextStyle(color: Theme.of(context).primaryColor,
                                     fontSize: 18),)
                             ],
                           ),
@@ -139,10 +140,10 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           } else if (state.eventState == EventState.LOADING) {
-            return const Center(
-              child: SpinKitThreeInOut(
-                color: Colors.redAccent,
-                size: 80.0,
+            return Center(
+              child: SpinKitSquareCircle(
+                color: Theme.of(context).primaryColor,
+                size: 40.0,
               ),
             );
           } else if (state.eventState == EventState.LOADED) {
@@ -187,12 +188,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     } else if (state.eventState == EventState.LOADING) {
-                      return const Center(
-                        child: SpinKitThreeInOut(
-                          color: Colors.redAccent,
-                          size: 80.0,
-                        ),
-                      );
+                      return Container();
                     } else if (state.eventState == EventState.LOADED) {
                       return Column(
                         children: [
@@ -214,7 +210,7 @@ class _HomePageState extends State<HomePage> {
                                     shrinkWrap: true,
                                     physics: const NeverScrollableScrollPhysics(),
                                     itemBuilder: (context, index) {
-                                      return alphaNumberContainer(state.alphabet!.data[index].attributes.arabe, state.alphabet!.data[index].attributes.french, state.alphabet!.data[index].attributes.song.data[0].attributes.url);
+                                      return alphaNumberContainer(context, state.alphabet!.data[index].attributes.arabe, state.alphabet!.data[index].attributes.french, state.alphabet!.data[index].attributes.song.data[0].attributes.url);
                                     },
                                     itemCount: state.alphabet!.data.length
                             ),
@@ -240,7 +236,12 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     } else if (state.eventState == EventState.LOADING) {
-                      return Container();
+                      return Center(
+                        child: SpinKitSquareCircle(
+                          color: Theme.of(context).primaryColor,
+                          size: 40.0,
+                        ),
+                      );
                     } else if (state.eventState == EventState.LOADED) {
                       return Column(
                         children: [
@@ -263,7 +264,7 @@ class _HomePageState extends State<HomePage> {
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) {
-                                    return alphaNumberContainer(state.number!.data[index].attributes.arabe, state.number!.data[index].attributes.french, state.number!.data[index].attributes.song.data[0].attributes.url);
+                                    return alphaNumberContainer(context, state.number!.data[index].attributes.arabe, state.number!.data[index].attributes.french, state.number!.data[index].attributes.song.data[0].attributes.url);
                                   },
                                   itemCount: state.number!.data.length
                           )
@@ -337,7 +338,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget alphaNumberContainer(String arabic, String french, String urlAudio){
+  Widget alphaNumberContainer(BuildContext context, String arabic, String french, String urlAudio){
     return InkWell(
       onTap: (){
         audioPlayer.play(UrlSource(urlAudio));
@@ -351,7 +352,7 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              Text(arabic,style: const TextStyle(fontSize:20,fontWeight: FontWeight.w700,color: Colors.deepOrange),),
+              Text(arabic,style: TextStyle(fontSize:20,fontWeight: FontWeight.w700,color: Theme.of(context).primaryColor),),
               const SizedBox(
                 height: 2,
               ),

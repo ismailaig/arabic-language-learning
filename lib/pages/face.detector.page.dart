@@ -35,11 +35,6 @@ class _FaceDetectorPageState extends State<FaceDetectorPage> {
                    foregroundPainter: ImagePainter(faces,imageFile),
                 //child: imageLoaded?Image.file(imageFile):const Text('No Image'),
                ):Container(),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Colors.deepOrange
-                  ),
-              ),
             ),
           )
         ],

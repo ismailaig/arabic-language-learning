@@ -1,11 +1,11 @@
 import 'package:devrnz/bloc/enums/EnumEvent.dart';
-import 'package:devrnz/pages/welcome.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:devrnz/bloc/theme.bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:page_transition/page_transition.dart';
 import '../bloc/authBloc/auth_bloc.dart';
+import '../pages/splash.page.dart';
 
 class MyDrawer extends StatelessWidget {
 
@@ -75,7 +75,13 @@ class MyDrawer extends StatelessWidget {
                                 _onDeleteUserInfo();
                                 authBloc.add(LogOut());
                                 Navigator.of(context).pop();
-                                Navigator.pushAndRemoveUntil(context, PageTransition(child: const WelcomePage(),type: PageTransitionType.leftToRight), (route) => false);
+                                Navigator.pushAndRemoveUntil(
+                                    context,MaterialPageRoute(builder: (context) => const SplashPage()),(route) => false
+                                );
+                              }else if(menus[index]['title']=="Profile"){
+                                context.read<AuthBloc>().add(AppLoaded(listUsers: state.listUsers!));
+                                Navigator.of(context).pop();
+                                Navigator.pushNamed(context, "${menus[index]['route']}");
                               }else{
                                 Navigator.of(context).pop();
                                 Navigator.pushNamed(context, "${menus[index]['route']}");

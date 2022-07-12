@@ -1,14 +1,13 @@
-import 'package:devrnz/bloc/enums/EnumEvent.dart';
 import 'package:devrnz/bloc/lessonBloc/course.bloc.dart';
 import 'package:devrnz/pages/splash.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:devrnz/bloc/theme.bloc.dart';
-import 'package:devrnz/models/users.model.dart';
 import 'package:devrnz/pages/qr.code.page.dart';
 import 'package:devrnz/pages/qr.scan.page.dart';
 import 'package:devrnz/pages/welcome.page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 import '../bloc/lessonBloc/course.event.dart';
 import '../bloc/loginBloc/login_bloc.dart';
@@ -35,19 +34,24 @@ class _RootViewState extends State<RootView> {
 
   @override
   void initState(){
-    super.initState();
     initUserLogin();
+    super.initState();
   }
 
   void initUserLogin() async {
     String? email = await storage.read(key: "email");
     String? password = await storage.read(key: "password");
+    String? themeIndex = await storage.read(key: "index");
     loginBloc = BlocProvider.of<LoginBloc>(context);
     if(email!=null && password!=null){
-      logged = 1;
       loginBloc.add(SignInButtonPressed(email: email, password: password));
     }else{
-      logged = 2;
+      setState((){
+        logged = 2;
+      });
+    }
+    if(themeIndex!=null){
+      context.read<ThemeBloc>().add(LoadedThemeEvent(index: int.parse(themeIndex)));
     }
   }
 
@@ -61,6 +65,7 @@ class _RootViewState extends State<RootView> {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             theme: state.theme,
+            color: Colors.white,
             home: BlocBuilder<LoginBloc,LoginState>(
               builder: (context,state){
                   if(state is LoginSucced){
@@ -68,7 +73,7 @@ class _RootViewState extends State<RootView> {
                     courseBloc.add(CourseLoading());
                     return const HomePage();
                   }else if(state is LoginLoading){
-                    return const SplashPage();
+                    return Container(color: Colors.white,child: Center(child: SpinKitThreeInOut(size: 50,color: Theme.of(context).primaryColor,)),);
                   }else if(state is LoginFailed){
                     return const WelcomePage();
                   }else if(state is LoginInitial){
@@ -76,8 +81,6 @@ class _RootViewState extends State<RootView> {
                       return Container();
                     }else if(logged==2){
                       return const WelcomePage();
-                    }else if(logged==1){
-                      return Container();
                     }
                   }
                   return Container();

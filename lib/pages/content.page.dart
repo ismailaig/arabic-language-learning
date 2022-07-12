@@ -83,7 +83,7 @@ class _ContentPageState extends State<ContentPage> {
                         animateFromLastPercent:true,
                         animationDuration: 1000,
                         barRadius: const Radius.circular(120),
-                        trailing: Text("${(state.contents!.data[state.currentContent].attributes.pageNumber*100/state.contents!.data.length).round()}%", style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w400, color: Colors.orange),),
+                        trailing: Text("${(state.contents!.data[state.currentContent].attributes.pageNumber*100/state.contents!.data.length).round()}%", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400, color: Theme.of(context).primaryColor),),
                         progressColor: Colors.green,
                       ),
                     ),
@@ -94,7 +94,7 @@ class _ContentPageState extends State<ContentPage> {
                             Image.asset("assets/images/crown.png", height: 33,
                               width: 33,),
                             Text("${state.contents!.data[state.currentContent].attributes.pageNumber}",
-                              style: const TextStyle(color: Colors.orange,
+                              style: TextStyle(color: Theme.of(context).primaryColor,
                                   fontSize: 18),)
                           ],
                       ),
@@ -130,10 +130,10 @@ class _ContentPageState extends State<ContentPage> {
                             ),
                           );
                         } else if (state.eventState == EventState.LOADING) {
-                          return const Center(
-                            child: SpinKitThreeInOut(
-                              color: Colors.redAccent,
-                              size: 80.0,
+                          return Center(
+                            child: SpinKitSquareCircle(
+                              color: Theme.of(context).primaryColor,
+                              size: 40.0,
                             ),
                           );
                         } else if(state.eventState == EventState.LOADED){
@@ -193,7 +193,7 @@ class _ContentPageState extends State<ContentPage> {
                                             borderRadius: BorderRadius.circular(18.0),
                                           ),
                                         ),
-                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)
+                                        backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor)
                                     ),
                                     onPressed: () {
                                       //audioPlayer.play(UrlSource(url.path));

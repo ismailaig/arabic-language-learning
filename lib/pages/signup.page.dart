@@ -320,8 +320,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                       if(state is RegisterLoading){
                                         return const Center(
                                             child: SpinKitThreeInOut(
-                                              color: Colors.redAccent,
-                                              size: 50.0,
+                                              color: Colors.orange,
+                                              size: 40.0,
                                             )
                                         );
                                       }else if(state is RegisterFailed){

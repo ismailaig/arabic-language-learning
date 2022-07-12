@@ -25,8 +25,9 @@ class UpdateInfos extends AuthEvent
   int id;
   String fullname;
   String email;
+  ListUsers listUsers;
   String password;
-  UpdateInfos(this.id, this.fullname, this.email, this.password);
+  UpdateInfos({required this.id, required this.fullname, required this.email, required this.listUsers, required this.password});
 }
 
 class LogOut extends AuthEvent{
@@ -45,6 +46,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthenticateState> {
     });
 
     on<UpdatePicture>((event, emit) async {
+        emit(AuthenticateState(listUsers: event.listUsers,eventState: EventState.LOADING,error: '',));
         try {
           if(event.listUsers.data[0].attributes.photo.data!=null){
             await userRepository.deletePhoto(event.listUsers);
@@ -52,22 +54,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthenticateState> {
           bool update = await userRepository.updatePhoto(event.image, event.listUsers);
           if(update){
             ListUsers listUsers = await userRepository.signIn(event.listUsers.data[0].attributes.email, event.listUsers.data[0].attributes.password);
-            emit(AuthenticateState(listUsers: listUsers,eventState: EventState.LOADED,error: '',));
+            emit(AuthenticateState(listUsers: listUsers,eventState: EventState.LOADED,error: 'Updated',));
           }
         } catch (e) {
-          throw("Update problem "+e.toString());
+          emit(AuthenticateState(listUsers: event.listUsers,eventState: EventState.LOADED,error: 'Not updated',));
+          throw("Update problem $e");
         }
     });
 
     on<UpdateInfos>((event, emit) async {
+      emit(AuthenticateState(listUsers: event.listUsers, eventState: EventState.LOADING, error: ''));
       try {
         bool update = await userRepository.updateUserInfos(event.id, event.fullname, event.password);
         if(update){
           ListUsers listUsers = await userRepository.signIn(event.email, event.password);
-          emit(AuthenticateState(listUsers: listUsers,eventState: EventState.LOADED,error: '',));
+          emit(AuthenticateState(listUsers: listUsers,eventState: EventState.LOADED,error: 'Updated',));
         }
       } catch (e) {
-        throw("Update problem "+e.toString());
+        emit(AuthenticateState(listUsers: event.listUsers,eventState: EventState.LOADED,error: 'Not updated',));
+        throw("Update problem $e");
       }
     });
 
