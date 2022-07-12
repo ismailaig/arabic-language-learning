@@ -30,13 +30,14 @@ class ThemeBloc extends Bloc<ThemeEvent,ThemeState>{
   ];
   ThemeBloc() : super(InitialTheme()){
 
-    on((SwitchThemeEvent event, emit) {
+    on((SwitchThemeEvent event, emit) async {
       ++index;
       if(index>=themes.length) {
         index = 0;
       }
       emit(ThemeState(themes[index]));
-      storage.write(key: "index", value: index.toString());
+      await storage.delete(key: "index");
+      await storage.write(key: "index", value: index.toString());
     });
 
     on((LoadedThemeEvent event, emit) {

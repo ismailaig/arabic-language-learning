@@ -6,7 +6,8 @@ class ContentState
 {
   Contents? contents;
   late EventState? eventState;
-  int currentContent ;
+  int currentContent;
+  int? idLesson;
   String error ='';
-  ContentState({this.eventState, this.contents, required this.currentContent, required this.error});
+  ContentState({this.eventState, this.contents, required this.currentContent, this.idLesson, required this.error});
 }

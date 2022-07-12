@@ -56,7 +56,7 @@ class MyDrawer extends StatelessWidget {
                           ),
                           IconButton(onPressed: (){
                             context.read<ThemeBloc>().add(SwitchThemeEvent());
-                          }, icon: const Icon(Icons.switch_account))
+                          }, icon: const Icon(Icons.switch_account_rounded))
                         ],
                       )
                   ),
@@ -82,7 +82,10 @@ class MyDrawer extends StatelessWidget {
                                 context.read<AuthBloc>().add(AppLoaded(listUsers: state.listUsers!));
                                 Navigator.of(context).pop();
                                 Navigator.pushNamed(context, "${menus[index]['route']}");
-                              }else{
+                              }else if(menus[index]['title']=="Home"){
+                                Navigator.of(context).pop();
+                                Navigator.pushNamedAndRemoveUntil(context, "${menus[index]['route']}", (route) => false);
+                              }else {
                                 Navigator.of(context).pop();
                                 Navigator.pushNamed(context, "${menus[index]['route']}");
                               }

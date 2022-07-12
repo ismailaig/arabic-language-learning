@@ -65,7 +65,7 @@ class _SignUpPageState extends State<SignUpPage> {
           TextFormField(
               onChanged: (value){
                 setState(() {
-                    name = value;
+                  name = value;
                 });
               },
               controller: nameTextEditingController,
@@ -100,7 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
           TextFormField(
               onChanged: (value){
                 setState(() {
-                    email = value;
+                  email = value;
                 });
               },
               controller: emailTextEditingController,
@@ -154,7 +154,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       });
                     },
                     icon: Icon(
-                      notVisible==true?Icons.visibility_off:Icons.visibility, color: const Color(0xffe46b10)
+                        notVisible==true?Icons.visibility_off:Icons.visibility, color: const Color(0xffe46b10)
                     ),
                   ),
                   border: InputBorder.none,
@@ -167,60 +167,60 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _submitButton() {
     return ElevatedButton(
-      onPressed: () {
-        setState(() {
-          FocusManager.instance.primaryFocus?.unfocus();
-          _formKey.currentState?.reset();
-        });
-        if (_formKey.currentState?.validate() == true) {
-          name = nameTextEditingController.text;
-          email = emailTextEditingController.text;
-          password = passwordTextEditingController.text;
-          registerBloc.add(SignUpButtonPressed(fullname:name, email: email,password: password));
-        }
-      },
-      style: ElevatedButton.styleFrom(
+        onPressed: () {
+          setState(() {
+            FocusManager.instance.primaryFocus?.unfocus();
+            _formKey.currentState?.reset();
+          });
+          if (_formKey.currentState?.validate() == true) {
+            name = nameTextEditingController.text;
+            email = emailTextEditingController.text;
+            password = passwordTextEditingController.text;
+            registerBloc.add(SignUpButtonPressed(fullname:name, email: email,password: password));
+          }
+        },
+        style: ElevatedButton.styleFrom(
           primary: const Color(0xffe46b10),
           fixedSize: const Size(410, 45),
-      ),
-      child: const Text(
-        "Register",
-        style: TextStyle(color: Colors.white, fontSize: 18),
-      )
+        ),
+        child: const Text(
+          "Register",
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        )
     );
   }
 
   Widget _loginAccountLabel() {
     return Container(
-        margin: const EdgeInsets.symmetric(vertical: 20),
-        padding: const EdgeInsets.all(15),
-        alignment: Alignment.bottomCenter,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Already have an account ?',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+      margin: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.all(15),
+      alignment: Alignment.bottomCenter,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Text(
+            'Already have an account ?',
+            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          InkWell(
+            onTap: (){
+              Navigator.pushAndRemoveUntil(
+                  context, MaterialPageRoute(builder: (context) => const LoginPage()), (route) => false
+              );
+            },
+            child: const Text(
+              'Login',
+              style: TextStyle(
+                  color: Color(0xfff79c4f),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600),
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            InkWell(
-              onTap: (){
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => const LoginPage()
-                ));
-              },
-              child: const Text(
-                'Login',
-                style: TextStyle(
-                    color: Color(0xfff79c4f),
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -255,94 +255,94 @@ class _SignUpPageState extends State<SignUpPage> {
     authBloc = BlocProvider.of<AuthBloc>(context);
     return Scaffold(
       body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: height,
-                    child: Stack(
-                      children: <Widget>[
-                        Positioned(
-                          top: -MediaQuery.of(context).size.height * .15,
-                          right: -MediaQuery.of(context).size.width * .4,
-                          child: const BezierContainer(),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          //child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              SizedBox(height: height * 0.19),
-                              _title(),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Form(
-                                key: _formKey,
-                                child: Column(
-                                  children: <Widget>[
-                                    _nameField(),
-                                    _emailField(),
-                                    _passwordField(),
-                                    const SizedBox(
-                                      height: 18,
-                                    ),
-                                    _submitButton(),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      error,
-                                      style: const TextStyle(color: Colors.red, fontSize: 15.0),
-                                    )
-                                  ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: height,
+                child: Stack(
+                  children: <Widget>[
+                    Positioned(
+                      top: -MediaQuery.of(context).size.height * .15,
+                      right: -MediaQuery.of(context).size.width * .4,
+                      child: const BezierContainer(),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      //child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(height: height * 0.19),
+                          _title(),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Form(
+                            key: _formKey,
+                            child: Column(
+                              children: <Widget>[
+                                _nameField(),
+                                _emailField(),
+                                _passwordField(),
+                                const SizedBox(
+                                  height: 18,
                                 ),
-                              ),
-                              SizedBox(height: height * .0000001),
-                              _loginAccountLabel(),
-                              BlocListener<RegisterBloc,RegisterState>(
-                                listener: (context,state){
-                                  if(state is RegisterSucced){
-                                    setState(() {
-                                      error = '';
-                                    });
-                                    Navigator.pushAndRemoveUntil(
-                                        context, PageTransition(child: const LoginPage(), type: PageTransitionType.rightToLeft), (route) => false
+                                _submitButton(),
+                                const SizedBox(height: 8),
+                                Text(
+                                  error,
+                                  style: const TextStyle(color: Colors.red, fontSize: 15.0),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: height * .0000001),
+                          _loginAccountLabel(),
+                          BlocListener<RegisterBloc,RegisterState>(
+                            listener: (context,state){
+                              if(state is RegisterSucced){
+                                setState(() {
+                                  error = '';
+                                });
+                                Navigator.pushAndRemoveUntil(
+                                    context, PageTransition(child: const LoginPage(), type: PageTransitionType.rightToLeft), (route) => false
+                                );
+                              }else if(state is RegisterFailed){
+                                setState(() {
+                                  error = 'Fields are incorrect';
+                                });
+                              }
+                            },
+                            child: BlocBuilder<RegisterBloc,RegisterState>(
+                                builder: (context,state){
+                                  if(state is RegisterLoading){
+                                    return const Center(
+                                        child: SpinKitThreeInOut(
+                                          color: Colors.orange,
+                                          size: 40.0,
+                                        )
                                     );
                                   }else if(state is RegisterFailed){
-                                    setState(() {
-                                      error = 'Fields are incorrect';
-                                    });
+                                    error = 'Fields are incorrect';
+                                  }else if(state is RegisterSucced){
+                                    return Container();
                                   }
-                                },
-                                child: BlocBuilder<RegisterBloc,RegisterState>(
-                                    builder: (context,state){
-                                      if(state is RegisterLoading){
-                                        return const Center(
-                                            child: SpinKitThreeInOut(
-                                              color: Colors.orange,
-                                              size: 40.0,
-                                            )
-                                        );
-                                      }else if(state is RegisterFailed){
-                                        error = 'Fields are incorrect';
-                                      }else if(state is RegisterSucced){
-                                        return Container();
-                                      }
-                                      return Container();
-                                    }
-                                ),
-                              ),
-                            ],
+                                  return Container();
+                                }
+                            ),
                           ),
-                        ),
-                        //),
-                        //Positioned(top: 38, left: 0, child: _backButton()),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              )
+                    //),
+                    //Positioned(top: 38, left: 0, child: _backButton()),
+                  ],
+                ),
+              ),
+            ],
+          )
       ),
     );
   }

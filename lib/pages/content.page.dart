@@ -42,6 +42,10 @@ class _ContentPageState extends State<ContentPage> {
     super.dispose();
   }
 
+  _playSound(String url){
+    AudioPlayer().play(UrlSource(url));
+  }
+
   @override
   Widget build(BuildContext context) {
     contentBloc = BlocProvider.of<ContentBloc>(context);
@@ -83,18 +87,19 @@ class _ContentPageState extends State<ContentPage> {
                         animateFromLastPercent:true,
                         animationDuration: 1000,
                         barRadius: const Radius.circular(120),
-                        trailing: Text("${(state.contents!.data[state.currentContent].attributes.pageNumber*100/state.contents!.data.length).round()}%", style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400, color: Theme.of(context).primaryColor),),
+                        trailing: Text("${(state.contents!.data[state.currentContent].attributes.pageNumber*100/state.contents!.data.length).round()}%", style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w400, color: Colors.orange),),
                         progressColor: Colors.green,
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 12.0),
+                      padding: const EdgeInsets.only(right: 15.0),
                       child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Image.asset("assets/images/crown.png", height: 33,
                               width: 33,),
                             Text("${state.contents!.data[state.currentContent].attributes.pageNumber}",
-                              style: TextStyle(color: Theme.of(context).primaryColor,
+                              style: const TextStyle(color: Colors.orange,
                                   fontSize: 18),)
                           ],
                       ),
@@ -104,8 +109,6 @@ class _ContentPageState extends State<ContentPage> {
               );
             }else if(state.eventState == EventState.LOADING){
               return Container();
-            }else if(state.eventState == EventState.ERROR){
-              return AppBar(title: const Center(child: Text("Not found")));
             }
             return Container();
           }),
@@ -120,10 +123,14 @@ class _ContentPageState extends State<ContentPage> {
                         if(state.eventState == EventState.ERROR) {
                           return Center(
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children:[
-                                Text(state.error,style: const TextStyle(color: Colors.red, fontSize: 22),),
+                                Text(state.error,style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 22),),
                                 ElevatedButton(
-                                  onPressed: (){},
+                                  onPressed: (){
+                                    context.read<ContentBloc>().add(ContentLoading(state.idLesson!));
+                                  },
                                   child: const Text("Retry"),
                                 )
                               ]
@@ -131,12 +138,13 @@ class _ContentPageState extends State<ContentPage> {
                           );
                         } else if (state.eventState == EventState.LOADING) {
                           return Center(
-                            child: SpinKitSquareCircle(
+                            child: SpinKitFadingCircle(
                               color: Theme.of(context).primaryColor,
-                              size: 40.0,
+                              size: 50.0,
                             ),
                           );
                         } else if(state.eventState == EventState.LOADED){
+                          _playSound(state.contents!.data[state.currentContent].attributes.imageSong.data[0].attributes.url);
                           return Column(
                               children: [
                                 Padding(
@@ -145,7 +153,7 @@ class _ContentPageState extends State<ContentPage> {
                                     children: [
                                       InkWell(
                                         onTap: () {
-                                          AudioPlayer().play(UrlSource(state.contents!.data[state.currentContent].attributes.imageSong.data[0].attributes.url));
+                                          _playSound(state.contents!.data[state.currentContent].attributes.imageSong.data[0].attributes.url);
                                         },
                                         child: Image.asset(
                                             "assets/images/sound.png",
@@ -168,7 +176,7 @@ class _ContentPageState extends State<ContentPage> {
                                   children: [
                                     SizedBox(
                                       height: 80,
-                                      child: Text(state.contents!.data[state.currentContent].attributes.imageName, textAlign: TextAlign.center, overflow: TextOverflow.visible, style: const TextStyle(color:Colors.deepOrange,fontWeight: FontWeight.w600, fontSize: 24)),
+                                      child: Text(state.contents!.data[state.currentContent].attributes.imageName, textAlign: TextAlign.center, overflow: TextOverflow.visible, style: const TextStyle(color:Colors.orange,fontWeight: FontWeight.w600, fontSize: 24)),
                                     ),
                                     SizedBox(
                                       height: 80,
@@ -201,6 +209,7 @@ class _ContentPageState extends State<ContentPage> {
                                         Navigator.of(context).pop();
                                       }else{
                                         context.read<ContentBloc>().add(ContentPagination());
+                                        //_playSound(state.contents!.data[state.currentContent].attributes.imageSong.data[0].attributes.url);
                                       }
                                     },
                                     child: const Text("Continuer",style: TextStyle(fontSize: 22)),

@@ -20,6 +20,12 @@ class UpdatePicture extends AuthEvent
   UpdatePicture(this.image, this.listUsers);
 }
 
+class DeletePicture extends AuthEvent
+{
+  ListUsers listUsers;
+  DeletePicture(this.listUsers);
+}
+
 class UpdateInfos extends AuthEvent
 {
   int id;
@@ -46,7 +52,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthenticateState> {
     });
 
     on<UpdatePicture>((event, emit) async {
-        emit(AuthenticateState(listUsers: event.listUsers,eventState: EventState.LOADING,error: '',));
         try {
           if(event.listUsers.data[0].attributes.photo.data!=null){
             await userRepository.deletePhoto(event.listUsers);
@@ -54,7 +59,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthenticateState> {
           bool update = await userRepository.updatePhoto(event.image, event.listUsers);
           if(update){
             ListUsers listUsers = await userRepository.signIn(event.listUsers.data[0].attributes.email, event.listUsers.data[0].attributes.password);
-            emit(AuthenticateState(listUsers: listUsers,eventState: EventState.LOADED,error: 'Updated',));
+            emit(AuthenticateState(listUsers: listUsers,eventState: EventState.LOADED,error: '',));
           }
         } catch (e) {
           emit(AuthenticateState(listUsers: event.listUsers,eventState: EventState.LOADED,error: 'Not updated',));
@@ -69,6 +74,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthenticateState> {
         if(update){
           ListUsers listUsers = await userRepository.signIn(event.email, event.password);
           emit(AuthenticateState(listUsers: listUsers,eventState: EventState.LOADED,error: 'Updated',));
+        }
+      } catch (e) {
+        emit(AuthenticateState(listUsers: event.listUsers,eventState: EventState.LOADED,error: 'Not updated',));
+        throw("Update problem $e");
+      }
+    });
+
+    on<DeletePicture>((event, emit) async {
+      try {
+        bool delete = await userRepository.deletePhoto(event.listUsers);
+        if(delete){
+          ListUsers listUsers = await userRepository.signIn(event.listUsers.data[0].attributes.email, event.listUsers.data[0].attributes.password);
+          emit(AuthenticateState(listUsers: listUsers,eventState: EventState.LOADED,error: '',));
         }
       } catch (e) {
         emit(AuthenticateState(listUsers: event.listUsers,eventState: EventState.LOADED,error: 'Not updated',));

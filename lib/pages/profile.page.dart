@@ -87,8 +87,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                     const SizedBox(height: 8),
                                     TextFormField(
                                       validator: (value) {
-                                        if (value == null || value.isEmpty || value.length<3) {
-                                          return 'Please enter a fullname with at least 3 characters';
+                                        if(fullname.isNotEmpty){
+                                          if (value == null || value.isEmpty || value.length<3) {
+                                            return 'Please enter a fullname with at least 3 characters';
+                                          }
                                         }
                                         return null;
                                       },
@@ -117,8 +119,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                     const SizedBox(height: 8),
                                     TextFormField(
                                       validator: (value) {
-                                        if (value == null || value.isEmpty || value.length < 8) {
-                                          return "Enter a password with at least 8 characters";
+                                        if(password.isNotEmpty){
+                                          if (value == null || value.isEmpty || value.length < 8) {
+                                            return "Enter a password with at least 8 characters";
+                                          }
                                         }
                                         return null;
                                       },
@@ -172,10 +176,20 @@ class _ProfilePageState extends State<ProfilePage> {
                                   _formKey.currentState?.reset();
                                 });
                                 if (_formKey.currentState?.validate() == true) {
-                                  password = passwordTextEditing.text;
-                                  fullname = fullnameTextEditing.text;
-                                  authBloc.add(UpdateInfos(id: state.listUsers!.data[0].id, fullname: fullname, email: state.listUsers!.data[0].attributes.email, listUsers: state.listUsers!, password: password));
-                                  _onUpdateUserInfo(password);
+                                  if(password.isEmpty && fullname.isNotEmpty){
+                                    setState(() {
+                                      fullname = fullnameTextEditing.text;
+                                    });
+                                    authBloc.add(UpdateInfos(id: state.listUsers!.data[0].id, fullname: fullname, email: state.listUsers!.data[0].attributes.email, listUsers: state.listUsers!, password: state.listUsers!.data[0].attributes.password));
+                                  }else if(password.isNotEmpty && fullname.isEmpty){
+                                    setState(() {
+                                      password = passwordTextEditing.text;
+                                    });
+                                    authBloc.add(UpdateInfos(id: state.listUsers!.data[0].id, fullname: state.listUsers!.data[0].attributes.fullname, email: state.listUsers!.data[0].attributes.email, listUsers: state.listUsers!, password: password));
+                                    setState(() {
+                                      _onUpdateUserInfo(password);
+                                    });
+                                  }
                                 }
                               },
                               child: const Text("Update informations",style: TextStyle(fontSize: 18)),
@@ -216,32 +230,39 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> openDialog(BuildContext context,ListUsers listUsers) {
     return showDialog(context: context,builder: (BuildContext context){
       return AlertDialog(
-        title: const Text('Source de l\'image'),
+        title: const Text('Profile picture'),
         actions: <Widget>[
-          MaterialButton(
-            child: const Text('Gallery'),
+          TextButton(
             onPressed: () async{
               Navigator.of(context).pop();
-              File file = await Utils().pickImage(ImageSource.gallery,false,500,500);
-              if(file == null) {
-                return;
-              }else{
-                authBloc.add(UpdatePicture(file,listUsers));
-              }
+              authBloc.add(DeletePicture(listUsers));
             },
+            child: Text('Delete', style: TextStyle(color: Theme.of(context).primaryColor,),),
           ),
-          MaterialButton(
-            child: const Text('Camera'),
+          TextButton(
             onPressed: () async{
               Navigator.of(context).pop();
-              File file = await Utils().pickImage(ImageSource.camera,false,500,500);
+              File? file = await Utils().pickImage(ImageSource.camera,false,500,500);
               if(file == null) {
                 return;
               }else{
                 authBloc.add(UpdatePicture(file,listUsers));
               }
             },
-          )
+            child: Text('Camera', style: TextStyle(color: Theme.of(context).primaryColor,),),
+          ),
+          TextButton(
+            onPressed: () async{
+              Navigator.of(context).pop();
+              File? file = await Utils().pickImage(ImageSource.gallery,false,500,500);
+              if(file == null) {
+                return;
+              }else{
+                authBloc.add(UpdatePicture(file,listUsers));
+              }
+            },
+            child: Text('Gallery', style: TextStyle(color: Theme.of(context).primaryColor,))
+          ),
         ],
       );
     });

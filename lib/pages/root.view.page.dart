@@ -27,24 +27,20 @@ class RootView extends StatefulWidget {
 
 class _RootViewState extends State<RootView> {
   final storage = const FlutterSecureStorage();
-  late LoginBloc loginBloc;
-  late AuthBloc authBloc;
   int logged = 0;
-  late CourseBloc courseBloc;
 
   @override
   void initState(){
-    initUserLogin();
     super.initState();
+    initUserLogin();
   }
 
   void initUserLogin() async {
     String? email = await storage.read(key: "email");
     String? password = await storage.read(key: "password");
     String? themeIndex = await storage.read(key: "index");
-    loginBloc = BlocProvider.of<LoginBloc>(context);
     if(email!=null && password!=null){
-      loginBloc.add(SignInButtonPressed(email: email, password: password));
+      context.read<LoginBloc>().add(SignInButtonPressed(email: email, password: password));
     }else{
       setState((){
         logged = 2;
@@ -58,48 +54,133 @@ class _RootViewState extends State<RootView> {
 
   @override
   Widget build(BuildContext context) {
-    authBloc = BlocProvider.of<AuthBloc>(context);
-    courseBloc = BlocProvider.of<CourseBloc>(context);
-    return BlocBuilder<ThemeBloc,ThemeState>(
+    return BlocBuilder<LoginBloc,LoginState>(
         builder: (context,state){
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: state.theme,
-            color: Colors.white,
-            home: BlocBuilder<LoginBloc,LoginState>(
-              builder: (context,state){
-                  if(state is LoginSucced){
-                    authBloc.add(AppLoaded(listUsers: state.listUsers));
-                    courseBloc.add(CourseLoading());
-                    return const HomePage();
-                  }else if(state is LoginLoading){
-                    return Container(color: Colors.white,child: Center(child: SpinKitThreeInOut(size: 50,color: Theme.of(context).primaryColor,)),);
-                  }else if(state is LoginFailed){
-                    return const WelcomePage();
-                  }else if(state is LoginInitial){
-                    if(logged==0){
-                      return Container();
-                    }else if(logged==2){
-                      return const WelcomePage();
-                    }
+          if(state is LoginSucced){
+            context.read<AuthBloc>().add(AppLoaded(listUsers: state.listUsers));
+            context.read<CourseBloc>().add(CourseLoading());
+            return BlocBuilder<ThemeBloc,ThemeState>(
+                builder: (context,state){
+                  return MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    theme: state.theme,
+                    home: const HomePage(),
+                    routes: {
+                      "/home":(context) => const HomePage(),
+                      "/welcome":(context) => const WelcomePage(),
+                      "/profile":(context) => ProfilePage(),
+                      "/maps":(context) => const MapPage(),
+                      "/ocr":(context) => const OcrPage(),
+                      "/face":(context) => const FaceDetectorPage(),
+                      "/QR":(context) => const QRCodePage(),
+                      "/scanQR": (context) => const QRViewScannerPage(),
+                      "/graphics": (context) => const GraphicsPage()
+                    },
+                  );
+                }
+            );
+          }else if(state is LoginLoading){
+            return BlocBuilder<ThemeBloc,ThemeState>(
+                builder: (context,state){
+                  return MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    theme: state.theme,
+                    home: Container(
+                      color: Colors.white,
+                      child: Center(
+                          child: SpinKitThreeInOut(
+                            itemBuilder: (context, index){
+                              final colors = [Colors.cyan, Colors.black26];
+                              final color = colors[index % colors.length];
+                              return DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    color: color,
+                                      shape: BoxShape.circle
+                                  )
+                              );
+                            },
+                            //color: Theme.of(context).primaryColor,
+                            size: 60.0,
+                          )
+                      ),
+                    ),
+                    routes: {
+                      "/home":(context) => const HomePage(),
+                      "/welcome":(context) => const WelcomePage(),
+                      "/profile":(context) => ProfilePage(),
+                      "/maps":(context) => const MapPage(),
+                      "/ocr":(context) => const OcrPage(),
+                      "/face":(context) => const FaceDetectorPage(),
+                      "/QR":(context) => const QRCodePage(),
+                      "/scanQR": (context) => const QRViewScannerPage(),
+                      "/graphics": (context) => const GraphicsPage()
+                    },
+                  );
+                }
+            );
+          }else if(state is LoginFailed){
+            return BlocBuilder<ThemeBloc,ThemeState>(
+                builder: (context,state){
+                  return MaterialApp(
+                    debugShowCheckedModeBanner: false,
+                    theme: state.theme,
+                    home: const WelcomePage(),
+                    routes: {
+                      "/home":(context) => const HomePage(),
+                      "/welcome":(context) => const WelcomePage(),
+                      "/profile":(context) => ProfilePage(),
+                      "/maps":(context) => const MapPage(),
+                      "/ocr":(context) => const OcrPage(),
+                      "/face":(context) => const FaceDetectorPage(),
+                      "/QR":(context) => const QRCodePage(),
+                      "/scanQR": (context) => const QRViewScannerPage(),
+                      "/graphics": (context) => const GraphicsPage()
+                    },
+                  );
+                }
+            );
+          }else if(state is LoginInitial){
+            if(logged==0){
+              return Container();
+            }else if(logged==2){
+              return BlocBuilder<ThemeBloc,ThemeState>(
+                  builder: (context,state){
+                    return MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      theme: state.theme,
+                      home: const WelcomePage(),
+                      routes: {
+                        "/home":(context) => const HomePage(),
+                        "/welcome":(context) => const WelcomePage(),
+                        "/profile":(context) => ProfilePage(),
+                        "/maps":(context) => const MapPage(),
+                        "/ocr":(context) => const OcrPage(),
+                        "/face":(context) => const FaceDetectorPage(),
+                        "/QR":(context) => const QRCodePage(),
+                        "/scanQR": (context) => const QRViewScannerPage(),
+                        "/graphics": (context) => const GraphicsPage()
+                      },
+                    );
                   }
-                  return Container();
-              }),
-            routes: {
-              "/home":(context) => const HomePage(),
-              "/welcome":(context) => const WelcomePage(),
-              "/profile":(context) => ProfilePage(),
-              "/maps":(context) => const MapPage(),
-              "/ocr":(context) => const OcrPage(),
-              "/face":(context) => const FaceDetectorPage(),
-              "/QR":(context) => const QRCodePage(),
-              "/scanQR": (context) => const QRViewScannerPage(),
-              "/graphics": (context) => const GraphicsPage()
-            },
-          );
+              );
+            }
+          }
+          return Container();
         }
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 

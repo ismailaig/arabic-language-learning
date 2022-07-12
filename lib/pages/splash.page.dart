@@ -17,7 +17,7 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
   }
   void autoNavigation() async {
-    await Future.delayed(Duration(seconds: 4));
+    await Future.delayed(const Duration(seconds: 4));
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -31,8 +31,18 @@ class _SplashPageState extends State<SplashPage> {
         color: Colors.white,
         child: Center(
           child: SpinKitThreeInOut(
-            color: Theme.of(context).primaryColor,
-            size: 50.0,
+            itemBuilder: (context, index){
+              final colors = [Colors.cyan, Colors.black26];
+              final color = colors[index % colors.length];
+              return DecoratedBox(
+                  decoration: BoxDecoration(
+                      color: color,
+                      shape: BoxShape.circle
+                  )
+              );
+            },
+            //color: Theme.of(context).primaryColor,
+            size: 60.0,
           ),
         ),
     );

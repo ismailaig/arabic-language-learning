@@ -28,25 +28,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  late ContentBloc contentBloc;
-
-  late CourseBloc courseBloc;
-
-  late AlphabetBloc alphabetBloc;
-
-  late NumberBloc numberBloc;
-
   bool alpha = false;
 
   final audioPlayer = AudioPlayer();
 
   @override
   Widget build(BuildContext context) {
-
-    alphabetBloc = BlocProvider.of<AlphabetBloc>(context);
-    courseBloc = BlocProvider.of<CourseBloc>(context);
-    numberBloc = BlocProvider.of<NumberBloc>(context);
-    contentBloc = BlocProvider.of<ContentBloc>(context);
 
     return BlocBuilder<AuthBloc, AuthenticateState>(
         builder: (context, state) {
@@ -59,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                         builder: (BuildContext context) {
                           return IconButton(
                               icon: Icon(
-                                  Icons.menu, color: Theme.of(context).primaryColor, size: 35),
+                                  Icons.menu, color: Theme.of(context).primaryColor, size: 38),
                               onPressed: () {
                                 Scaffold.of(context).openDrawer();
                               },
@@ -76,10 +63,12 @@ class _HomePageState extends State<HomePage> {
                       children: <Widget>[
                         InkWell(
                           onTap: (){
-                            courseBloc.add(CourseLoading());
-                            setState((){
-                              alpha = false;
-                            });
+                            if(alpha==true){
+                              context.read<CourseBloc>().add(CourseLoading());
+                              setState((){
+                                alpha = false;
+                              });
+                            }
                           },
                           child: Image.asset(
                             "assets/images/saudi-arabia.png", height: 40,
@@ -88,11 +77,13 @@ class _HomePageState extends State<HomePage> {
                         ),
                         InkWell(
                           onTap: (){
-                            alphabetBloc.add(AlphabetLoading());
-                            numberBloc.add(NumberLoading());
-                            setState((){
-                              alpha = true;
-                            });
+                            if(alpha==false){
+                              context.read<AlphabetBloc>().add(AlphabetLoading());
+                              context.read<NumberBloc>().add(NumberLoading());
+                              setState((){
+                                alpha = true;
+                              });
+                            }
                           },
                           child: Image.asset(
                             "assets/images/arabic-language.png", height: 35,
@@ -107,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                               Image.asset("assets/images/crown.png", height: 33,
                                 width: 33,),
                               Text("${state.listUsers!.data[0].attributes.king}",
-                                style: TextStyle(color: Theme.of(context).primaryColor,
+                                style: const TextStyle(color: Colors.orange,
                                     fontSize: 18),)
                             ],
                           ),
@@ -130,10 +121,14 @@ class _HomePageState extends State<HomePage> {
           if (state.eventState == EventState.ERROR) {
             return Center(
               child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children:[
-                    Text(state.error,style: const TextStyle(color: Colors.red, fontSize: 22),),
+                    Text(state.error,style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 22),),
                     ElevatedButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        context.read<CourseBloc>().add(CourseLoading());
+                      },
                       child: const Text("Retry"),
                     )
                   ]
@@ -141,9 +136,9 @@ class _HomePageState extends State<HomePage> {
             );
           } else if (state.eventState == EventState.LOADING) {
             return Center(
-              child: SpinKitSquareCircle(
+              child: SpinKitFadingCircle(
                 color: Theme.of(context).primaryColor,
-                size: 40.0,
+                size: 50.0,
               ),
             );
           } else if (state.eventState == EventState.LOADED) {
@@ -175,13 +170,18 @@ class _HomePageState extends State<HomePage> {
             children: [
               BlocBuilder<AlphabetBloc, AlphabetState>(
                   builder: (context, state) {
-                    if (state.eventState == EventState.ERROR) {
+                    if(state.eventState == EventState.ERROR) {
                       return Center(
                         child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children:[
-                              Text(state.error,style: const TextStyle(color: Colors.red, fontSize: 22),),
+                              Text(state.error,style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 22),),
                               ElevatedButton(
-                                onPressed: (){},
+                                onPressed: (){
+                                  context.read<AlphabetBloc>().add(AlphabetLoading());
+                                  context.read<NumberBloc>().add(NumberLoading());
+                                },
                                 child: const Text("Retry"),
                               )
                             ]
@@ -223,23 +223,11 @@ class _HomePageState extends State<HomePage> {
               ),
               BlocBuilder<NumberBloc, NumberState>(
                   builder: (context, state) {
-                    if (state.eventState == EventState.ERROR) {
+                    if (state.eventState == EventState.LOADING) {
                       return Center(
-                        child: Column(
-                            children:[
-                              Text(state.error,style: const TextStyle(color: Colors.red, fontSize: 22),),
-                              ElevatedButton(
-                                onPressed: (){},
-                                child: const Text("Retry"),
-                              )
-                            ]
-                        ),
-                      );
-                    } else if (state.eventState == EventState.LOADING) {
-                      return Center(
-                        child: SpinKitSquareCircle(
+                        child: SpinKitFadingCircle(
                           color: Theme.of(context).primaryColor,
-                          size: 40.0,
+                          size: 50.0,
                         ),
                       );
                     } else if (state.eventState == EventState.LOADED) {
@@ -307,7 +295,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 InkWell(
                   onTap:() {
-                    contentBloc.add(ContentLoading(id));
+                    context.read<ContentBloc>().add(ContentLoading(id));
                     Navigator.push(
                         context,MaterialPageRoute(builder: (context) => const ContentPage())
                     );
@@ -323,11 +311,8 @@ class _HomePageState extends State<HomePage> {
             Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                Image.asset("assets/images/crown.png",height: 39),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Text(number,style: const TextStyle(color: Colors.deepOrange,fontSize: 13,fontWeight: FontWeight.bold),),
-                )
+                Image.asset("assets/images/crown.png",height: 34, width: 34,),
+                Text(number,style: const TextStyle(color: Colors.deepOrange,fontSize: 13,fontWeight: FontWeight.bold),),
               ],
             )
           ],
