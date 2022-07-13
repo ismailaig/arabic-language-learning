@@ -79,8 +79,8 @@ class _ContentPageState extends State<ContentPage> {
                     ClipRRect(
                       borderRadius: const BorderRadius.all(Radius.circular(20)),
                       child: LinearPercentIndicator(
-                        padding: const EdgeInsets.only(right: 8),
-                        width: 170,
+                        padding: const EdgeInsets.only(right: 12),
+                        width: 200,
                         lineHeight: 19,
                         percent: state.contents!.data[state.currentContent].attributes.pageNumber/state.contents!.data.length,
                         animation: true,
@@ -91,7 +91,7 @@ class _ContentPageState extends State<ContentPage> {
                         progressColor: Colors.green,
                       ),
                     ),
-                    Padding(
+                    /*Padding(
                       padding: const EdgeInsets.only(right: 15.0),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -103,7 +103,7 @@ class _ContentPageState extends State<ContentPage> {
                                   fontSize: 18),)
                           ],
                       ),
-                    ),
+                    ),*/
                   ],
                 )
               );
@@ -126,7 +126,8 @@ class _ContentPageState extends State<ContentPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children:[
-                                Text(state.error,style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 22),),
+                                Text(state.error,textAlign: TextAlign.center, overflow: TextOverflow.visible, style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 25),),
+                                const SizedBox(height: 15,),
                                 ElevatedButton(
                                   onPressed: (){
                                     context.read<ContentBloc>().add(ContentLoading(state.idLesson!));

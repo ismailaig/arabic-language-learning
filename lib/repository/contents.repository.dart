@@ -17,7 +17,7 @@ class ContentRepository{
         return throw("Error => ${response.statusCode}");
       }
     } catch (e) {
-      return throw("Error => "+e.toString());
+      return throw("Error => $e");
     }
   }
 }

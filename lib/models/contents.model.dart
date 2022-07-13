@@ -235,7 +235,6 @@ class AttributesLesson {
     required this.createdAt,
     required this.updatedAt,
     required this.publishedAt,
-    required this.king,
   });
   late final String title;
   late final bool started;
@@ -243,7 +242,6 @@ class AttributesLesson {
   late final String createdAt;
   late final String updatedAt;
   late final String publishedAt;
-  late final int king;
 
   AttributesLesson.fromJson(Map<String, dynamic> json){
     title = json['title'];
@@ -252,7 +250,6 @@ class AttributesLesson {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     publishedAt = json['publishedAt'];
-    king = json['king'];
   }
 
   Map<String, dynamic> toJson() {
@@ -263,11 +260,9 @@ class AttributesLesson {
     _data['createdAt'] = createdAt;
     _data['updatedAt'] = updatedAt;
     _data['publishedAt'] = publishedAt;
-    _data['king'] = king;
     return _data;
   }
 }
-
 
 
 class ImageSong {

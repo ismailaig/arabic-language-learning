@@ -19,7 +19,7 @@ class UserRepository{
         return throw("Error => ${response.statusCode}");
       }
     } catch (e) {
-      return throw("Error => "+e.toString());
+      return throw("Error => $e");
     }
   }
 
@@ -60,7 +60,7 @@ class UserRepository{
         return throw("Delete photo probleme => ${response.statusCode}");
       }
     } catch (e) {
-      return throw("Delete photo probleme => "+e.toString());
+      return throw("Delete photo probleme => $e");
     }
   }
 
@@ -80,7 +80,7 @@ class UserRepository{
         return throw("Error uplaod => ${response.statusCode}");
       }
     } catch (e) {
-      return throw("Error upload => "+e.toString());
+      return throw("Error upload => $e");
     }
   }
 

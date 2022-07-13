@@ -48,7 +48,6 @@ class Attributes {
     required this.createdAt,
     required this.updatedAt,
     required this.publishedAt,
-    required this.king,
     required this.image, 
   });
   late final String title;
@@ -57,7 +56,6 @@ class Attributes {
   late final String createdAt;
   late final String updatedAt;
   late final String publishedAt;
-  late final int king;
   late final Image image;
 
   Attributes.fromJson(Map<String, dynamic> json){
@@ -67,7 +65,6 @@ class Attributes {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     publishedAt = json['publishedAt'];
-    king = json['king'];
     image = Image.fromJson(json['image']);
   }
 
@@ -79,7 +76,6 @@ class Attributes {
     _data['createdAt'] = createdAt;
     _data['updatedAt'] = updatedAt;
     _data['publishedAt'] = publishedAt;
-    _data['king'] = king;
     _data['image'] = image.toJson();
     return _data;
   }
