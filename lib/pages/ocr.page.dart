@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:devrnz/utils/utils.dart';
+import 'package:AgeArabic/utils/utils.dart';
 
 class OcrPage extends StatefulWidget {
   const OcrPage({Key? key}) : super(key: key);
@@ -19,7 +19,10 @@ class _OcrPageState extends State<OcrPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('OCR'),),
+      appBar: AppBar(
+        title: const Text('OCR',style: TextStyle(color: Colors.white),),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -43,7 +46,7 @@ class _OcrPageState extends State<OcrPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.camera),
+        child: const Icon(Icons.camera, color: Colors.white,),
         onPressed: (){
           showDialog(
               context: context,
@@ -56,14 +59,14 @@ class _OcrPageState extends State<OcrPage> {
                         onPressed: () async{
                           performOcr(context, ImageSource.camera);
                         },
-                        child: const Text("Camera")
+                        child: const Text("Camera", style: TextStyle(color: Colors.white),)
                     ),
                     ElevatedButton(
                         onPressed: () async{
                           performOcr(context, ImageSource.gallery);
                         },
 
-                        child: const Text("Gallery")
+                        child: const Text("Gallery", style: TextStyle(color: Colors.white),)
                     )
                   ],
                 );

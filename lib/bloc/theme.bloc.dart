@@ -22,11 +22,17 @@ class ThemeBloc extends Bloc<ThemeEvent,ThemeState>{
   int index=0;
   final storage = const FlutterSecureStorage();
 
+
+
   List<ThemeData> themes = [
     ThemeData(primarySwatch:Colors.deepOrange),
     ThemeData(primarySwatch:Colors.blue),
+    ThemeData(primarySwatch:Colors.lightGreen),
+    ThemeData(primarySwatch:Colors.cyan),
+    ThemeData(primarySwatch:Colors.blueGrey),
+    ThemeData(primarySwatch:Colors.orange),
+    ThemeData(primarySwatch:Colors.teal),
     ThemeData(primarySwatch:Colors.deepPurple),
-    ThemeData(primarySwatch:Colors.teal)
   ];
   ThemeBloc() : super(InitialTheme()){
 

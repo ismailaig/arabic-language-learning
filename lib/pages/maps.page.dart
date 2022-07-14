@@ -46,7 +46,11 @@ class MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Current Location"),),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text("Current Location", style: TextStyle(color: Colors.white),),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: GoogleMap(
             mapType: MapType.normal,
             myLocationButtonEnabled: true,

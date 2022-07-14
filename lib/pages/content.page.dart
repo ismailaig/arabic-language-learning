@@ -1,5 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:devrnz/bloc/contentBloc/content.event.dart';
+import 'package:AgeArabic/bloc/contentBloc/content.event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -24,24 +24,6 @@ class _ContentPageState extends State<ContentPage> {
   late final url;
 
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    setAudio();
-  }
-
-  Future setAudio() async{
-    final player = AudioCache(prefix: "assets/audio/");
-    url = await player.load("continue.mp3");
-  }
-
-  @override
-  void dispose(){
-    audioPlayer.dispose();
-    super.dispose();
-  }
-
   _playSound(String url){
     AudioPlayer().play(UrlSource(url));
   }
@@ -50,6 +32,7 @@ class _ContentPageState extends State<ContentPage> {
   Widget build(BuildContext context) {
     contentBloc = BlocProvider.of<ContentBloc>(context);
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(58),
           child: BlocBuilder<ContentBloc, ContentState>(
@@ -126,13 +109,13 @@ class _ContentPageState extends State<ContentPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children:[
-                                Text(state.error,textAlign: TextAlign.center, overflow: TextOverflow.visible, style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 25),),
+                                Text("Server problem",textAlign: TextAlign.center, overflow: TextOverflow.visible, style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 25),),
                                 const SizedBox(height: 15,),
                                 ElevatedButton(
                                   onPressed: (){
                                     context.read<ContentBloc>().add(ContentLoading(state.idLesson!));
                                   },
-                                  child: const Text("Retry"),
+                                  child: const Text("Retry", style: TextStyle(color: Colors.white),),
                                 )
                               ]
                             ),
@@ -210,10 +193,9 @@ class _ContentPageState extends State<ContentPage> {
                                         Navigator.of(context).pop();
                                       }else{
                                         context.read<ContentBloc>().add(ContentPagination());
-                                        //_playSound(state.contents!.data[state.currentContent].attributes.imageSong.data[0].attributes.url);
                                       }
                                     },
-                                    child: const Text("Continuer",style: TextStyle(fontSize: 22)),
+                                    child: const Text("Continuer",style: TextStyle(color: Colors.white, fontSize: 22)),
                                   ),
                                 )
                               ],

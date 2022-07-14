@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:devrnz/repository/users.repository.dart';
+import 'package:AgeArabic/repository/users.repository.dart';
 part 'reg_state.dart';
 
 abstract class RegisterEvent {}

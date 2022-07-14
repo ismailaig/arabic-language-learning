@@ -1,7 +1,6 @@
-import 'package:devrnz/pages/welcome.page.dart';
+import 'package:AgeArabic/pages/welcome.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:page_transition/page_transition.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -27,24 +26,27 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Colors.white,
-        child: Center(
-          child: SpinKitThreeInOut(
-            itemBuilder: (context, index){
-              final colors = [Colors.cyan, Colors.black26];
-              final color = colors[index % colors.length];
-              return DecoratedBox(
-                  decoration: BoxDecoration(
-                      color: color,
-                      shape: BoxShape.circle
-                  )
-              );
-            },
-            //color: Theme.of(context).primaryColor,
-            size: 60.0,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Container(
+          color: Colors.white,
+          child: Center(
+            child: SpinKitThreeInOut(
+              itemBuilder: (context, index){
+                final colors = [Colors.cyan, Colors.black26];
+                final color = colors[index % colors.length];
+                return DecoratedBox(
+                    decoration: BoxDecoration(
+                        color: color,
+                        shape: BoxShape.circle
+                    )
+                );
+              },
+              //color: Theme.of(context).primaryColor,
+              size: 60.0,
+            ),
           ),
-        ),
+      ),
     );
   }
 }

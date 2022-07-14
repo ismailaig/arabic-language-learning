@@ -1,9 +1,9 @@
-import 'package:devrnz/bloc/lessonBloc/course.bloc.dart';
-import 'package:devrnz/repository/alphabets.repository.dart';
-import 'package:devrnz/repository/contents.repository.dart';
-import 'package:devrnz/repository/course.repository.dart';
-import 'package:devrnz/repository/numbers.repository.dart';
-import 'package:devrnz/repository/users.repository.dart';
+import 'package:AgeArabic/bloc/lessonBloc/course.bloc.dart';
+import 'package:AgeArabic/repository/alphabets.repository.dart';
+import 'package:AgeArabic/repository/contents.repository.dart';
+import 'package:AgeArabic/repository/course.repository.dart';
+import 'package:AgeArabic/repository/numbers.repository.dart';
+import 'package:AgeArabic/repository/users.repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/AlphabetsBloc/alphabet.bloc.dart';
@@ -21,6 +21,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({Key? key}) : super(key: key);
 
 

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:devrnz/utils/utils.dart';
+import 'package:AgeArabic/utils/utils.dart';
 import 'dart:ui' as ui;
 
 
@@ -21,7 +21,8 @@ class _FaceDetectorPageState extends State<FaceDetectorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Face Detector'),
+        title: const Text('Face Detector', style: TextStyle(color: Colors.white),),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -43,7 +44,7 @@ class _FaceDetectorPageState extends State<FaceDetectorPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-              child: const Icon(Icons.camera),
+              child: const Icon(Icons.camera, color: Colors.white,),
               onPressed: (){
                 showDialog(
                     context: context,
@@ -59,7 +60,7 @@ class _FaceDetectorPageState extends State<FaceDetectorPage> {
                                   faces=facesList;
                                 });
                               },
-                              child: const Text("Camera")
+                              child: const Text("Camera", style: TextStyle(color: Colors.white),)
                           ),
                           ElevatedButton(
                               onPressed: () async{
@@ -69,7 +70,7 @@ class _FaceDetectorPageState extends State<FaceDetectorPage> {
                                 });
                               },
 
-                              child: const Text("Gallery")
+                              child: const Text("Gallery", style: TextStyle(color: Colors.white),)
                           )
                         ],
                       );

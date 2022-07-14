@@ -1,10 +1,10 @@
-import 'package:devrnz/bloc/lessonBloc/course.bloc.dart';
-import 'package:devrnz/bloc/lessonBloc/course.event.dart';
+import 'package:AgeArabic/bloc/lessonBloc/course.bloc.dart';
+import 'package:AgeArabic/bloc/lessonBloc/course.event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:devrnz/bloc/loginBloc/login_bloc.dart';
-import 'package:devrnz/pages/home.page.dart';
-import 'package:devrnz/pages/signup.page.dart';
+import 'package:AgeArabic/bloc/loginBloc/login_bloc.dart';
+import 'package:AgeArabic/pages/home.page.dart';
+import 'package:AgeArabic/pages/signup.page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../bloc/authBloc/auth_bloc.dart';
@@ -292,7 +292,7 @@ class _LoginPageState extends State<LoginPage> {
     return RichText(
       textAlign: TextAlign.center,
       text: const TextSpan(
-          text: 'd',
+          text: 'A',
           style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.w700,
@@ -300,11 +300,11 @@ class _LoginPageState extends State<LoginPage> {
           ),
           children: [
             TextSpan(
-              text: 'ev',
+              text: 'ge',
               style: TextStyle(color: Colors.black, fontSize: 30),
             ),
             TextSpan(
-              text: 'rnz',
+              text: 'arabic',
               style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
             ),
           ]),

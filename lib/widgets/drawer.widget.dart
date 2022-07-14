@@ -1,9 +1,8 @@
-import 'package:devrnz/bloc/enums/EnumEvent.dart';
+import 'package:AgeArabic/bloc/enums/EnumEvent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:devrnz/bloc/theme.bloc.dart';
+import 'package:AgeArabic/bloc/theme.bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:page_transition/page_transition.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 import '../pages/splash.page.dart';
 
@@ -36,6 +35,7 @@ class MyDrawer extends StatelessWidget {
         builder: (context, state) {
           if(state.eventState==EventState.LOADED){
             return Drawer(
+              backgroundColor: Colors.white,
               child: Column(
                 children: [
                   DrawerHeader(
@@ -48,7 +48,7 @@ class MyDrawer extends StatelessWidget {
                           )
                       ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children:  [
                           CircleAvatar(
                             radius: 60,
@@ -56,7 +56,7 @@ class MyDrawer extends StatelessWidget {
                           ),
                           IconButton(onPressed: (){
                             context.read<ThemeBloc>().add(SwitchThemeEvent());
-                          }, icon: const Icon(Icons.switch_account_rounded))
+                          }, icon: const Icon(Icons.palette_outlined, color: Colors.white70, size: 30,))
                         ],
                       )
                   ),

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
-import 'package:devrnz/repository/users.repository.dart';
-import 'package:devrnz/models/users.model.dart';
+import 'package:AgeArabic/repository/users.repository.dart';
+import 'package:AgeArabic/models/users.model.dart';
 import '../../models/users.model.dart';
 import '../enums/EnumEvent.dart';
 part 'auth_state.dart';

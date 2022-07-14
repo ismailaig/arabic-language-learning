@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:devrnz/bloc/contentBloc/content.event.dart';
-import 'package:devrnz/bloc/enums/EnumEvent.dart';
-import 'package:devrnz/bloc/lessonBloc/course.bloc.dart';
-import 'package:devrnz/bloc/lessonBloc/course.state.dart';
+import 'package:AgeArabic/bloc/contentBloc/content.event.dart';
+import 'package:AgeArabic/bloc/enums/EnumEvent.dart';
+import 'package:AgeArabic/bloc/lessonBloc/course.bloc.dart';
+import 'package:AgeArabic/bloc/lessonBloc/course.state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -32,93 +32,132 @@ class _HomePageState extends State<HomePage> {
 
   final audioPlayer = AudioPlayer();
 
-  final colors = [Colors.deepOrange, Colors.blue, Colors.teal, Colors.purple];
+  final colors = [Colors.deepOrange, Colors.blue, Colors.teal, Colors.purple, Colors.cyan, Colors.lightGreen, Colors.blueGrey];
 
   @override
   Widget build(BuildContext context) {
-
-    return BlocBuilder<AuthBloc, AuthenticateState>(
-        builder: (context, state) {
-          if (state.eventState==EventState.LOADED) {
-            return Scaffold(
-                backgroundColor: Colors.white,
-                drawer: MyDrawer(),
-                appBar: AppBar(
-                    leading: Builder(
-                        builder: (BuildContext context) {
-                          return IconButton(
-                              icon: Icon(
-                                  Icons.menu, color: Theme.of(context).primaryColor, size: 38),
-                              onPressed: () {
-                                Scaffold.of(context).openDrawer();
-                              },
-                              tooltip: MaterialLocalizations
-                                  .of(context)
-                                  .openAppDrawerTooltip
-                          );
-                        }
-                    ),
-                    backgroundColor: Colors.white,
-                    elevation: 1.7,
-                    title: Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          InkWell(
-                            onTap: (){
-                              if(alpha==true){
-                                context.read<CourseBloc>().add(CourseLoading());
-                                setState((){
-                                  alpha = false;
-                                });
-                              }
-                            },
-                            child: Image.asset(
-                              "assets/images/saudi-arabia.png", height: 40,
-                              width: 40,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: (){
-                              if(alpha==false){
-                                context.read<AlphabetBloc>().add(AlphabetLoading());
-                                context.read<NumberBloc>().add(NumberLoading());
-                                setState((){
-                                  alpha = true;
-                                });
-                              }
-                            },
-                            child: Image.asset(
-                              "assets/images/arabic-language.png", height: 35,
-                              width: 35,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Image.asset("assets/images/crown.png", height: 33, width: 33,),
-                                const SizedBox(width: 8,),
-                                Text("${state.listUsers!.data[0].attributes.king}",
-                                  style: const TextStyle(color: Colors.orange,
-                                      fontSize: 18),)
-                              ],
-                            ),
-                          )
-                        ],
+    return WillPopScope(
+      onWillPop: () async {
+        final shouldPop = await showMyDialog();
+        return shouldPop ?? false;
+      },
+      child: BlocBuilder<AuthBloc, AuthenticateState>(
+          builder: (context, state) {
+            if (state.eventState == EventState.LOADED) {
+              return Scaffold(
+                  backgroundColor: Colors.white,
+                  drawer: MyDrawer(),
+                  appBar: AppBar(
+                      leading: Builder(
+                          builder: (BuildContext context) {
+                            return IconButton(
+                                icon: Icon(
+                                    Icons.menu, color: Theme
+                                    .of(context)
+                                    .primaryColor, size: 38),
+                                onPressed: () {
+                                  Scaffold.of(context).openDrawer();
+                                },
+                                tooltip: MaterialLocalizations
+                                    .of(context)
+                                    .openAppDrawerTooltip
+                            );
+                          }
                       ),
-                    )
-                ),
-                body: alpha == false? homeLesson():alphaNumber()
-            );
+                      backgroundColor: Colors.white,
+                      elevation: 1.7,
+                      title: Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            InkWell(
+                              onTap: () {
+                                if (alpha == true) {
+                                  context.read<CourseBloc>().add(
+                                      CourseLoading());
+                                  setState(() {
+                                    alpha = false;
+                                  });
+                                }
+                              },
+                              child: Image.asset(
+                                "assets/images/saudi-arabia.png", height: 40,
+                                width: 40,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                if (alpha == false) {
+                                  context.read<AlphabetBloc>().add(
+                                      AlphabetLoading());
+                                  context.read<NumberBloc>().add(
+                                      NumberLoading());
+                                  setState(() {
+                                    alpha = true;
+                                  });
+                                }
+                              },
+                              child: Image.asset(
+                                "assets/images/arabic-language.png", height: 35,
+                                width: 35,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceBetween,
+                                children: [
+                                  Image.asset(
+                                    "assets/images/crown.png", height: 33,
+                                    width: 33,),
+                                  const SizedBox(width: 8,),
+                                  Text("${state.listUsers!.data[0].attributes
+                                      .king}",
+                                    style: const TextStyle(color: Colors.orange,
+                                        fontSize: 18),)
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                  ),
+                  body: alpha == false ? homeLesson() : alphaNumber()
+              );
+            }
+            return Container();
           }
-          return Container();
-        }
+      ),
     );
   }
 
+  Future<bool?> showMyDialog() => showDialog<bool>(
+    context: context,
+    builder: (BuildContext context){
+      return AlertDialog(
+        actionsAlignment: MainAxisAlignment.spaceAround,
+        title: const Center(child: Text('Do you want to quit ?')),
+        actions: <Widget>[
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(primary: Colors.white, side: BorderSide(width: 1.5, color: Theme.of(context).primaryColor,)),
+            onPressed: () {
+              Navigator.pop(context,false); // Dismiss alert dialog
+            },
+            child: Text("No",style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor),
+            onPressed: () {
+              Navigator.pop(context,true); // Dismiss alert dialog
+            },
+            child: const Text("Yes",style: TextStyle(color: Colors.white, fontSize: 15)),
+          ),
+        ],
+      );
+    },
+  );
 
   Widget homeLesson(){
     return BlocBuilder<CourseBloc, CourseState>(
@@ -129,13 +168,13 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children:[
-                    Text(state.error,textAlign: TextAlign.center, overflow: TextOverflow.visible, style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 25),),
+                    Text("Server problem",textAlign: TextAlign.center, overflow: TextOverflow.visible, style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 25),),
                     const SizedBox(height: 15,),
                     ElevatedButton(
                       onPressed: (){
                         context.read<CourseBloc>().add(CourseLoading());
                       },
-                      child: const Text("Retry"),
+                      child: const Text("Retry", style: TextStyle(color: Colors.white),),
                     )
                   ]
               ),
@@ -159,7 +198,7 @@ class _HomePageState extends State<HomePage> {
                     lesson(
                       state.lessons!.data[index].id,
                       context,state.lessons!.data[index].attributes.image.data.attributes.url,
-                      "0",state.lessons!.data[index].attributes.title, colors[Random().nextInt(4)],
+                      "0",state.lessons!.data[index].attributes.title, colors[Random().nextInt(7)],
                     );
                 },
                 itemCount: state.lessons!.data.length
@@ -184,14 +223,14 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children:[
-                              Text(state.error,textAlign: TextAlign.center, overflow: TextOverflow.visible, style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 25),),
+                              Text("Server problem",textAlign: TextAlign.center, overflow: TextOverflow.visible, style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 25),),
                               const SizedBox(height: 15,),
                               ElevatedButton(
                                 onPressed: (){
                                   context.read<AlphabetBloc>().add(AlphabetLoading());
                                   context.read<NumberBloc>().add(NumberLoading());
                                 },
-                                child: const Text("Retry"),
+                                child: const Text("Retry", style: TextStyle(color: Colors.white),),
                               )
                             ]
                         ),
@@ -362,9 +401,9 @@ class _HomePageState extends State<HomePage> {
                   InkWell(
                     onTap:null,
                     child: CircleAvatar(
-                        radius: 39,
-                        backgroundColor: Colors.brown,
-                        child: Image.asset("assets/images/egg.png",height: 53,)
+                        radius: 36,
+                        backgroundColor: Colors.yellow,
+                        child: Image.asset("assets/images/egg.png", height: 53,)
                     ),
                   )
                 ],

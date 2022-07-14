@@ -15,37 +15,48 @@ class _QRCodePageState extends State<QRCodePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('QRCode')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+          title: const Text('QR Code Generate', style: TextStyle(color: Colors.white),),
+          iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: Column(
         children: [
-          QrImage(
-            data: data,
-            size: 200,
+          Expanded(
+            flex: 4,
+            child: QrImage(
+              data: data,
+            ),
           ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(borderSide: BorderSide(width: 1))),
-              controller: _controller,
-              onChanged: (value) {
-                setState(() {
-                  data = value;
-                });
-              },
+          Expanded(
+            flex: 3,
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              child: TextFormField(
+                maxLines: 9,
+                decoration: InputDecoration(
+                    hintText: "Enter a text to generate QR Code",
+                    border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 1))),
+                controller: _controller,
+                onChanged: (value) {
+                  setState(() {
+                    data = value;
+                  });
+                },
+              ),
             ),
           )
         ],
       ),
-      floatingActionButton: Row(
+      /*floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-              child: const Icon(Icons.qr_code_2_outlined),
+              child: const Icon(Icons.qr_code_2_outlined, color: Colors.white,),
               onPressed: () {}
           )
         ],
-      ),
+      ),*/
     );
   }
 }

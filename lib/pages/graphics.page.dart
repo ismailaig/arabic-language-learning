@@ -9,7 +9,7 @@ class GraphicsPage extends StatefulWidget {
 }
 
 class _GraphicsPageState extends State<GraphicsPage> with TickerProviderStateMixin {
-  double radius=40;
+  double radius=30;
   late Animation<double> animation;
   late AnimationController animationController;
   @override
@@ -42,7 +42,8 @@ class _GraphicsPageState extends State<GraphicsPage> with TickerProviderStateMix
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Animation'),
+        title: const Text('Animation', style: TextStyle(color: Colors.white),),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body:Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,8 +62,8 @@ class _GraphicsPageState extends State<GraphicsPage> with TickerProviderStateMix
           ),
           Slider(
               value: radius,
-              min: 20,
-              max: 150,
+              min: 10,
+              max: 120,
               label: radius.toString(),
               divisions: 10,
               onChanged: (value){

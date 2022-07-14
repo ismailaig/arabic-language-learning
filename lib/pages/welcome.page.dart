@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:devrnz/pages/login.page.dart';
-import 'package:devrnz/pages/signup.page.dart';
+import 'package:AgeArabic/pages/login.page.dart';
+import 'package:AgeArabic/pages/signup.page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -95,7 +95,7 @@ class _WelcomePageState extends State<WelcomePage> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          text: 'd',
+          text: 'A',
           style: GoogleFonts.portLligatSans(
             textStyle: Theme.of(context).textTheme.headline1,
             fontSize: 30,
@@ -104,11 +104,11 @@ class _WelcomePageState extends State<WelcomePage> {
           ),
           children: const [
             TextSpan(
-              text: 'ev',
+              text: 'ge',
               style: TextStyle(color: Colors.black, fontSize: 30),
             ),
             TextSpan(
-              text: 'rnz',
+              text: 'arabic',
               style: TextStyle(color: Colors.white, fontSize: 30),
             ),
           ]),

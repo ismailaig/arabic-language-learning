@@ -1,11 +1,10 @@
-import 'package:devrnz/bloc/lessonBloc/course.bloc.dart';
-import 'package:devrnz/pages/splash.page.dart';
+import 'package:AgeArabic/bloc/lessonBloc/course.bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:devrnz/bloc/theme.bloc.dart';
-import 'package:devrnz/pages/qr.code.page.dart';
-import 'package:devrnz/pages/qr.scan.page.dart';
-import 'package:devrnz/pages/welcome.page.dart';
+import 'package:AgeArabic/bloc/theme.bloc.dart';
+import 'package:AgeArabic/pages/qr.code.page.dart';
+import 'package:AgeArabic/pages/qr.scan.page.dart';
+import 'package:AgeArabic/pages/welcome.page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../bloc/authBloc/auth_bloc.dart';
@@ -62,6 +61,7 @@ class _RootViewState extends State<RootView> {
             return BlocBuilder<ThemeBloc,ThemeState>(
                 builder: (context,state){
                   return MaterialApp(
+                    color: Colors.white,
                     debugShowCheckedModeBanner: false,
                     theme: state.theme,
                     home: const HomePage(),
@@ -83,25 +83,29 @@ class _RootViewState extends State<RootView> {
             return BlocBuilder<ThemeBloc,ThemeState>(
                 builder: (context,state){
                   return MaterialApp(
+                    color: Colors.white,
                     debugShowCheckedModeBanner: false,
                     theme: state.theme,
-                    home: Container(
-                      color: Colors.white,
-                      child: Center(
-                          child: SpinKitThreeInOut(
-                            itemBuilder: (context, index){
-                              final colors = [Colors.cyan, Colors.black26];
-                              final color = colors[index % colors.length];
-                              return DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    color: color,
-                                      shape: BoxShape.circle
-                                  )
-                              );
-                            },
-                            //color: Theme.of(context).primaryColor,
-                            size: 60.0,
-                          )
+                    home: Scaffold(
+                      backgroundColor: Colors.white,
+                      body: Container(
+                        color: Colors.white,
+                        child: Center(
+                            child: SpinKitThreeInOut(
+                              itemBuilder: (context, index){
+                                final colors = [Colors.cyan, Colors.black26];
+                                final color = colors[index % colors.length];
+                                return DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color: color,
+                                        shape: BoxShape.circle
+                                    )
+                                );
+                              },
+                              //color: Theme.of(context).primaryColor,
+                              size: 60.0,
+                            )
+                        ),
                       ),
                     ),
                     routes: {
@@ -140,9 +144,7 @@ class _RootViewState extends State<RootView> {
                 }
             );
           }else if(state is LoginInitial){
-            if(logged==0){
-              return Container();
-            }else if(logged==2){
+            if(logged==2){
               return BlocBuilder<ThemeBloc,ThemeState>(
                   builder: (context,state){
                     return MaterialApp(
@@ -165,7 +167,7 @@ class _RootViewState extends State<RootView> {
               );
             }
           }
-          return Container();
+          return Container(color: Colors.white,);
         }
     );
   }

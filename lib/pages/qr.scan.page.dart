@@ -12,33 +12,36 @@ class QRViewScannerPage extends StatefulWidget {
 class _QRViewScannerPageState extends State<QRViewScannerPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   late QRViewController qrViewController;
-  Barcode? barcode;
-  String? data="Scanned Code";
+  late Barcode barcode;
+  String data = "";
   bool viewQRScan=false;
   TextEditingController textEditingController=TextEditingController();
+
   @override
   void initState() {
     super.initState();
-    textEditingController.text=data!;
+    textEditingController.text=data;
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text("QR Scan & Generate", style: TextStyle(color: Colors.white),),
         actions: [
           IconButton(
               onPressed: () {
                 qrViewController.flipCamera();
               },
-              icon: const Icon(Icons.flip))
+              icon: const Icon(Icons.flip, color: Colors.white,))
         ],
       ),
       body: Column(
         children: [
           Expanded(
-              flex: 5,
+              flex: 3,
               child:
-              (!viewQRScan)?QrImage(data: "$data"):
+              (!viewQRScan)?QrImage(data: data):
               Container(
                 padding: const EdgeInsets.all(20),
                 child: QRView(
@@ -53,8 +56,8 @@ class _QRViewScannerPageState extends State<QRViewScannerPage> {
                     qrViewController.scannedDataStream.listen((barCode) {
                       setState(() {
                         barcode = barCode;
-                        data=barCode.code;
-                        textEditingController.text=data!;
+                        data = barCode.code!;
+                        textEditingController.text=data;
                         viewQRScan=false;
                       });
                     });
@@ -62,12 +65,14 @@ class _QRViewScannerPageState extends State<QRViewScannerPage> {
                 ),
               )),
           Expanded(
-              flex: 1,
+              flex: 3,
               child:Container(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(borderSide: BorderSide(width: 1))),
+                  maxLines: 9,
+                  decoration: InputDecoration(
+                      hintText: "Enter a text to generate QR Code",
+                      border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 1))),
                   controller: textEditingController,
                   onChanged: (value) {
                     setState(() {
@@ -88,7 +93,7 @@ class _QRViewScannerPageState extends State<QRViewScannerPage> {
                 viewQRScan=true;
               });
             },
-            child: const Icon(Icons.qr_code_2_outlined),
+            child: const Icon(Icons.qr_code_2_outlined,color: Colors.white),
           )
         ],
       ),
@@ -96,10 +101,10 @@ class _QRViewScannerPageState extends State<QRViewScannerPage> {
   }
 
 
-  @override
+  /*@override
   void dispose() {
     // TODO: implement dispose
     qrViewController.dispose();
     super.dispose();
-  }
+  }*/
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:devrnz/bloc/regBloc/reg_bloc.dart';
-import 'package:devrnz/pages/login.page.dart';
+import 'package:AgeArabic/bloc/regBloc/reg_bloc.dart';
+import 'package:AgeArabic/pages/login.page.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:page_transition/page_transition.dart';
 import '../bloc/authBloc/auth_bloc.dart';
@@ -228,7 +228,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return RichText(
       textAlign: TextAlign.center,
       text: const TextSpan(
-          text: 'd',
+          text: 'A',
           style: TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.w700,
@@ -236,11 +236,11 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           children: [
             TextSpan(
-              text: 'ev',
+              text: 'ge',
               style: TextStyle(color: Colors.black, fontSize: 30),
             ),
             TextSpan(
-              text: 'rnz',
+              text: 'arabic',
               style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
             ),
           ]),
@@ -254,6 +254,7 @@ class _SignUpPageState extends State<SignUpPage> {
     registerBloc = BlocProvider.of<RegisterBloc>(context);
     authBloc = BlocProvider.of<AuthBloc>(context);
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,9 +307,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 setState(() {
                                   error = '';
                                 });
-                                Navigator.pushAndRemoveUntil(
-                                    context, PageTransition(child: const LoginPage(), type: PageTransitionType.rightToLeft), (route) => false
-                                );
+                                showUpdateDialog(context);
                               }else if(state is RegisterFailed){
                                 setState(() {
                                   error = 'Fields are incorrect';
@@ -346,4 +345,26 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
+
+  Future<void> showUpdateDialog(BuildContext context) {
+    return showDialog(context: context, builder: (BuildContext context) {
+      return AlertDialog(
+        actionsAlignment: MainAxisAlignment.center,
+        title: const Center(child: Icon(Icons.check_circle_outline, color: Colors.green, size: 45)),
+        content: const Text("Successfully registered", style: TextStyle(fontSize: 20),),
+        actions: <Widget>[
+          OutlinedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pushAndRemoveUntil(
+                    context, PageTransition(child: const LoginPage(), type: PageTransitionType.rightToLeft), (route) => false
+                );
+              },
+              child: const Text("OK", style: TextStyle(color: Colors.deepOrange,))
+          )
+        ],
+      );
+    });
+  }
+
 }

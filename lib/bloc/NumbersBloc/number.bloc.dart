@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:devrnz/bloc/enums/EnumEvent.dart';
-import 'package:devrnz/repository/numbers.repository.dart';
+import 'package:AgeArabic/bloc/enums/EnumEvent.dart';
+import 'package:AgeArabic/repository/numbers.repository.dart';
 import 'number.event.dart';
 import 'number.state.dart';
 
