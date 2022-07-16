@@ -3,17 +3,18 @@ class Lessons {
     required this.data,
     required this.meta,
   });
+
   late final List<Data> data;
   late final Meta meta;
 
-  Lessons.fromJson(Map<String, dynamic> json){
-    data = List.from(json['data']).map((e)=>Data.fromJson(e)).toList();
+  Lessons.fromJson(Map<String, dynamic> json) {
+    data = List.from(json['data']).map((e) => Data.fromJson(e)).toList();
     meta = Meta.fromJson(json['meta']);
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['data'] = data.map((e)=>e.toJson()).toList();
+    _data['data'] = data.map((e) => e.toJson()).toList();
     _data['meta'] = meta.toJson();
     return _data;
   }
@@ -24,10 +25,11 @@ class Data {
     required this.id,
     required this.attributes,
   });
+
   late final int id;
   late final Attributes attributes;
 
-  Data.fromJson(Map<String, dynamic> json){
+  Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     attributes = Attributes.fromJson(json['attributes']);
   }
@@ -48,8 +50,9 @@ class Attributes {
     required this.createdAt,
     required this.updatedAt,
     required this.publishedAt,
-    required this.image, 
+    required this.image,
   });
+
   late final String title;
   late final bool started;
   late final bool locked;
@@ -58,7 +61,7 @@ class Attributes {
   late final String publishedAt;
   late final Image image;
 
-  Attributes.fromJson(Map<String, dynamic> json){
+  Attributes.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     started = json['started'];
     locked = json['locked'];
@@ -85,9 +88,10 @@ class Image {
   Image({
     required this.data,
   });
+
   late final DataImage data;
 
-  Image.fromJson(Map<String, dynamic> json){
+  Image.fromJson(Map<String, dynamic> json) {
     data = DataImage.fromJson(json['data']);
   }
 
@@ -103,10 +107,11 @@ class DataImage {
     required this.id,
     required this.attributes,
   });
+
   late final int id;
   late final AttributesImage attributes;
 
-  DataImage.fromJson(Map<String, dynamic> json){
+  DataImage.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     attributes = AttributesImage.fromJson(json['attributes']);
   }
@@ -136,6 +141,7 @@ class AttributesImage {
     required this.createdAt,
     required this.updatedAt,
   });
+
   late final String name;
   late final String alternativeText;
   late final String caption;
@@ -151,7 +157,7 @@ class AttributesImage {
   late final String createdAt;
   late final String updatedAt;
 
-  AttributesImage.fromJson(Map<String, dynamic> json){
+  AttributesImage.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     alternativeText = json['alternativeText'];
     caption = json['caption'];
@@ -193,10 +199,11 @@ class Formats {
     required this.small,
     required this.thumbnail,
   });
+
   late final Small small;
   late final Thumbnail thumbnail;
 
-  Formats.fromJson(Map<String, dynamic> json){
+  Formats.fromJson(Map<String, dynamic> json) {
     small = Small.fromJson(json['small']);
     thumbnail = Thumbnail.fromJson(json['thumbnail']);
   }
@@ -220,6 +227,7 @@ class Small {
     required this.width,
     required this.height,
   });
+
   late final String ext;
   late final String url;
   late final String hash;
@@ -229,7 +237,7 @@ class Small {
   late final int width;
   late final int height;
 
-  Small.fromJson(Map<String, dynamic> json){
+  Small.fromJson(Map<String, dynamic> json) {
     ext = json['ext'];
     url = json['url'];
     hash = json['hash'];
@@ -265,6 +273,7 @@ class Thumbnail {
     required this.width,
     required this.height,
   });
+
   late final String ext;
   late final String url;
   late final String hash;
@@ -274,7 +283,7 @@ class Thumbnail {
   late final int width;
   late final int height;
 
-  Thumbnail.fromJson(Map<String, dynamic> json){
+  Thumbnail.fromJson(Map<String, dynamic> json) {
     ext = json['ext'];
     url = json['url'];
     hash = json['hash'];
@@ -303,9 +312,10 @@ class Meta {
   Meta({
     required this.pagination,
   });
+
   late final Pagination pagination;
 
-  Meta.fromJson(Map<String, dynamic> json){
+  Meta.fromJson(Map<String, dynamic> json) {
     pagination = Pagination.fromJson(json['pagination']);
   }
 
@@ -323,12 +333,13 @@ class Pagination {
     required this.pageCount,
     required this.total,
   });
+
   late final int page;
   late final int pageSize;
   late final int pageCount;
   late final int total;
 
-  Pagination.fromJson(Map<String, dynamic> json){
+  Pagination.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     pageSize = json['pageSize'];
     pageCount = json['pageCount'];

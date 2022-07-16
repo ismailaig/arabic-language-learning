@@ -11,4 +11,3 @@ class LogoutSucced extends LogoutState {
   @override
   List<Object> get props => [];
 }
-

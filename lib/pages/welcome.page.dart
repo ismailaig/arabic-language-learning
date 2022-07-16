@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:AgeArabic/pages/login.page.dart';
-import 'package:AgeArabic/pages/signup.page.dart';
+import 'package:aget_arabic/pages/login.page.dart';
+import 'package:aget_arabic/pages/signup.page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -104,11 +104,11 @@ class _WelcomePageState extends State<WelcomePage> {
           ),
           children: const [
             TextSpan(
-              text: 'ge',
+              text: 'get',
               style: TextStyle(color: Colors.black, fontSize: 30),
             ),
             TextSpan(
-              text: 'arabic',
+              text: 'Arabic',
               style: TextStyle(color: Colors.white, fontSize: 30),
             ),
           ]),

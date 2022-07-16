@@ -1,4 +1,4 @@
-import 'package:AgeArabic/pages/welcome.page.dart';
+import 'package:aget_arabic/pages/welcome.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -20,8 +20,7 @@ class _SplashPageState extends State<SplashPage> {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const WelcomePage(),
-        ));
+          builder: (context) => const WelcomePage(),));
   }
 
   @override

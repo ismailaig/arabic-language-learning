@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:AgeArabic/utils/utils.dart';
+import 'package:aget_arabic/utils/utils.dart';
 
 class OcrPage extends StatefulWidget {
   const OcrPage({Key? key}) : super(key: key);

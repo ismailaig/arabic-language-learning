@@ -1,5 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:AgeArabic/bloc/contentBloc/content.event.dart';
+import 'package:aget_arabic/bloc/contentBloc/content.event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -11,7 +11,9 @@ import '../bloc/enums/EnumEvent.dart';
 class ContentPage extends StatefulWidget {
 
 
-  const ContentPage({Key? key}) : super(key: key);
+  final int idLesson;
+
+  const ContentPage({Key? key, required this.idLesson}) : super(key: key);
 
   @override
   State<ContentPage> createState() => _ContentPageState();
@@ -21,11 +23,15 @@ class _ContentPageState extends State<ContentPage> {
   late ContentBloc contentBloc;
 
   final audioPlayer = AudioPlayer();
-  late final url;
+  final url = "";
 
 
   _playSound(String url){
     AudioPlayer().play(UrlSource(url));
+  }
+
+  _pauseSound(){
+    AudioPlayer().pause();
   }
 
   @override
@@ -109,11 +115,11 @@ class _ContentPageState extends State<ContentPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children:[
-                                Text("Server problem",textAlign: TextAlign.center, overflow: TextOverflow.visible, style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 25),),
+                                const Text("Error connexion. Try to connect",textAlign: TextAlign.center, overflow: TextOverflow.visible, style: TextStyle(color: Colors.red, fontSize: 22),),
                                 const SizedBox(height: 15,),
                                 ElevatedButton(
                                   onPressed: (){
-                                    context.read<ContentBloc>().add(ContentLoading(state.idLesson!));
+                                    context.read<ContentBloc>().add(ContentLoading(widget.idLesson));
                                   },
                                   child: const Text("Retry", style: TextStyle(color: Colors.white),),
                                 )
@@ -152,6 +158,7 @@ class _ContentPageState extends State<ContentPage> {
                                         state.contents!.data[state.currentContent].attributes.image.data[0].attributes.url,
                                         width: 150,
                                         height: 230,
+                                        errorBuilder: (context, error, stackTrace) => Image.asset("assets/images/egg.png",height: 230, width: 150,),
                                       ),
                                     ],
                                   ),
@@ -160,15 +167,15 @@ class _ContentPageState extends State<ContentPage> {
                                   children: [
                                     SizedBox(
                                       height: 80,
-                                      child: Text(state.contents!.data[state.currentContent].attributes.imageName, textAlign: TextAlign.center, overflow: TextOverflow.visible, style: const TextStyle(color:Colors.orange,fontWeight: FontWeight.w600, fontSize: 24)),
+                                      child: Text(state.contents!.data[state.currentContent].attributes.imageName, textAlign: TextAlign.center, overflow: TextOverflow.visible, style: const TextStyle(color:Colors.orange, fontWeight: FontWeight.w300, fontSize: 24)),
                                     ),
                                     SizedBox(
                                       height: 80,
-                                      child: Text(state.contents!.data[state.currentContent].attributes.nameArFr, textAlign: TextAlign.center, overflow: TextOverflow.visible, style: const TextStyle(color:Colors.deepPurple, fontWeight: FontWeight.w500, fontSize: 22),),
+                                      child: Text(state.contents!.data[state.currentContent].attributes.nameArFr, textAlign: TextAlign.center, overflow: TextOverflow.visible, style: const TextStyle(color:Colors.deepPurple, fontSize: 22),),
                                     ),
                                     SizedBox(
                                       height: 80,
-                                      child: Text(state.contents!.data[state.currentContent].attributes.imageNameFr, textAlign: TextAlign.center, overflow: TextOverflow.visible, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 22),),
+                                      child: Text(state.contents!.data[state.currentContent].attributes.imageNameFr, textAlign: TextAlign.center, overflow: TextOverflow.visible, style: const TextStyle(fontSize: 22),),
                                     ),
                                   ],
                                 ),
@@ -188,14 +195,14 @@ class _ContentPageState extends State<ContentPage> {
                                         backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor)
                                     ),
                                     onPressed: () {
-                                      //audioPlayer.play(UrlSource(url.path));
                                       if(state.currentContent==(state.contents!.data.length)-1){
                                         Navigator.of(context).pop();
                                       }else{
+                                        _pauseSound();
                                         context.read<ContentBloc>().add(ContentPagination());
                                       }
                                     },
-                                    child: const Text("Continuer",style: TextStyle(color: Colors.white, fontSize: 22)),
+                                    child: const Text("Continue",style: TextStyle(color: Colors.white, fontSize: 22)),
                                   ),
                                 )
                               ],

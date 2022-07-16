@@ -10,6 +10,9 @@ class LoadedThemeEvent extends ThemeEvent{
   LoadedThemeEvent({required this.index});
 }
 
+class DeleteThemeEvent extends ThemeEvent{
+}
+
 class ThemeState {
   final ThemeData theme;
   ThemeState(this.theme);
@@ -19,10 +22,9 @@ class InitialTheme extends ThemeState{
 }
 
 class ThemeBloc extends Bloc<ThemeEvent,ThemeState>{
-  int index=0;
+
+  int index = 0;
   final storage = const FlutterSecureStorage();
-
-
 
   List<ThemeData> themes = [
     ThemeData(primarySwatch:Colors.deepOrange),
@@ -34,6 +36,7 @@ class ThemeBloc extends Bloc<ThemeEvent,ThemeState>{
     ThemeData(primarySwatch:Colors.teal),
     ThemeData(primarySwatch:Colors.deepPurple),
   ];
+
   ThemeBloc() : super(InitialTheme()){
 
     on((SwitchThemeEvent event, emit) async {
@@ -48,6 +51,11 @@ class ThemeBloc extends Bloc<ThemeEvent,ThemeState>{
 
     on((LoadedThemeEvent event, emit) {
       index = event.index;
+      emit(ThemeState(themes[index]));
+    });
+
+    on((DeleteThemeEvent event, emit) {
+      index = 0;
       emit(ThemeState(themes[index]));
     });
 

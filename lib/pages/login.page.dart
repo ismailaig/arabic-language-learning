@@ -1,12 +1,14 @@
-import 'package:AgeArabic/bloc/lessonBloc/course.bloc.dart';
-import 'package:AgeArabic/bloc/lessonBloc/course.event.dart';
+import 'package:aget_arabic/bloc/lessonBloc/course.bloc.dart';
+import 'package:aget_arabic/bloc/lessonBloc/course.event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:AgeArabic/bloc/loginBloc/login_bloc.dart';
-import 'package:AgeArabic/pages/home.page.dart';
-import 'package:AgeArabic/pages/signup.page.dart';
+import 'package:aget_arabic/bloc/loginBloc/login_bloc.dart';
+import 'package:aget_arabic/pages/home.page.dart';
+import 'package:aget_arabic/pages/signup.page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:overlay_support/overlay_support.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 import '../utils/bezierContainer.dart';
 
@@ -116,8 +118,8 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: notVisible,
               controller: passwordTextEditingController,
               validator: (value) {
-                if (value == null || value.length < 8) {
-                  return "Enter a password with at least 8 characters";
+                if (value == null || value.isEmpty) {
+                  return "Please enter a password";
                 }
                 return null;
               },
@@ -145,14 +147,28 @@ class _LoginPageState extends State<LoginPage> {
   Widget _submitButton() {
     return ElevatedButton(
         onPressed: () async {
+          FocusManager.instance.primaryFocus?.unfocus();
           setState(() {
-            FocusManager.instance.primaryFocus?.unfocus();
             _formKey.currentState?.reset();
           });
-          if (_formKey.currentState?.validate() == true) {
-            email = emailTextEditingController.text;
-            password = passwordTextEditingController.text;
-            loginBloc.add(SignInButtonPressed(email: email,password: password));
+          if(_formKey.currentState?.validate() == true) {
+            bool hasInternet =
+            await InternetConnectionChecker()
+                .hasConnection;
+            if(hasInternet==false){
+              showSimpleNotification(
+                  const Text(
+                    "No internet connection",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20),
+                  ),
+                  background: Colors.redAccent);
+            }else{
+              email = emailTextEditingController.text;
+              password = passwordTextEditingController.text;
+              loginBloc.add(SignInButtonPressed(email: email,password: password));
+            }
           }
         },
         style: ElevatedButton.styleFrom(
@@ -300,11 +316,11 @@ class _LoginPageState extends State<LoginPage> {
           ),
           children: [
             TextSpan(
-              text: 'ge',
+              text: 'get',
               style: TextStyle(color: Colors.black, fontSize: 30),
             ),
             TextSpan(
-              text: 'arabic',
+              text: 'Arabic',
               style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
             ),
           ]),
@@ -339,7 +355,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: <Widget>[
                         SizedBox(height: height * .1),
                         _title(),
-                        const SizedBox(height: 5),
+                        const SizedBox(height: 60),
                         Form(
                           key: _formKey,
                           child: Column(
@@ -371,18 +387,24 @@ class _LoginPageState extends State<LoginPage> {
                         BlocListener<LoginBloc,LoginState>(
                             listener: (context, state) {
                               if(state is LoginSucced){
-                                setState(() {
-                                  error = '';
-                                  _onSaveUserInfo(state.listUsers.data[0].attributes.email, state.listUsers.data[0].attributes.password);
-                                });
-                                authBloc.add(AppLoaded(listUsers: state.listUsers));
-                                courseBloc.add(CourseLoading());
-                                Navigator.pushAndRemoveUntil(
-                                    context,MaterialPageRoute(builder: (context) => const HomePage()),(route) => false
-                                );
+                                if(state.listUsers.data.isEmpty){
+                                  setState(() {
+                                    error = 'Email or password is incorrect';
+                                  });
+                                }else{
+                                  setState(() {
+                                    error = '';
+                                    _onSaveUserInfo(state.listUsers.data[0].attributes.email, state.listUsers.data[0].attributes.password);
+                                  });
+                                  authBloc.add(AppLoaded(listUsers: state.listUsers));
+                                  courseBloc.add(CourseLoading());
+                                  Navigator.pushAndRemoveUntil(
+                                      context,MaterialPageRoute(builder: (context) => const HomePage()),(route) => false
+                                  );
+                                }
                               }else if(state is LoginFailed){
                                 setState(() {
-                                  error = 'Email or password is incorrect';
+                                  error = 'Error connexion. Please retry';
                                 });
                               }
                             },
@@ -396,7 +418,7 @@ class _LoginPageState extends State<LoginPage> {
                                         )
                                     );
                                   }else if(state is LoginFailed){
-                                    error = 'Email or password is incorrect';
+                                    return Container();
                                   }else if(state is LoginSucced){
                                     return Container();
                                   }

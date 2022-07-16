@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ProfileWidget extends StatelessWidget {
-
   final VoidCallback onClicked;
   final String imagePath;
   final String mode;
 
-  const ProfileWidget({
-    Key?key,
-    required this.onClicked,
-    required this.imagePath,
-    required this.mode
-  }):super(key: key);
-
+  const ProfileWidget(
+      {Key? key,
+      required this.onClicked,
+      required this.imagePath,
+      required this.mode})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,46 +29,45 @@ class ProfileWidget extends StatelessWidget {
     );
   }
 
-  Widget buildImage(){
+  Widget buildImage() {
     final image;
-    if(mode=="network"){
-      image = NetworkImage(imagePath);
-    }else{
-      image = AssetImage(imagePath);
+    if (mode == "network") {
+      image = Image.network(imagePath,
+          width: 155,
+          height: 155,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => Image.asset(
+              "assets/images/profile.jpg",
+              width: 155,
+              height: 155,
+              fit: BoxFit.cover));
+    } else {
+      image =
+          Image.asset(imagePath, width: 155, height: 155, fit: BoxFit.cover);
     }
     return ClipOval(
       child: Material(
-        color: Colors.transparent,
-        child: Ink.image(
-            image: image,
-            fit: BoxFit.cover,
-            width: 155,
-            height: 155,
-            child: InkWell(onTap: onClicked),
-        ),
-      ),
+          color: Colors.transparent,
+          child: InkWell(onTap: onClicked, child: image)),
     );
   }
 
   Widget buildEditIcon(Color color) => buildCircle(
-    color : Colors.white,
-    all:3,
-    child: buildCircle(
-      color :color,
-      all:8,
-      child:const Icon(
-        Icons.add_a_photo,
         color: Colors.white,
-        size: 20,
-      ),
-    ),
-  );
+        all: 3,
+        child: buildCircle(
+          color: color,
+          all: 8,
+          child: const Icon(
+            Icons.add_a_photo,
+            color: Colors.white,
+            size: 20,
+          ),
+        ),
+      );
 
-  Widget buildCircle({
-    required Widget child,
-    required double all,
-    required Color color
-  }) =>
+  Widget buildCircle(
+          {required Widget child, required double all, required Color color}) =>
       ClipOval(
         child: Container(
           padding: EdgeInsets.all(all),
@@ -79,6 +76,3 @@ class ProfileWidget extends StatelessWidget {
         ),
       );
 }
-
-
-

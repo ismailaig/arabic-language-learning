@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:AgeArabic/bloc/regBloc/reg_bloc.dart';
-import 'package:AgeArabic/pages/login.page.dart';
+import 'package:aget_arabic/bloc/regBloc/reg_bloc.dart';
+import 'package:aget_arabic/pages/login.page.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:page_transition/page_transition.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 import '../utils/bezierContainer.dart';
@@ -141,8 +143,8 @@ class _SignUpPageState extends State<SignUpPage> {
               obscureText: notVisible,
               controller: passwordTextEditingController,
               validator: (value) {
-                if (value == null || value.length < 8) {
-                  return "Enter a password with at least 8 characters";
+                if (value == null || value.length < 6) {
+                  return "Enter a password with at least 6 characters";
                 }
                 return null;
               },
@@ -167,16 +169,30 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _submitButton() {
     return ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
+          FocusManager.instance.primaryFocus?.unfocus();
           setState(() {
-            FocusManager.instance.primaryFocus?.unfocus();
             _formKey.currentState?.reset();
           });
           if (_formKey.currentState?.validate() == true) {
-            name = nameTextEditingController.text;
-            email = emailTextEditingController.text;
-            password = passwordTextEditingController.text;
-            registerBloc.add(SignUpButtonPressed(fullname:name, email: email,password: password));
+            bool hasInternet =
+                await InternetConnectionChecker()
+                .hasConnection;
+            if(hasInternet==false){
+              showSimpleNotification(
+                  const Text(
+                    "No internet connection",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20),
+                  ),
+                  background: Colors.redAccent);
+            }else{
+              name = nameTextEditingController.text;
+              email = emailTextEditingController.text;
+              password = passwordTextEditingController.text;
+              registerBloc.add(SignUpButtonPressed(fullname:name, email: email,password: password));
+            }
           }
         },
         style: ElevatedButton.styleFrom(
@@ -236,11 +252,11 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           children: [
             TextSpan(
-              text: 'ge',
+              text: 'get',
               style: TextStyle(color: Colors.black, fontSize: 30),
             ),
             TextSpan(
-              text: 'arabic',
+              text: 'Arabic',
               style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
             ),
           ]),
@@ -275,10 +291,10 @@ class _SignUpPageState extends State<SignUpPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          SizedBox(height: height * 0.19),
+                          SizedBox(height: height * 0.13),
                           _title(),
                           const SizedBox(
-                            height: 20,
+                            height: 40,
                           ),
                           Form(
                             key: _formKey,
@@ -310,7 +326,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 showUpdateDialog(context);
                               }else if(state is RegisterFailed){
                                 setState(() {
-                                  error = 'Fields are incorrect';
+                                  error = 'Error connexion. Please retry';
                                 });
                               }
                             },
@@ -324,7 +340,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         )
                                     );
                                   }else if(state is RegisterFailed){
-                                    error = 'Fields are incorrect';
+                                    return Container();
                                   }else if(state is RegisterSucced){
                                     return Container();
                                   }

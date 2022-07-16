@@ -3,17 +3,18 @@ class Alphabets {
     required this.data,
     required this.meta,
   });
+
   late final List<Data> data;
   late final Meta meta;
 
-  Alphabets.fromJson(Map<String, dynamic> json){
-    data = List.from(json['data']).map((e)=>Data.fromJson(e)).toList();
+  Alphabets.fromJson(Map<String, dynamic> json) {
+    data = List.from(json['data']).map((e) => Data.fromJson(e)).toList();
     meta = Meta.fromJson(json['meta']);
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['data'] = data.map((e)=>e.toJson()).toList();
+    _data['data'] = data.map((e) => e.toJson()).toList();
     _data['meta'] = meta.toJson();
     return _data;
   }
@@ -24,10 +25,11 @@ class Data {
     required this.id,
     required this.attributes,
   });
+
   late final int id;
   late final Attributes attributes;
 
-  Data.fromJson(Map<String, dynamic> json){
+  Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     attributes = Attributes.fromJson(json['attributes']);
   }
@@ -49,6 +51,7 @@ class Attributes {
     required this.publishedAt,
     required this.song,
   });
+
   late final String arabe;
   late final String french;
   late final String createdAt;
@@ -56,7 +59,7 @@ class Attributes {
   late final String publishedAt;
   late final Song song;
 
-  Attributes.fromJson(Map<String, dynamic> json){
+  Attributes.fromJson(Map<String, dynamic> json) {
     arabe = json['arabe'];
     french = json['french'];
     createdAt = json['createdAt'];
@@ -81,15 +84,16 @@ class Song {
   Song({
     required this.data,
   });
+
   late final List<DataSong> data;
 
-  Song.fromJson(Map<String, dynamic> json){
-    data = List.from(json['data']).map((e)=>DataSong.fromJson(e)).toList();
+  Song.fromJson(Map<String, dynamic> json) {
+    data = List.from(json['data']).map((e) => DataSong.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['data'] = data.map((e)=>e.toJson()).toList();
+    _data['data'] = data.map((e) => e.toJson()).toList();
     return _data;
   }
 }
@@ -99,10 +103,11 @@ class DataSong {
     required this.id,
     required this.attributes,
   });
+
   late final int id;
   late final AttributesSong attributes;
 
-  DataSong.fromJson(Map<String, dynamic> json){
+  DataSong.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     attributes = AttributesSong.fromJson(json['attributes']);
   }
@@ -131,6 +136,7 @@ class AttributesSong {
     required this.createdAt,
     required this.updatedAt,
   });
+
   late final String name;
   late final String alternativeText;
   late final String caption;
@@ -145,7 +151,7 @@ class AttributesSong {
   late final String createdAt;
   late final String updatedAt;
 
-  AttributesSong.fromJson(Map<String, dynamic> json){
+  AttributesSong.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     alternativeText = json['alternativeText'];
     caption = json['caption'];
@@ -185,10 +191,11 @@ class ProviderMetadata {
     required this.publicId,
     required this.resourceType,
   });
+
   late final String publicId;
   late final String resourceType;
 
-  ProviderMetadata.fromJson(Map<String, dynamic> json){
+  ProviderMetadata.fromJson(Map<String, dynamic> json) {
     publicId = json['public_id'];
     resourceType = json['resource_type'];
   }
@@ -205,9 +212,10 @@ class Meta {
   Meta({
     required this.pagination,
   });
+
   late final Pagination pagination;
 
-  Meta.fromJson(Map<String, dynamic> json){
+  Meta.fromJson(Map<String, dynamic> json) {
     pagination = Pagination.fromJson(json['pagination']);
   }
 
@@ -225,12 +233,13 @@ class Pagination {
     required this.pageCount,
     required this.total,
   });
+
   late final int page;
   late final int pageSize;
   late final int pageCount;
   late final int total;
 
-  Pagination.fromJson(Map<String, dynamic> json){
+  Pagination.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     pageSize = json['pageSize'];
     pageCount = json['pageCount'];

@@ -3,17 +3,18 @@ class ListUsers {
     required this.data,
     required this.meta,
   });
+
   late final List<Data> data;
   late final Meta meta;
 
-  ListUsers.fromJson(Map<String, dynamic> json){
-    data = List.from(json['data']).map((e)=>Data.fromJson(e)).toList();
+  ListUsers.fromJson(Map<String, dynamic> json) {
+    data = List.from(json['data']).map((e) => Data.fromJson(e)).toList();
     meta = Meta.fromJson(json['meta']);
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['data'] = data.map((e)=>e.toJson()).toList();
+    _data['data'] = data.map((e) => e.toJson()).toList();
     _data['meta'] = meta.toJson();
     return _data;
   }
@@ -24,10 +25,11 @@ class Data {
     required this.id,
     required this.attributes,
   });
+
   late final int id;
   late final Attributes attributes;
 
-  Data.fromJson(Map<String, dynamic> json){
+  Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     attributes = Attributes.fromJson(json['attributes']);
   }
@@ -41,16 +43,16 @@ class Data {
 }
 
 class Attributes {
-  Attributes({
-    required this.email,
-    required this.fullname,
-    required this.password,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.publishedAt,
-    required this.photo,
-    required this.king
-  });
+  Attributes(
+      {required this.email,
+      required this.fullname,
+      required this.password,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.publishedAt,
+      required this.photo,
+      required this.king});
+
   late final String email;
   late final String fullname;
   late final String password;
@@ -60,7 +62,7 @@ class Attributes {
   late final Photo photo;
   late final int king;
 
-  Attributes.fromJson(Map<String, dynamic> json){
+  Attributes.fromJson(Map<String, dynamic> json) {
     email = json['email'];
     fullname = json['fullname'];
     password = json['password'];
@@ -89,9 +91,10 @@ class Photo {
   Photo({
     required this.data,
   });
+
   DataPhoto? data;
 
-  Photo.fromJson(Map<String, dynamic> json){
+  Photo.fromJson(Map<String, dynamic> json) {
     data = json['data'] == null ? null : DataPhoto.fromJson(json['data']);
   }
 
@@ -107,10 +110,11 @@ class DataPhoto {
     required this.id,
     required this.attributes,
   });
+
   late final int id;
   late final AttributesPhoto attributes;
 
-  DataPhoto.fromJson(Map<String, dynamic> json){
+  DataPhoto.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     attributes = AttributesPhoto.fromJson(json['attributes']);
   }
@@ -137,6 +141,7 @@ class AttributesPhoto {
     required this.createdAt,
     required this.updatedAt,
   });
+
   late final String name;
   late final int width;
   late final int height;
@@ -149,7 +154,7 @@ class AttributesPhoto {
   late final String createdAt;
   late final String updatedAt;
 
-  AttributesPhoto.fromJson(Map<String, dynamic> json){
+  AttributesPhoto.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     width = json['width'];
     height = json['height'];
@@ -184,9 +189,10 @@ class Meta {
   Meta({
     required this.pagination,
   });
+
   late final Pagination pagination;
 
-  Meta.fromJson(Map<String, dynamic> json){
+  Meta.fromJson(Map<String, dynamic> json) {
     pagination = Pagination.fromJson(json['pagination']);
   }
 
@@ -204,12 +210,13 @@ class Pagination {
     required this.pageCount,
     required this.total,
   });
+
   late final int page;
   late final int pageSize;
   late final int pageCount;
   late final int total;
 
-  Pagination.fromJson(Map<String, dynamic> json){
+  Pagination.fromJson(Map<String, dynamic> json) {
     page = json['page'];
     pageSize = json['pageSize'];
     pageCount = json['pageCount'];

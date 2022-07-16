@@ -1,11 +1,9 @@
 part of 'auth_bloc.dart';
 
-
-
-class AuthenticateState
-{
+class AuthenticateState {
   ListUsers? listUsers;
   late EventState? eventState;
-  String error ='';
+  String error = '';
+
   AuthenticateState({this.eventState, this.listUsers, required this.error});
 }

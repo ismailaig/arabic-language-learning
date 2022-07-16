@@ -1,4 +1,4 @@
-name: AgeArabic
+name: aget_arabic
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -29,10 +29,6 @@ environment:
 
 #dependency_overrides:
 
-  #qr_code_scanner:
-    #git:
-      #url: https://github.com/X-SLAYER/qr_code_scanner.git
-      #ref: flutter-beta
 
 dependencies:
   flutter:
@@ -43,6 +39,8 @@ dependencies:
   google_maps_flutter:
   geolocator:
   google_ml_kit:
+  internet_connection_checker:
+  overlay_support:
   google_fonts:
   simple_animations:
   qr_flutter:
