@@ -7,7 +7,6 @@ import 'package:aget_arabic/pages/qr.scan.page.dart';
 import 'package:aget_arabic/pages/welcome.page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:overlay_support/overlay_support.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 import '../bloc/lessonBloc/course.event.dart';
 import '../bloc/loginBloc/login_bloc.dart';
@@ -62,8 +61,7 @@ class _RootViewState extends State<RootView> {
         context.read<CourseBloc>().add(CourseLoading());
       }
     }, child: BlocBuilder<ThemeBloc, ThemeState>(builder: (context, state) {
-      return OverlaySupport.global(
-        child: MaterialApp(
+      return MaterialApp(
           color: Colors.white,
           debugShowCheckedModeBanner: false,
           theme: state.theme,
@@ -113,7 +111,6 @@ class _RootViewState extends State<RootView> {
             "/scanQR": (context) => const QRViewScannerPage(),
             "/graphics": (context) => const GraphicsPage()
           },
-        ),
       );
     }));
   }

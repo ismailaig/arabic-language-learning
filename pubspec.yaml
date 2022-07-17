@@ -40,7 +40,7 @@ dependencies:
   geolocator:
   google_ml_kit:
   internet_connection_checker:
-  overlay_support:
+  fluttertoast:
   google_fonts:
   simple_animations:
   qr_flutter:

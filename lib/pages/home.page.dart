@@ -7,8 +7,8 @@ import 'package:aget_arabic/bloc/lessonBloc/course.state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:overlay_support/overlay_support.dart';
 import '../bloc/AlphabetsBloc/alphabet.bloc.dart';
 import '../bloc/AlphabetsBloc/alphabet.event.dart';
 import '../bloc/AlphabetsBloc/alphabet.state.dart';
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
 
   final audioPlayer = AudioPlayer();
 
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final colors = [
     Colors.deepOrange,
@@ -89,13 +89,7 @@ class _HomePageState extends State<HomePage> {
                                   await InternetConnectionChecker()
                                       .hasConnection;
                               if (hasInternet == false) {
-                                showSimpleNotification(
-                                    const Text(
-                                      "No internet connection",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 20),
-                                    ),
-                                    background: Colors.redAccent);
+                                   showToast();
                               } else {
                                 context.read<CourseBloc>().add(CourseLoading());
                                 setState(() {
@@ -117,13 +111,7 @@ class _HomePageState extends State<HomePage> {
                                   await InternetConnectionChecker()
                                       .hasConnection;
                               if (hasInternet == false) {
-                                showSimpleNotification(
-                                    const Text(
-                                      "No internet connection",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 20),
-                                    ),
-                                    background: Colors.redAccent);
+                                showToast();
                               } else {
                                 context
                                     .read<AlphabetBloc>()
@@ -216,7 +204,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Text(
-                  "Error connexion. Try to connect",
+                  "Server problem",
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.visible,
                   style: TextStyle(color: Colors.red, fontSize: 22),
@@ -283,7 +271,7 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const Text(
-                            "Error connexion. Try to connect",
+                            "Server problem",
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.visible,
                             style: TextStyle(color: Colors.red, fontSize: 22),
@@ -430,12 +418,7 @@ class _HomePageState extends State<HomePage> {
                     bool hasInternet =
                         await InternetConnectionChecker().hasConnection;
                     if (hasInternet == false) {
-                      showSimpleNotification(
-                          const Text(
-                            "No internet connection",
-                            style: TextStyle(color: Colors.white, fontSize: 20),
-                          ),
-                          background: Colors.redAccent);
+                      showToast();
                     } else {
                       context.read<ContentBloc>().add(ContentLoading(id));
                       Navigator.push(
@@ -489,6 +472,15 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
+
+  void showToast() =>
+      Fluttertoast.showToast(
+          msg: "No internet connexion",
+          fontSize: 15,
+          gravity: ToastGravity.TOP,
+          backgroundColor: Colors.redAccent,
+          textColor: Colors.white
+      );
 
   Widget lessonInkwell() {
     return InkWell(

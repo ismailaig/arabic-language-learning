@@ -7,8 +7,8 @@ import 'package:aget_arabic/pages/home.page.dart';
 import 'package:aget_arabic/pages/signup.page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:overlay_support/overlay_support.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 import '../utils/bezierContainer.dart';
 
@@ -17,10 +17,10 @@ class LoginPage extends StatefulWidget {
   final String? title;
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   late LoginBloc loginBloc;
   late AuthBloc authBloc;
   final storage = const FlutterSecureStorage();
@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     await storage.write(key: "password", value: password);
   }
 
-  Widget _backButton() {
+  /*Widget _backButton() {
     return InkWell(
       onTap: () {
         Navigator.pop(context);
@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
+  }*/
 
 
   Widget _emailField() {
@@ -156,14 +156,7 @@ class _LoginPageState extends State<LoginPage> {
             await InternetConnectionChecker()
                 .hasConnection;
             if(hasInternet==false){
-              showSimpleNotification(
-                  const Text(
-                    "No internet connection",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20),
-                  ),
-                  background: Colors.redAccent);
+              showToast();
             }else{
               email = emailTextEditingController.text;
               password = passwordTextEditingController.text;
@@ -182,7 +175,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _divider() {
+  /*Widget _divider() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -268,7 +261,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
+  }*/
 
   Widget _createAccountLabel() {
     return Container(
@@ -326,6 +319,15 @@ class _LoginPageState extends State<LoginPage> {
           ]),
     );
   }
+
+  void showToast() =>
+      Fluttertoast.showToast(
+          msg: "No internet connexion",
+          fontSize: 15,
+          gravity: ToastGravity.TOP,
+          backgroundColor: Colors.redAccent,
+          textColor: Colors.white
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -404,7 +406,7 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                               }else if(state is LoginFailed){
                                 setState(() {
-                                  error = 'Error connexion. Please retry';
+                                  error = 'Server problem';
                                 });
                               }
                             },

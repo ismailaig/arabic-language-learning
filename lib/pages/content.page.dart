@@ -30,9 +30,9 @@ class _ContentPageState extends State<ContentPage> {
     AudioPlayer().play(UrlSource(url));
   }
 
-  _pauseSound(){
+  /*_pauseSound(){
     AudioPlayer().pause();
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +115,7 @@ class _ContentPageState extends State<ContentPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children:[
-                                const Text("Error connexion. Try to connect",textAlign: TextAlign.center, overflow: TextOverflow.visible, style: TextStyle(color: Colors.red, fontSize: 22),),
+                                const Text("Server problem",textAlign: TextAlign.center, overflow: TextOverflow.visible, style: TextStyle(color: Colors.red, fontSize: 22),),
                                 const SizedBox(height: 15,),
                                 ElevatedButton(
                                   onPressed: (){
@@ -134,7 +134,6 @@ class _ContentPageState extends State<ContentPage> {
                             ),
                           );
                         } else if(state.eventState == EventState.LOADED){
-                          _playSound(state.contents!.data[state.currentContent].attributes.imageSong.data[0].attributes.url);
                           return Column(
                               children: [
                                 Padding(
@@ -198,7 +197,6 @@ class _ContentPageState extends State<ContentPage> {
                                       if(state.currentContent==(state.contents!.data.length)-1){
                                         Navigator.of(context).pop();
                                       }else{
-                                        _pauseSound();
                                         context.read<ContentBloc>().add(ContentPagination());
                                       }
                                     },

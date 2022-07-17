@@ -1,5 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ConnexionErrorPage extends StatefulWidget {
   const ConnexionErrorPage({Key? key}) : super(key: key);
@@ -11,13 +11,13 @@ class ConnexionErrorPage extends StatefulWidget {
 class _ConnexionErrorPageState extends State<ConnexionErrorPage> {
   @override
   void initState() {
-    showDialogError();
+    showToastError();
     super.initState();
   }
 
-  void showDialogError() async {
-    await Future.delayed(const Duration(milliseconds: 400));
-    showMyDialog();
+  void showToastError() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    showToast();
   }
 
 
@@ -37,23 +37,13 @@ class _ConnexionErrorPageState extends State<ConnexionErrorPage> {
     );
   }
 
-  Future<void> showMyDialog() => showDialog(
-    context: context,
-    builder: (BuildContext context){
-      return AlertDialog(
-        actionsAlignment: MainAxisAlignment.center,
-        title: const Center(child: Text('Error connexion. Try to connect', style: TextStyle(fontSize: 15),)),
-        actions: <Widget>[
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(primary: Colors.white, side: BorderSide(width: 1, color: Theme.of(context).primaryColor,)),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text("Ok",style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15)),
-          ),
-        ],
+  void showToast() =>
+      Fluttertoast.showToast(
+          msg: "No internet connexion",
+          fontSize: 15,
+          gravity: ToastGravity.TOP,
+          backgroundColor: Colors.redAccent,
+          textColor: Colors.white
       );
-    },
-  );
 
 }

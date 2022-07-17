@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aget_arabic/bloc/regBloc/reg_bloc.dart';
 import 'package:aget_arabic/pages/login.page.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:overlay_support/overlay_support.dart';
 import 'package:page_transition/page_transition.dart';
 import '../bloc/authBloc/auth_bloc.dart';
 import '../utils/bezierContainer.dart';
@@ -14,10 +14,10 @@ class SignUpPage extends StatefulWidget {
 
 
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  SignUpPageState createState() => SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class SignUpPageState extends State<SignUpPage> {
 
   late RegisterBloc registerBloc;
   late AuthBloc authBloc;
@@ -31,7 +31,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String error = '';
   final _formKey = GlobalKey<FormState>();
 
-  Widget _backButton() {
+  /*Widget _backButton() {
     return InkWell(
       onTap: () {
         Navigator.pop(context);
@@ -49,7 +49,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
-  }
+  }*/
 
   Widget _nameField() {
     return Container(
@@ -179,14 +179,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 await InternetConnectionChecker()
                 .hasConnection;
             if(hasInternet==false){
-              showSimpleNotification(
-                  const Text(
-                    "No internet connection",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20),
-                  ),
-                  background: Colors.redAccent);
+              showToast();
             }else{
               name = nameTextEditingController.text;
               email = emailTextEditingController.text;
@@ -239,6 +232,15 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
+
+  void showToast() =>
+      Fluttertoast.showToast(
+          msg: "No internet connexion",
+          fontSize: 15,
+          gravity: ToastGravity.TOP,
+          backgroundColor: Colors.redAccent,
+          textColor: Colors.white
+      );
 
   Widget _title() {
     return RichText(
@@ -326,7 +328,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 showUpdateDialog(context);
                               }else if(state is RegisterFailed){
                                 setState(() {
-                                  error = 'Error connexion. Please retry';
+                                  error = 'Server problem';
                                 });
                               }
                             },
